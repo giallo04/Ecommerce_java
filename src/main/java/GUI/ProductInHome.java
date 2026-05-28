@@ -29,7 +29,7 @@ public class ProductInHome {
         productName.setText(name);
         productPrice.setText(price);
         categoryLabel.setText(category);
-        image.setIcon(new ImageIcon(getClass().getResource("/products/img.png")));//just a test
+        image.setIcon(new ImageIcon(getClass().getResource("/products/img.png")));//just a test TODO add a tool class for image loading that check pointer
 
 
         //codice per hover pane custom
