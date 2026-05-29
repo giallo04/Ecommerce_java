@@ -1,7 +1,7 @@
-package GUI.Login;
+package Boundary.Login;
 
-import GUI.App;
-import GUI.PasswordValidator;
+import Boundary.App;
+import Boundary.PasswordValidator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class MioForm {
+public class LoginPage {
     private JPanel pane;
     private JTextField textField1;
     private JButton signInButton;
@@ -21,11 +21,11 @@ public class MioForm {
     private JButton nonHaiUnAccountButton;
     private JButton showButton;
 
-    public MioForm() {
+    public LoginPage() {
         textField1.putClientProperty("JTextField.placeholderText", "name@email.com");
         nonHaiUnAccountButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         signInButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        showButton.setIcon(new ImageIcon(getClass().getResource("/immages/show.png")));
+        showButton.setIcon(new ImageIcon(getClass().getResource("/images/show.png")));
         //LISTENER TASTI
         nonHaiUnAccountButton.addActionListener(new ActionListener() {
             @Override
@@ -57,10 +57,10 @@ public class MioForm {
                 char echoChar='•';
                 if(passwordField1.getEchoChar()==echoChar){
                     passwordField1.setEchoChar((char)0);
-                    showButton.setIcon(new ImageIcon(getClass().getResource("/immages/hide.png")));
+                    showButton.setIcon(new ImageIcon(getClass().getResource("/images/hide.png")));
                 }else{
                     passwordField1.setEchoChar(echoChar);
-                    showButton.setIcon(new ImageIcon(getClass().getResource("/immages/show.png")));
+                    showButton.setIcon(new ImageIcon(getClass().getResource("/images/show.png")));
                 }
             }
         });
@@ -71,7 +71,7 @@ public class MioForm {
     }
     private void createUIComponents() {
         labelImmagine = new JLabel();
-        java.net.URL imgUrl = getClass().getResource("/immages/logo.png");
+        java.net.URL imgUrl = getClass().getResource("/images/logo.png");
         labelImmagine.setOpaque(false);
         if (imgUrl != null) {
             labelImmagine.setIcon(new ImageIcon(imgUrl));
@@ -79,10 +79,15 @@ public class MioForm {
     }
     private void enterData(){
         //validate data entered TODO
+        String email = textField1.getText();
         PasswordValidator validator = new PasswordValidator(passwordField1.getText());
         if(validator.isValid()){
             //mando al controller
-            App.mostraHome();
+            if(email.equals("admin")){
+                App.mostraDashBoard();
+            }else{
+              App.mostraHome();
+            }
         }else{
             JOptionPane.showMessageDialog(null, validator.getErrorMessage());
         }

@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>26</maven.compiler.source>
-        <maven.compiler.target>26</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -20,6 +20,11 @@
             <artifactId>flatlaf</artifactId>
             <version>3.7.1</version>
         </dependency>
-    </dependencies>
+            <dependency>
+                <groupId>com.intellij</groupId>
+                <artifactId>forms_rt</artifactId>
+                <version>7.0.3</version>
+            </dependency>
+        </dependencies>
 
 </project>

@@ -1,6 +1,6 @@
-package GUI.ClientView;
+package Boundary.ClientView;
 
-import GUI.App;
+import Boundary.App;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 
 import javax.swing.*;

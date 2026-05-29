@@ -1,4 +1,4 @@
-package GUI.ClientView;
+package Boundary.ClientView;
 
 import com.formdev.flatlaf.ui.FlatLineBorder;
 
