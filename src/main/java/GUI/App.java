@@ -3,6 +3,9 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 
+import GUI.ClientView.MainPage;
+import GUI.Login.MioForm;
+import GUI.Login.RegistrazioneForm;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import themes.MyTheme;
 
