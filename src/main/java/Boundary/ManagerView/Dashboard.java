@@ -62,7 +62,7 @@ public class Dashboard {
         contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 40, 30, 40));
 
         viewPanel.add(contentPanel, BorderLayout.CENTER);
-
+        viewPanel.setPreferredSize(new Dimension(1920, 1080));
 
         // --- AZIONI MENU LATERALE ---
         statisticheButton.addActionListener(e -> {
@@ -88,6 +88,8 @@ public class Dashboard {
 
         logoutButton.addActionListener(e -> {
             App.mostraLogin();});
+
+
     }
 
     private JPanel createStatCard(String title, JLabel valueLabel) {

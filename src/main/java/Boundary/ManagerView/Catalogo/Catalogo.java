@@ -22,7 +22,11 @@ public class Catalogo {
 
 
     private void loadCatalogo() {
-        model = buildTableModel();
+        //Static definition of the table
+        model = new DefaultTableModel(Stub.getDati(), new String[]{"ID", "Nome", "Prezzo","Quantità"}){
+            @Override
+            public boolean isCellEditable(int row, int col) { return false; }
+        };
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
 
         table = buildTable(model, sorter);
@@ -32,14 +36,6 @@ public class Catalogo {
         card.add(buildControlPanel(sorter), BorderLayout.SOUTH);
 
         pane.add(card, BorderLayout.CENTER);
-    }
-
-
-    private DefaultTableModel buildTableModel() {
-        return new DefaultTableModel(Stub.getDati(), new String[]{"ID", "Nome", "Prezzo"}) {
-            @Override
-            public boolean isCellEditable(int row, int col) { return col != 0; }
-        };
     }
 
     private JTable buildTable(DefaultTableModel model, TableRowSorter<DefaultTableModel> sorter) {
@@ -80,17 +76,17 @@ public class Catalogo {
     }
 
     private JPanel buildActionPanel() {
-        JButton btnSave   = createButton("Salva modifiche");
+        JButton btnMod   = createButton("Modifica prodotto");
         JButton btnRemove = createButton("Rimuovi");
         JButton btnAdd    = createButton("Aggiungi prodotto");
 
-        btnSave.addActionListener(e -> onSave());
+        btnMod.addActionListener(e -> onMod());
         btnRemove.addActionListener(e -> onRemove());
         btnAdd.addActionListener(e -> onAdd());
 
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
         panel.setOpaque(false);
-        panel.add(btnSave);
+        panel.add(btnMod);
         panel.add(btnRemove);
         panel.add(btnAdd);
         return panel;
@@ -98,13 +94,14 @@ public class Catalogo {
 
 //Action handlers
 
-    private void onEnter(){
 
-    }
-    private void onSave() {
-        if (table.isEditing()) table.getCellEditor().stopCellEditing();
+    private void onMod() {
+        int viewRow = table.getSelectedRow();
+        String id=(String) model.getValueAt(viewRow,0);
+        ShowModificaProdottoDialog dialog = new ShowModificaProdottoDialog(id);
+        dialog.pack();
+        dialog.setVisible(true);
         // TODO: Controller.saveDati(model.getDataVector());
-        JOptionPane.showMessageDialog(pane, "Catalogo aggiornato correttamente.");
     }
 
     private void onRemove() {

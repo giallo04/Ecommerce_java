@@ -83,7 +83,7 @@ public class ProductInHome {
     }
     private void addToCart(){
         //TODO implementare l'aggiunta al carrello' chiamando il controller
-        System.out.println("prodotto aggiunto al carrello");
+        JOptionPane.showMessageDialog(null, "Prodotto aggiunto al carrello");
     }
     public String getName(){
         return productName.getText();
