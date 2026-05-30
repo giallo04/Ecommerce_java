@@ -65,31 +65,14 @@ public class Dashboard {
         viewPanel.setPreferredSize(new Dimension(1920, 1080));
 
         // --- AZIONI MENU LATERALE ---
-        statisticheButton.addActionListener(e -> {
-            contentPanel.removeAll();
+        statisticheButton.addActionListener(e -> {onStatistiche();});
 
-            Statistiche statistiche = new Statistiche();
-            for (JPanel panel : statistiche.getSections()) {
-                contentPanel.add(panel);
-            }
+        catalogoButton.addActionListener(e -> {onCatalogo();});
 
-            contentPanel.revalidate();
-            contentPanel.repaint();
-        });
+        logoutButton.addActionListener(e -> {App.mostraLogin();});
 
-        catalogoButton.addActionListener(e -> {
-            contentPanel.removeAll();
-            Catalogo catalogo = new Catalogo();
-            contentPanel.add(catalogo.getPane());
-
-            contentPanel.revalidate();
-            contentPanel.repaint();
-        });
-
-        logoutButton.addActionListener(e -> {
-            App.mostraLogin();});
-
-
+        //main menu catalogo
+        catalogoButton.doClick();
     }
 
     private JPanel createStatCard(String title, JLabel valueLabel) {
@@ -118,7 +101,26 @@ public class Dashboard {
         button.putClientProperty("JButton.buttonType", "borderless");
         button.setMargin(new Insets(10, 15, 10, 15));
     }
+    //metodi bottoni
+    private void onCatalogo() {
+        contentPanel.removeAll();
+        Catalogo catalogo = new Catalogo();
+        contentPanel.add(catalogo.getPane());
 
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
+    private void onStatistiche() {
+        contentPanel.removeAll();
+
+        Statistiche statistiche = new Statistiche();
+        for (JPanel panel : statistiche.getSections()) {
+            contentPanel.add(panel);
+        }
+
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
     public JPanel getPane() {
         return pane;
     }

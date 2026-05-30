@@ -11,6 +11,7 @@ public class TableUtils {
     // Colore standard dell'applicazione
     public static final Color PRIMARY_COLOR = new Color(79, 70, 229);
 
+    private TableUtils() {}//Classe di utilità non deve essere istanziata
     public static JTable createStyledTable(DefaultTableModel model) {
         JTable table = new JTable(model);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 20));

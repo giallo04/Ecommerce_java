@@ -1,16 +1,33 @@
 package Entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Prodotto {
+
+    public Prodotto() {}//richiesto per JPA
+    @Id
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    private int product_id;
     private String nome;
     private float prezzo;
-    private final String descrizione;
-    private final String categoria;
+    private  String descrizione;
+    private  String categoria;
     private int sconto;
-    int quantita;
+    private int quantita;
 
+    @OneToMany (mappedBy ="prodotto")
+    private List<RigaOrdine> rigaOrdini=new ArrayList<RigaOrdine>();
 
-    public  Prodotto(String nome, float prezzo, String descrizione, int quantita, String categoria ) throws IllegalArgumentException{
-        if(!(nome.isEmpty() || prezzo<=0 || descrizione.isEmpty() || categoria.isEmpty()|| quantita<0)){
+    public Prodotto(String nome, float prezzo, String descrizione, int quantita, String categoria)
+            throws IllegalArgumentException {
+        if (nome.isEmpty() || prezzo <= 0 || descrizione.isEmpty() || categoria.isEmpty() || quantita < 0) {
             throw new IllegalArgumentException();
         }
         this.nome = nome;
@@ -18,68 +35,42 @@ public class Prodotto {
         this.descrizione = descrizione;
         this.categoria = categoria;
         this.quantita = quantita;
+        this.sconto = 0;
     }
-    public String getNome(){
-        return nome;
+
+
+    public String getNome()             { return nome; }
+    public float getPrezzo()            { return prezzo; }
+    public String getDescrizione()      { return descrizione; }
+    public String getCategoria()        { return categoria; }
+    public int getQuantita()            { return quantita; }
+    public int getSconto()              { return sconto; } // int, non String
+
+    public void setNome(String nome) {
+        if (nome.isEmpty()) throw new IllegalArgumentException();
+        this.nome = nome;
     }
-    public float  getCostoEffettivo(){
-        return prezzo-prezzo*sconto/100;
+    public void setPrezzo(float prezzo) {
+        if (prezzo <= 0) throw new IllegalArgumentException();
+        this.prezzo = prezzo;
     }
-    public void setNome(String nome) throws IllegalArgumentException{
-        if(nome.isEmpty()){
-            throw new IllegalArgumentException();
-        }else{
-            this.nome=nome;
-        }
+    public void setSconto(int sconto) {
+        if (sconto < 0 || sconto > 100) throw new IllegalArgumentException();
+        this.sconto = sconto;
     }
-    public void setPrezzo(float prezzo) throws IllegalArgumentException{
-        if(prezzo<=0){
-            throw new IllegalArgumentException();
-        }else{
-            this.prezzo=prezzo;
-        }
+    public void setQuantita(int quantita) {
+        if (quantita < 0) throw new IllegalArgumentException();
+        this.quantita = quantita;
     }
-    public float getPrezzo(){
-        return prezzo;
+    public void setDescrizione(String descrizione) {
+        if (descrizione.isEmpty()) throw new IllegalArgumentException();
+        this.descrizione = descrizione;
     }
-    public String getDescrizione(){
-        return descrizione;
+    public void setCategoria(String categoria) {
+        if (categoria.isEmpty()) throw new IllegalArgumentException();
+        this.categoria = categoria;
     }
-    public String getCategoria(){
-        return categoria;
-    }
-    public int getQuantita(){
-        return quantita;
-    }
-    public void addQuantita(int quantita) throws IllegalArgumentException{
-        if(quantita<=0){
-            throw  new IllegalArgumentException();
-        }else{
-            this.quantita+=quantita;
-        }
-    }
-    public void removeQuantita(int quantita) throws IllegalArgumentException{
-        if(quantita<=0||quantita>this.quantita){
-            throw  new IllegalArgumentException();
-        }else{
-            this.quantita-=quantita;
-        }
-    }
-    public void setSconto(int sconto) throws IllegalArgumentException{
-        if(sconto<0||sconto>100){
-            throw  new IllegalArgumentException();
-        }else{
-            this.sconto=sconto;
-        }
-    }
-    public  String getSconto(){
-        return  sconto+"%";
-    }
-    public boolean isDisponibile(){
-        return quantita>0;
-    }
-    public void setNotDisponibile(){
-        quantita=0;
+    public int getProduct_id() {
+        return product_id;
     }
 }
-
