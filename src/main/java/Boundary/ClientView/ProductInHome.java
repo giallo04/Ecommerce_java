@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import Boundary.Utils.ImageUtils;
-public class ProductInHome {
+public class ProductInHome implements Comparable<ProductInHome>{
     private JPanel pane;
     private JLabel image;
     private JButton addToCart;
@@ -32,7 +32,7 @@ public class ProductInHome {
 
         //Set parametri
         productName.setText(name);
-        productPrice.setText(price);
+        productPrice.setText("$"+price);
         categoryLabel.setText(category);
 
         String imgUrl = "/products/" + name + ".png";
@@ -83,4 +83,10 @@ public class ProductInHome {
     public String getCategory(){
         return categoryLabel.getText();
     }
+
+    @Override
+    public int compareTo(ProductInHome o) {
+        return Integer.compare(Integer.parseInt(productPrice.getText().replace("$","")), Integer.parseInt(o.productPrice.getText().replace("$","")));
+    }
+
 }

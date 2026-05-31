@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainPage {
     private JPanel pane;
@@ -55,11 +56,36 @@ public class MainPage {
             @Override  public void insertUpdate(DocumentEvent e)  { search(); }
         });
         //Pulsanti pannello superiore
-        ricercaButton.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {search();}});//TODO add search function
+        ricercaButton.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {search();}});
         carrelloButton.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {goToCart();}});
+
+        categoriaComboBox.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {
+            search();
+        }});
+
 
         //Pannello laterale
         leftPanel.setBorder(new FlatLineBorder(insets,customColor, 1, arc));
+        ordineComboBox.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {
+            int scelta=ordineComboBox.getSelectedIndex();
+            switch(scelta){
+                case 0:
+                    Collections.shuffle(products);
+                    search();
+                    break;
+                case 1:
+                    products.sort((p1,p2)->p1.getName().compareTo(p2.getName()));
+                    search();
+                    break;
+                case 2:
+                    Collections.sort(products);
+                    search();
+                    break;
+                case 3:
+                    products.sort(Collections.reverseOrder());
+                    search();
+            }
+        }});
         //Pulsanti pannello laterale
 
         StyleUtils.styleButton(logoutButton);
@@ -77,14 +103,14 @@ public class MainPage {
 
         //Pannello centrale
         viewPanel.setBorder(new FlatLineBorder(new Insets(0,0,0,0),customColor, 0, arc));
-        products.add(new ProductInHome("Cmf phone 2","$100", "Elettronica"));
-        products.add(new ProductInHome("Ps4","$200", "Elettronica"));
-        products.add(new ProductInHome("Air Force 1","$160", "Moda"));
-        products.add(new ProductInHome("Maglia Napoli","$120", "Moda"));
-        products.add(new ProductInHome("Iphone 17","$150", "Elettronica"));
-        products.add(new ProductInHome("Iphone 17","$150", "Elettronica"));
-        products.add(new ProductInHome("Iphone 17","$150", "Elettronica"));
-        products.add(new ProductInHome("Iphone 17","$150", "Elettronica"));
+        products.add(new ProductInHome("Cmf phone 2","100", "Elettronica"));
+        products.add(new ProductInHome("Ps4","200", "Elettronica"));
+        products.add(new ProductInHome("Air Force 1","160", "Moda"));
+        products.add(new ProductInHome("Maglia Napoli","120", "Moda"));
+        products.add(new ProductInHome("Iphone 17","150", "Elettronica"));
+        products.add(new ProductInHome("Iphone 17","150", "Elettronica"));
+        products.add(new ProductInHome("Iphone 17","150", "Elettronica"));
+        products.add(new ProductInHome("Iphone 17","150", "Elettronica"));
         viewPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentResized(java.awt.event.ComponentEvent e) {
@@ -137,7 +163,8 @@ public class MainPage {
     private void renderProducts(ArrayList<ProductInHome> products) {
         productsPanel.removeAll();
         for(ProductInHome p:products){
-            productsPanel.add(p.getPane());
+            if(categoriaComboBox.getSelectedIndex()==0 || p.getCategory().equals(categoriaComboBox.getSelectedItem()))
+                productsPanel.add(p.getPane());
         }
         productsPanel.revalidate();
         productsPanel.repaint();
