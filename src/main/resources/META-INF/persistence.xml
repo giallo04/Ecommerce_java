@@ -8,8 +8,8 @@ https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>Entity.Merce.Prodotto</class>
         <class>Entity.client.Utente</class>
-        <class>Entity.Ordine</class>
-        <class>Entity.RigaOrdine</class>
+        <class>Entity.Ordini.Ordine</class>
+        <class>Entity.Ordini.RigaOrdine</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver"
                       value="com.mysql.cj.jdbc.Driver"/>

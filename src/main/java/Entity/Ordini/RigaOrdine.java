@@ -1,4 +1,4 @@
-package Entity;
+package Entity.Ordini;
 
 import java.util.Objects;
 import Entity.Merce.Prodotto;
