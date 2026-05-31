@@ -32,7 +32,7 @@ public class RegistroCatalogo {
             prodotto.setSconto(sconto);
             prodotto.setDescrizione(descrizione);
             prodotto.setCategoria(categoria);
-            gestore.salva(prodotto);
+            gestore.modifica(prodotto);
         }else{
             throw new IllegalArgumentException("Prodotto non trovato");
         }

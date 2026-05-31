@@ -35,6 +35,19 @@ public class GestorePersistenza {
             em.close();
         }
     }
+    public void modifica(Object oggetto) {
+        EntityManager em = JpaUtil.getInstance().getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(oggetto);
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        }
+    }
 public void rimuovi(long id) {
         EntityManager em = JpaUtil.getInstance().getEntityManager();
         try {
