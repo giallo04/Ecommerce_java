@@ -1,6 +1,7 @@
 package Boundary.ClientView;
 
 import com.formdev.flatlaf.ui.FlatLineBorder;
+import Boundary.Utils.StyleUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,8 +21,12 @@ public class ProductInHome {
     public ProductInHome(String name, String price, String category){
         //estetica
         Color customColor = new Color(79,70,229);
-        infoPanel.setBackground(customColor);
-        infoPanel.setBorder(new FlatLineBorder(new Insets(0,0,0,0),customColor, 0, 20));
+        infoPanel.setBackground(Color.WHITE);
+        infoPanel.setForeground(customColor);
+        infoPanel.setBorder(new FlatLineBorder(new Insets(0,0,0,0),customColor, 3, 20));
+        StyleUtils.styleButton(addToCart);
+        addToCart.setBackground(customColor);
+
         pane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(104,113,207), 2, 20));
 
 
@@ -56,6 +61,7 @@ public class ProductInHome {
                 addToCart();
             }
         });
+        pane.setCursor(new Cursor(Cursor.HAND_CURSOR));
         pane.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -67,7 +73,6 @@ public class ProductInHome {
                 pane.setBackground(coloreNormale);
                 image.setForeground(coloreHover);
             }
-
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
                 goToProduct();
