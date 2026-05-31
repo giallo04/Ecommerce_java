@@ -12,13 +12,15 @@ import java.awt.event.MouseEvent;
 import Boundary.Utils.ImageUtils;
 public class ProductInHome implements Comparable<ProductInHome>{
     private JPanel pane;
+    private JPanel offerPane;
+    private JLabel offerLabel;
     private JLabel image;
     private JButton addToCart;
     private JLabel productName;
     private JLabel productPrice;
     private JLabel categoryLabel;
     private JPanel infoPanel;
-    public ProductInHome(String name, String price, String category){
+    public ProductInHome(String name, String price, String category, String offer){
         //estetica
         Color customColor = new Color(79,70,229);
         infoPanel.setBackground(Color.WHITE);
@@ -28,8 +30,9 @@ public class ProductInHome implements Comparable<ProductInHome>{
         addToCart.setBackground(customColor);
 
         pane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(104,113,207), 2, 20));
-
-
+        if(Integer.parseInt(offer)>0) offerPane.setVisible(true);
+        offerPane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(242, 126, 91), 2, 20));
+        offerLabel.setText("Prodotto scontato del "+offer+"%");
         //Set parametri
         productName.setText(name);
         productPrice.setText("$"+price);
@@ -83,7 +86,9 @@ public class ProductInHome implements Comparable<ProductInHome>{
     public String getCategory(){
         return categoryLabel.getText();
     }
-
+public boolean isOffer(){
+        return offerPane.isVisible();
+}
     @Override
     public int compareTo(ProductInHome o) {
         return Integer.compare(Integer.parseInt(productPrice.getText().replace("$","")), Integer.parseInt(o.productPrice.getText().replace("$","")));

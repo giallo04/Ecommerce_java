@@ -86,6 +86,10 @@ public class MainPage {
                     search();
             }
         }});
+
+        offerteCheckBox.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {
+            search();
+        }});
         //Pulsanti pannello laterale
 
         StyleUtils.styleButton(logoutButton);
@@ -103,14 +107,14 @@ public class MainPage {
 
         //Pannello centrale
         viewPanel.setBorder(new FlatLineBorder(new Insets(0,0,0,0),customColor, 0, arc));
-        products.add(new ProductInHome("Cmf phone 2","100", "Elettronica"));
-        products.add(new ProductInHome("Ps4","200", "Elettronica"));
-        products.add(new ProductInHome("Air Force 1","160", "Moda"));
-        products.add(new ProductInHome("Maglia Napoli","120", "Moda"));
-        products.add(new ProductInHome("Iphone 17","150", "Elettronica"));
-        products.add(new ProductInHome("Iphone 17","150", "Elettronica"));
-        products.add(new ProductInHome("Iphone 17","150", "Elettronica"));
-        products.add(new ProductInHome("Iphone 17","150", "Elettronica"));
+        products.add(new ProductInHome("Cmf phone 2","100", "Elettronica","20"));
+        products.add(new ProductInHome("Ps4","200", "Elettronica","0"));
+        products.add(new ProductInHome("Air Force 1","160", "Moda","10"));
+        products.add(new ProductInHome("Maglia Napoli","120", "Moda","0"));
+        products.add(new ProductInHome("Iphone 17","150", "Elettronica","0"));
+        products.add(new ProductInHome("Iphone 17","150", "Elettronica","0"));
+        products.add(new ProductInHome("Iphone 17","150", "Elettronica","0"));
+        products.add(new ProductInHome("Iphone 17","150", "Elettronica","0"));
         viewPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentResized(java.awt.event.ComponentEvent e) {
@@ -164,7 +168,11 @@ public class MainPage {
         productsPanel.removeAll();
         for(ProductInHome p:products){
             if(categoriaComboBox.getSelectedIndex()==0 || p.getCategory().equals(categoriaComboBox.getSelectedItem()))
+                if(offerteCheckBox.isSelected()){
+                    if(p.isOffer()){productsPanel.add(p.getPane());}
+                }else{
                 productsPanel.add(p.getPane());
+                }
         }
         productsPanel.revalidate();
         productsPanel.repaint();
