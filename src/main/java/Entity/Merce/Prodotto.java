@@ -1,4 +1,4 @@
-package Entity;
+package Entity.Merce;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +14,7 @@ public class Prodotto {
     public Prodotto() {}//richiesto per JPA
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private int product_id;
+    private long product_id;
     private String nome;
     private float prezzo;
     private  String descrizione;
@@ -22,8 +22,8 @@ public class Prodotto {
     private int sconto;
     private int quantita;
 
-    @OneToMany (mappedBy ="prodotto")
-    private List<RigaOrdine> rigaOrdini=new ArrayList<RigaOrdine>();
+    //TODO collegare a riga @OneToMany (mappedBy ="prodotto")
+    //private List<RigaOrdine> rigaOrdini=new ArrayList<RigaOrdine>();
 
     public Prodotto(String nome, float prezzo, String descrizione, int quantita, String categoria)
             throws IllegalArgumentException {
@@ -70,7 +70,7 @@ public class Prodotto {
         if (categoria.isEmpty()) throw new IllegalArgumentException();
         this.categoria = categoria;
     }
-    public int getProduct_id() {
+    public long getProduct_id() {
         return product_id;
     }
 }

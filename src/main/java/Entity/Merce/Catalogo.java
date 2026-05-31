@@ -1,4 +1,4 @@
-package Entity;
+package Entity.Merce;
 
 import java.util.ArrayList;
 
