@@ -70,7 +70,9 @@ public class Catalogo {
 
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         panel.setOpaque(false);
-        panel.add(new JLabel("Cerca:"));
+        JLabel lblSearch = new JLabel("Cerca:");
+        lblSearch.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        panel.add(lblSearch);
         panel.add(txtSearch);
         return panel;
     }
