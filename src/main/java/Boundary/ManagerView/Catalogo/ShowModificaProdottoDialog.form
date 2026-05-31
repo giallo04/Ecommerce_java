@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Boundary.ManagerView.Catalogo.ShowModificaProdottoDialog">
+  <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="20" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="48" y="54" width="436" height="500"/>
+    </constraints>
+    <properties>
+      <font name="Segoe UI Black" size="16"/>
+      <minimumSize width="300" height="500"/>
+      <preferredSize width="350" height="500"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="94766" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <hspacer id="98af6">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <grid id="9538f" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="e7465" class="javax.swing.JButton" binding="buttonOK">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Apply"/>
+                </properties>
+              </component>
+              <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Cancel"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="f75ba" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="10" left="10" bottom="10" right="10"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="6975c" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="5edb2" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <font name="Segoe UI Black" size="16"/>
+                  <text value="Nome   "/>
+                </properties>
+              </component>
+              <component id="2d621" class="javax.swing.JTextField" binding="nome">
+                <constraints border-constraint="Center"/>
+                <properties/>
+              </component>
+            </children>
+          </grid>
+          <grid id="151ec" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="7c6bc" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <font name="Segoe UI Black" size="16"/>
+                  <text value="Prezzo "/>
+                </properties>
+              </component>
+              <component id="b4c6b" class="javax.swing.JTextField" binding="prezzo">
+                <constraints border-constraint="Center"/>
+                <properties/>
+              </component>
+            </children>
+          </grid>
+          <grid id="45060" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="f2813" class="javax.swing.JTextArea" binding="descrizione">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="50"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <grid id="e8ee8" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="fade4" class="javax.swing.JComboBox" binding="choice">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <font name="Segoe UI Black" size="18"/>
+                      <model>
+                        <item value="Aggiungi"/>
+                        <item value="Rimuovi"/>
+                      </model>
+                    </properties>
+                  </component>
+                  <component id="6207e" class="javax.swing.JTextField" binding="quantita">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <component id="5cec9" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Segoe UI Black" size="16"/>
+              <text value="Descrizione"/>
+            </properties>
+          </component>
+          <grid id="4ed7f" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="b8e51" class="javax.swing.JTextField" binding="imgPath">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                </properties>
+              </component>
+              <component id="82938" class="javax.swing.JButton" binding="openButton" default-binding="true">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Open"/>
+                </properties>
+              </component>
+              <component id="53001" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Segoe UI Black" size="16"/>
+                  <text value="Foto  "/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="dc656" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="446a2" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <font name="Segoe UI Black" size="16"/>
+                  <text value="Categoria   "/>
+                </properties>
+              </component>
+              <component id="ca14e" class="javax.swing.JTextField" binding="categoria">
+                <constraints border-constraint="Center"/>
+                <properties/>
+              </component>
+            </children>
+          </grid>
+          <grid id="f06c2" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="4afaa" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <font name="Segoe UI Black" size="16"/>
+                  <text value="Sconto   "/>
+                </properties>
+              </component>
+              <component id="cd2ac" class="javax.swing.JSlider" binding="scontoSlider">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <paintLabels value="false"/>
+                  <paintTicks value="false"/>
+                  <value value="0"/>
+                </properties>
+              </component>
+              <component id="7300f" class="javax.swing.JLabel" binding="labelQuantita">
+                <constraints border-constraint="East"/>
+                <properties>
+                  <font name="Segoe UI Black" size="20"/>
+                  <text value="0"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

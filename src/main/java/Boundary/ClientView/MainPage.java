@@ -1,6 +1,6 @@
-package GUI.ClientView;
+package Boundary.ClientView;
 
-import GUI.App;
+import Boundary.App;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 
 import javax.swing.*;
@@ -111,7 +111,10 @@ public class MainPage {
     //Barra di ricerca
     private void search(){
         String askFor=queryTextField.getText();
-        if(askFor.isEmpty()) return;
+        if(askFor.isEmpty()) {
+            renderProducts(products);
+            return;
+        };
         ArrayList<ProductInHome> askedProd=new ArrayList<>();
         for(ProductInHome p:products){
             if(p.getName().toLowerCase().contains(askFor.toLowerCase())){

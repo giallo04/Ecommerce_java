@@ -1,7 +1,7 @@
-package GUI.Login;
+package Boundary.Login;
 
-import GUI.App;
-import GUI.PasswordValidator;
+import Boundary.App;
+import Boundary.PasswordValidator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -45,7 +45,7 @@ public class RegistrazioneForm {
         emailField.putClientProperty("JTextField.placeholderText", "name@email.com");
         capField.putClientProperty("JTextField.placeholderText", "CAP");
         viaField.putClientProperty("JTextField.placeholderText", "Via");
-        showButton.setIcon(new ImageIcon(getClass().getResource("/immages/show.png")));
+        showButton.setIcon(new ImageIcon(getClass().getResource("/images/show.png")));
         boxCitta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,10 +74,10 @@ public class RegistrazioneForm {
                 char echoChar='•';
                 if(passwordField1.getEchoChar()==echoChar){
                     passwordField1.setEchoChar((char)0);
-                    showButton.setIcon(new ImageIcon(getClass().getResource("/immages/hide.png")));
+                    showButton.setIcon(new ImageIcon(getClass().getResource("/images/hide.png")));
                 }else{
                     passwordField1.setEchoChar(echoChar);
-                    showButton.setIcon(new ImageIcon(getClass().getResource("/immages/show.png")));
+                    showButton.setIcon(new ImageIcon(getClass().getResource("/images/show.png")));
                 }
             }
         });

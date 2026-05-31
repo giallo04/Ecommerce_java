@@ -1,4 +1,4 @@
-package GUI.ClientView;
+package Boundary.ClientView;
 
 public class ProductPage {
 }
