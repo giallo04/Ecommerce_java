@@ -1,6 +1,7 @@
 package Entity;
 
 import java.util.Objects;
+import Entity.Merce.Prodotto;
 
 public class RigaOrdine {
     Prodotto prodotto;
