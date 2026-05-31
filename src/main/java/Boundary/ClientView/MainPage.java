@@ -2,8 +2,11 @@ package Boundary.ClientView;
 
 import Boundary.App;
 import com.formdev.flatlaf.ui.FlatLineBorder;
+import Boundary.Utils.StyleUtils;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,19 +48,23 @@ public class MainPage {
 
         //Pannello superiore
         queryTextField.putClientProperty("JTextField.placeholderText", "Cerca prodotto...");
-        topPanel.setBackground(customColor);
-        topPanel.setBorder(new FlatLineBorder(insets,customColor, 0, arc));
-
+        topPanel.setBorder(new FlatLineBorder(insets,customColor, 1, arc));
+        queryTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override public void changedUpdate(DocumentEvent e)  { search(); }
+            @Override public void removeUpdate(DocumentEvent e)  { search(); }
+            @Override  public void insertUpdate(DocumentEvent e)  { search(); }
+        });
         //Pulsanti pannello superiore
         ricercaButton.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {search();}});//TODO add search function
         carrelloButton.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {goToCart();}});
 
         //Pannello laterale
-        leftPanel.setBackground(customColor);
-        leftPanel.setBorder(new FlatLineBorder(insets,customColor, 0, arc));
-
+        leftPanel.setBorder(new FlatLineBorder(insets,customColor, 1, arc));
         //Pulsanti pannello laterale
 
+        StyleUtils.styleButton(logoutButton);
+        StyleUtils.styleButton(modificaProfiloButton);
+        StyleUtils.styleButton(visualizzaOrdiniButton);
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,8 +97,6 @@ public class MainPage {
         productsPanel.setLayout(new GridLayout(0,3,20,20));
 
     }
-
-
 
 
 

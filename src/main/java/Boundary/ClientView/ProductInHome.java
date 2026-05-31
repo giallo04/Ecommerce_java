@@ -36,7 +36,7 @@ public class ProductInHome {
             ImageIcon originalIcon = new ImageIcon(getClass().getResource(imgUrl));
             Image originalImage = originalIcon.getImage();
             Image scaledImage = originalImage.getScaledInstance(-1, 250, Image.SCALE_SMOOTH);
-            image.setIcon(new ImageIcon(scaledImage));//just a test TODO add a tool class for image loading that check pointer
+            image.setIcon(new ImageIcon(scaledImage));
         } catch (NullPointerException e) {
         java.net.URL fallbackUrl = getClass().getResource("/products/notFound.png");
         if (fallbackUrl != null) {
