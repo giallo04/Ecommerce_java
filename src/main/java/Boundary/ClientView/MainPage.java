@@ -110,7 +110,11 @@ public class MainPage {
         App.mostraLogin();}
     private void goToCart(){}
     private void goToOrder(){}
-    private void goToProfile(){}
+    private void goToProfile(){
+        ShowModificaProfiloDialog dialog = new ShowModificaProfiloDialog();
+        dialog.pack();
+        dialog.setVisible(true);
+    }
     //Barra laterale
 
     //Barra di ricerca

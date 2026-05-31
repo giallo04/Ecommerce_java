@@ -2,6 +2,7 @@ package Boundary.Login;
 
 import Boundary.App;
 import Boundary.PasswordValidator;
+import Boundary.Utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -9,32 +10,36 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Map;
 
-public class RegistrazioneForm {
-    private JButton backButton;
-    private JPanel pane;
-    private JTextField nomeField;
-    private JTextField cognomeField;
-    private JComboBox boxCitta;
-    private JComboBox boxProvincia;
-    private JTextField capField;
-    private JTextField viaField;
-    private JTextField emailField;
-    private JPasswordField passwordField1;
-    private JPasswordField passwordField2;
-    private JButton returnToLoginButton;
-    private JButton registerButton;
-    private JButton showButton;
+public class RegistrazioneForm extends JDialog {
+    protected JLabel imgLabel;
+    protected JPanel pane;
+    protected JTextField nomeField;
+    protected JTextField cognomeField;
+    protected JComboBox boxCitta;
+    protected JComboBox boxProvincia;
+    protected JTextField capField;
+    protected JTextField viaField;
+    protected JTextField emailField;
+    protected JPasswordField passwordField1;
+    protected JPasswordField passwordField2;
+    protected JButton backButton;
+    protected JButton registerButton;
+    protected JButton showButton;
+    protected JTextField imgPath;
+    protected JButton openButton;
 
     Map<String, String[]> citta;
 
-    public RegistrazioneForm() {
+    public RegistrazioneForm () {
+        setContentPane(pane);
+        setModalityType(ModalityType.APPLICATION_MODAL);
+        getRootPane().setDefaultButton(registerButton);
+
+        imgLabel.setIcon(ImageUtils.getIconScaled("/products/notFound.png",100));//just a test
         citta = new java.util.HashMap<String, String[]>();
         citta.put("Napoli", new String[]{"Napoli", "Pozzuoli", "Giugliano in Campania", "Torre del Greco", "Casoria", "Castellammare di Stabia", "Afragola", "Pompei"});
         citta.put("Milano", new String[]{"Milano", "Sesto San Giovanni", "Cinisello Balsamo", "Legnano", "Rho", "Cologno Monzese", "Paderno Dugnano"});
         citta.put("Firenze", new String[]{"Firenze", "Scandicci", "Sesto Fiorentino", "Empoli", "Campi Bisenzio"});
-        //Carico prima questo per farlo uscire come placeholder (il dictionary non è ordinato)
-        boxCitta.addItem("Città");
-        boxProvincia.addItem("Provincia/Comune");
         for (String key : citta.keySet()) {
             boxCitta.addItem(key);
         }
@@ -46,26 +51,59 @@ public class RegistrazioneForm {
         capField.putClientProperty("JTextField.placeholderText", "CAP");
         viaField.putClientProperty("JTextField.placeholderText", "Via");
         showButton.setIcon(new ImageIcon(getClass().getResource("/images/show.png")));
+        openButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.showOpenDialog(null);
+                String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+                imgPath.setText(filePath);
+            }//TODO carica immagine
+        });
+        boxCitta.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (index == -1 && value == null) {
+                    setText("Città");
+                    setForeground(java.awt.Color.GRAY);
+                }
+                return this;
+            }
+        });
+
         boxCitta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String cittaSelezionata = (String) boxCitta.getSelectedItem();
-                if (cittaSelezionata != null && !cittaSelezionata.equals("Città")) {
-                    boxCitta.removeItem("Città");
+                if (cittaSelezionata != null) {
                     setProvince(cittaSelezionata);
                 }
             }
         });
-        returnToLoginButton.addActionListener(new ActionListener() {
+        boxProvincia.setRenderer(new DefaultListCellRenderer() {
+            @Override
+           public java.awt.Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (index == -1 && value == null) {
+                    setText("Comune");
+                    setForeground(java.awt.Color.GRAY);
+                }
+                return this;
+            }
+        });
+        boxCitta.setSelectedIndex(-1);
+        boxProvincia.setSelectedIndex(-1);
+        backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                goToLogin();
+                dispose();
             }
         });
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                register();
+                onOk();
             }
         });
         showButton.addActionListener(new ActionListener() {
@@ -96,9 +134,6 @@ public class RegistrazioneForm {
         }
     }
 
-    private void goToLogin() {
-        App.mostraLogin();
-    }
 
     private boolean checkPasswords() {
         return Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword());
@@ -108,7 +143,7 @@ public class RegistrazioneForm {
         return emailField.getText().contains("@");
     }
 
-    private void register() {
+    protected void onOk() {
         if (!checkEmail()) {
             JOptionPane.showMessageDialog(null, "Email non valida");
             emailField.setText("");
@@ -135,7 +170,7 @@ public class RegistrazioneForm {
                     passwordField1.requestFocus();
                 } else {
                     JOptionPane.showMessageDialog(null, "Registrazione effettuata con successo");
-                    goToLogin();
+                    dispose();
                 }
             }
         }

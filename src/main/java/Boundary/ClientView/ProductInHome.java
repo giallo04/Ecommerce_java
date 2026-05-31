@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import Boundary.Utils.ImageUtils;
 public class ProductInHome {
     private JPanel pane;
     private JLabel image;
@@ -37,20 +37,7 @@ public class ProductInHome {
 
         String imgUrl = "/products/" + name + ".png";
         imgUrl = imgUrl.replace(" ", "");
-        try {
-            ImageIcon originalIcon = new ImageIcon(getClass().getResource(imgUrl));
-            Image originalImage = originalIcon.getImage();
-            Image scaledImage = originalImage.getScaledInstance(-1, 250, Image.SCALE_SMOOTH);
-            image.setIcon(new ImageIcon(scaledImage));
-        } catch (NullPointerException e) {
-        java.net.URL fallbackUrl = getClass().getResource("/products/notFound.png");
-        if (fallbackUrl != null) {
-            image.setIcon(new ImageIcon(fallbackUrl));
-        } else {
-            image.setText("No Image");
-        }
-    }
-
+       image.setIcon(ImageUtils.getIconScaled(imgUrl,250));
 
         //codice per hover pane custom
         Color coloreNormale = new Color(245, 245, 245);
