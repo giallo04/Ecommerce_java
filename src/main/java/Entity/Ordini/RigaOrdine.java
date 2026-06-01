@@ -8,18 +8,22 @@ public class RigaOrdine {
     private Prodotto prodotto;
     int qtaProdotto;
     float prezzo;
+
+    //costruttore
     public RigaOrdine(Prodotto prodotto, int qtaProdotto) {
         this.prodotto = prodotto;
         this.qtaProdotto = qtaProdotto;
-        this.prezzo=prodotto.getPrezzo();
+        this.prezzo=(prodotto.getPrezzo()*qtaProdotto);
     }
 
+    //get
     public int getQtaProdotto() {
         return qtaProdotto;
     }
     public float getPrezzo() {
         return prezzo;
     }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof RigaOrdine that)) return false;
