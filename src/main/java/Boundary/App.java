@@ -3,6 +3,7 @@ package Boundary;
 import javax.swing.*;
 import java.awt.*;
 
+import Boundary.ClientView.ShowModificaProfiloDialog;
 import Boundary.Login.LoginPage;
 import Boundary.Login.RegistrazioneForm;
 import Boundary.ClientView.MainPage;
@@ -50,9 +51,10 @@ public class App {
     }
     // Metodo pubblico per mostrare la Registrazione
     public static void mostraRegistrazione() {
-        frame.setResizable(false);
         RegistrazioneForm form = new RegistrazioneForm();
-        cambiaPannello(form.getPane());
+        form.pack();
+        form.setVisible(true);
+        form.setLocationRelativeTo(null);
     }
     public static void mostraDashBoard(){
         frame.setResizable(true);

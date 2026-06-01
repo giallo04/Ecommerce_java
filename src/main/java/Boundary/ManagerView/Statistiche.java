@@ -6,7 +6,7 @@ import javax.swing.*;
 import Boundary.Utils.TableUtils;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.MouseWheelListener;
+import Boundary.Utils.TableUtils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,28 +41,13 @@ public class Statistiche {
         };
 
         JTable table = TableUtils.createStyledTable(model);
-        JPanel card   = TableUtils.wrapInCard(title, table);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-        disableWheelScrolling(card);
-
+        JPanel card = TableUtils.wrapInCard(title, table);
+        TableUtils.disableWheelScrolling(card);
         return card;
     }
 
-    //metodo per disabilitare lo scroll del mousewheel
-    private void disableWheelScrolling(Container container) {
-        for (Component c : container.getComponents()) {
-            if (c instanceof JScrollPane scrollPane) {
-                scrollPane.setWheelScrollingEnabled(false);
-                for (MouseWheelListener l : scrollPane.getMouseWheelListeners()) {
-                    scrollPane.removeMouseWheelListener(l);
-                }
-                return;
-            }
-            if (c instanceof Container child) {
-                disableWheelScrolling(child);
-            }
-        }
-    }
 
     public JPanel[] getSections() {
         return sections.toArray(new JPanel[0]);

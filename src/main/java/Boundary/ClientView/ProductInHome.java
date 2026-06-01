@@ -1,6 +1,7 @@
 package Boundary.ClientView;
 
 import com.formdev.flatlaf.ui.FlatLineBorder;
+import Boundary.Utils.StyleUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,44 +9,38 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-public class ProductInHome {
+import Boundary.Utils.ImageUtils;
+public class ProductInHome implements Comparable<ProductInHome>{
     private JPanel pane;
+    private JPanel offerPane;
+    private JLabel offerLabel;
     private JLabel image;
     private JButton addToCart;
     private JLabel productName;
     private JLabel productPrice;
     private JLabel categoryLabel;
     private JPanel infoPanel;
-    public ProductInHome(String name, String price, String category){
+    public ProductInHome(String name, String price, String category, String offer){
         //estetica
         Color customColor = new Color(79,70,229);
-        infoPanel.setBackground(customColor);
-        infoPanel.setBorder(new FlatLineBorder(new Insets(0,0,0,0),customColor, 0, 20));
+        infoPanel.setBackground(Color.WHITE);
+        infoPanel.setForeground(customColor);
+        infoPanel.setBorder(new FlatLineBorder(new Insets(0,0,0,0),customColor, 3, 20));
+        StyleUtils.styleButton(addToCart);
+        addToCart.setBackground(customColor);
+
         pane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(104,113,207), 2, 20));
-
-
+        if(Integer.parseInt(offer)>0) offerPane.setVisible(true);
+        offerPane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(242, 126, 91), 2, 20));
+        offerLabel.setText("Prodotto scontato del "+offer+"%");
         //Set parametri
         productName.setText(name);
-        productPrice.setText(price);
+        productPrice.setText("$"+price);
         categoryLabel.setText(category);
 
         String imgUrl = "/products/" + name + ".png";
         imgUrl = imgUrl.replace(" ", "");
-        try {
-            ImageIcon originalIcon = new ImageIcon(getClass().getResource(imgUrl));
-            Image originalImage = originalIcon.getImage();
-            Image scaledImage = originalImage.getScaledInstance(-1, 250, Image.SCALE_SMOOTH);
-            image.setIcon(new ImageIcon(scaledImage));//just a test TODO add a tool class for image loading that check pointer
-        } catch (NullPointerException e) {
-        java.net.URL fallbackUrl = getClass().getResource("/products/notFound.png");
-        if (fallbackUrl != null) {
-            image.setIcon(new ImageIcon(fallbackUrl));
-        } else {
-            image.setText("No Image");
-        }
-    }
-
+       image.setIcon(ImageUtils.getIconScaled(imgUrl,250));
 
         //codice per hover pane custom
         Color coloreNormale = new Color(245, 245, 245);
@@ -56,6 +51,7 @@ public class ProductInHome {
                 addToCart();
             }
         });
+        pane.setCursor(new Cursor(Cursor.HAND_CURSOR));
         pane.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -67,7 +63,6 @@ public class ProductInHome {
                 pane.setBackground(coloreNormale);
                 image.setForeground(coloreHover);
             }
-
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
                 goToProduct();
@@ -91,4 +86,12 @@ public class ProductInHome {
     public String getCategory(){
         return categoryLabel.getText();
     }
+public boolean isOffer(){
+        return offerPane.isVisible();
+}
+    @Override
+    public int compareTo(ProductInHome o) {
+        return Integer.compare(Integer.parseInt(productPrice.getText().replace("$","")), Integer.parseInt(o.productPrice.getText().replace("$","")));
+    }
+
 }

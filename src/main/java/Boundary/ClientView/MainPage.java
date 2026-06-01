@@ -9,6 +9,11 @@ import com.intellij.uiDesigner.core.Spacer;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import Boundary.Utils.StyleUtils;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +21,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Collections;
 
 public class MainPage {
     private JPanel pane;
@@ -69,13 +75,54 @@ public class MainPage {
                 goToCart();
             }
         });
+        topPanel.setBorder(new FlatLineBorder(insets,customColor, 1, arc));
+        queryTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override public void changedUpdate(DocumentEvent e)  { search(); }
+            @Override public void removeUpdate(DocumentEvent e)  { search(); }
+            @Override  public void insertUpdate(DocumentEvent e)  { search(); }
+        });
+        //Pulsanti pannello superiore
+        ricercaButton.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {search();}});
+        carrelloButton.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {goToCart();}});
+
+        categoriaComboBox.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {
+            search();
+        }});
+
 
         //Pannello laterale
         leftPanel.setBackground(customColor);
         leftPanel.setBorder(new FlatLineBorder(insets, customColor, 0, arc));
+        leftPanel.setBorder(new FlatLineBorder(insets,customColor, 1, arc));
+        ordineComboBox.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {
+            int scelta=ordineComboBox.getSelectedIndex();
+            switch(scelta){
+                case 0:
+                    Collections.shuffle(products);
+                    search();
+                    break;
+                case 1:
+                    products.sort((p1,p2)->p1.getName().compareTo(p2.getName()));
+                    search();
+                    break;
+                case 2:
+                    Collections.sort(products);
+                    search();
+                    break;
+                case 3:
+                    products.sort(Collections.reverseOrder());
+                    search();
+            }
+        }});
 
+        offerteCheckBox.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent e) {
+            search();
+        }});
         //Pulsanti pannello laterale
 
+        StyleUtils.styleButton(logoutButton);
+        StyleUtils.styleButton(modificaProfiloButton);
+        StyleUtils.styleButton(visualizzaOrdiniButton);
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -139,6 +186,20 @@ public class MainPage {
     }
 
     private void goToProfile() {
+    public JPanel getPane(){
+        return pane;
+    }
+
+    //Navigazione
+    private void goToProduct(){}
+    private void goToLogin(){
+        App.mostraLogin();}
+    private void goToCart(){}
+    private void goToOrder(){}
+    private void goToProfile(){
+        ShowModificaProfiloDialog dialog = new ShowModificaProfiloDialog();
+        dialog.pack();
+        dialog.setVisible(true);
     }
     //Barra laterale
 
@@ -163,8 +224,13 @@ public class MainPage {
     //Renderizzazione
     private void renderProducts(ArrayList<ProductInHome> products) {
         productsPanel.removeAll();
-        for (ProductInHome p : products) {
-            productsPanel.add(p.getPane());
+        for(ProductInHome p:products){
+            if(categoriaComboBox.getSelectedIndex()==0 || p.getCategory().equals(categoriaComboBox.getSelectedItem()))
+                if(offerteCheckBox.isSelected()){
+                    if(p.isOffer()){productsPanel.add(p.getPane());}
+                }else{
+                productsPanel.add(p.getPane());
+                }
         }
         productsPanel.revalidate();
         productsPanel.repaint();

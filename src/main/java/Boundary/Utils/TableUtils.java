@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.MouseWheelListener;
 
 public class TableUtils {
 
@@ -46,4 +47,19 @@ public class TableUtils {
         cardPanel.add(scroll, BorderLayout.CENTER);
         return cardPanel;
     }
+    public static void disableWheelScrolling(Container container) {
+        for (Component c : container.getComponents()) {
+            if (c instanceof JScrollPane scrollPane) {
+                scrollPane.setWheelScrollingEnabled(false);
+                for (MouseWheelListener l : scrollPane.getMouseWheelListeners()) {
+                    scrollPane.removeMouseWheelListener(l);
+                }
+                return;
+            }
+            if (c instanceof Container child) {
+                disableWheelScrolling(child);
+            }
+        }
+    }
+
 }

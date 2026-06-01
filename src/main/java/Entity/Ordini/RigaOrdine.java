@@ -2,18 +2,26 @@ package Entity.Ordini;
 
 import java.util.Objects;
 import Entity.Merce.Prodotto;
+import jakarta.persistence.ManyToOne;
 
 public class RigaOrdine {
-    Prodotto prodotto;
+    private Prodotto prodotto;
     int qtaProdotto;
+    float prezzo;
 
+    //costruttore
     public RigaOrdine(Prodotto prodotto, int qtaProdotto) {
         this.prodotto = prodotto;
         this.qtaProdotto = qtaProdotto;
+        this.prezzo=(prodotto.getPrezzo()*qtaProdotto);
     }
 
+    //get
     public int getQtaProdotto() {
         return qtaProdotto;
+    }
+    public float getPrezzo() {
+        return prezzo;
     }
 
     @Override

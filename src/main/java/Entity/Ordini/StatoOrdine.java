@@ -1,5 +1,5 @@
 package Entity.Ordini;
 
 public enum StatoOrdine {
-    INSERITO, IN_PREPARAZIONE, SPEDITO, ANNULLATO, CONSEGNATO //TODO aggiungi parametri numericci relativi per le comparazioni
+    INSERITO, IN_PREPARAZIONE, SPEDITO, CONSEGNATO, ANNULLATO //TODO aggiungi parametri numericci relativi per le comparazioni
 }

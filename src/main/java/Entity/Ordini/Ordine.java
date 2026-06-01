@@ -1,22 +1,29 @@
 package Entity.Ordini;
 
+import Entity.Merce.Prodotto;
+import Entity.client.Indirizzo;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class Ordine {
     private LocalDate data;
-    private String indirizzo; // per ora ho messo string perché la deve implementare checco
+    private Indirizzo indirizzo;
     private StatoOrdine statoOrdine;
     private ArrayList<RigaOrdine> inOrdine;
 
-    public Ordine(String indirizzo) { //il resto degli attributi non devono esistere al di fuori dell'ordine quindi vengono creati nel costruttore
+    //costruttore
+    public Ordine(Indirizzo indirizzo) { //il resto degli attributi non devono esistere al di fuori dell'ordine quindi vengono creati nel costruttore
         this.indirizzo = indirizzo;
         this.data = LocalDate.now();
         this.statoOrdine = StatoOrdine.INSERITO;
         this.inOrdine = new ArrayList<>();
     }
 
+    //getter e setter
     public LocalDate getData() {
         return data;
     }
@@ -25,12 +32,30 @@ public class Ordine {
         return statoOrdine;
     }
 
-    public String getIndirizzo() {
+    public Indirizzo getIndirizzo() {
         return indirizzo;
     }
 
+    public float getTotale() {
+        float totale=0;
+        for(RigaOrdine riga:inOrdine){
+            totale+=riga.getPrezzo()*riga.getQtaProdotto();
+        }
+        return totale;
+    }
+
+    public List<RigaOrdine> getInOrdine() {
+        return Collections.unmodifiableList(inOrdine);
+    }
+
     public void setStatoOrdine(StatoOrdine statoOrdine) {
+
+        if(statoOrdine.ordinal() < this.statoOrdine.ordinal()) throw new IllegalArgumentException("Lo stato inserito non è valido");
         this.statoOrdine = statoOrdine;
+    }
+
+    public void addRigaOrdine(Prodotto prodotto, int qtaProdotto){
+        inOrdine.add(new RigaOrdine(prodotto,qtaProdotto));
     }
 
     @Override

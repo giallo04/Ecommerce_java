@@ -83,10 +83,4 @@ public class ShowAggiungiProdottoDialog extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        ShowAggiungiProdottoDialog dialog = new ShowAggiungiProdottoDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }
