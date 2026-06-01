@@ -7,6 +7,7 @@ import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Prodotto {
@@ -73,4 +74,9 @@ public class Prodotto {
     public long getProduct_id() {
         return product_id;
     }
+
+
+
+
+
 }

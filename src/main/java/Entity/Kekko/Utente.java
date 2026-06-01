@@ -1,6 +1,10 @@
-package Kekko;
+package Entity.Kekko;
 
-import java.util.ArrayList;
+
+import java.util.*;
+
+import Entity.Merce.Prodotto;
+import Entity.Ordini.Ordine;
 
 public class Utente {
 
@@ -93,8 +97,43 @@ public class Utente {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Utente utente = (Utente) o;
+        return Objects.equals(nome, utente.nome) && Objects.equals(cognome, utente.cognome) && Objects.equals(email, utente.email) && Objects.equals(password, utente.password) && Objects.equals(imgPath, utente.imgPath) && Objects.equals(indirizzo, utente.indirizzo) && Objects.equals(ordini, utente.ordini) && Objects.equals(carrello, utente.carrello);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, cognome, email, password, imgPath, indirizzo, ordini, carrello);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Utente{" +
+                "nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", imgPath='" + imgPath + '\'' +
+                ", indirizzo=" + indirizzo +
+                '}';
+    }
+
     public boolean effettuaOrdine()
-    {}
+    {
+       Collection<InCarrello> prodotti=carrello.getProdotti();
+
+       for(InCarrello item: prodotti)
+       {
+           Prodotto p=item.getProdotto();
+
+       }
+
+        return true;
+    }
 
     //FAI EFFETTUA ORDINE E LE INTERFACCE
 }

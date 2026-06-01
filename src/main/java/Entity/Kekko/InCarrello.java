@@ -1,4 +1,7 @@
-package Kekko;
+package Entity.Kekko;
+import Entity.Merce.Prodotto;
+
+import java.util.Objects;
 
 public class InCarrello {
 
@@ -40,5 +43,17 @@ public class InCarrello {
                 "prodotto=" + prodotto +
                 ", quantita=" + quantita +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        InCarrello that = (InCarrello) o;
+        return this.prodotto.equals(that.prodotto);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(prodotto);
     }
 }
