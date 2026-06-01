@@ -1,4 +1,4 @@
-package Kekko;
+package Entity.client;
 
 public class Indirizzo {
 

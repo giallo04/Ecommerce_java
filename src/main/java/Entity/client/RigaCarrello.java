@@ -1,12 +1,12 @@
-package Kekko;
+package Entity.client;
+import Entity.Merce.Prodotto;
+public class RigaCarrello {
 
-public class InCarrello {
-
-    Prodotto prodotto;
+    private Prodotto prodotto;
     int quantita;
 
 
-    public InCarrello(Prodotto prodotto, int quantita)
+    public RigaCarrello(Prodotto prodotto, int quantita)
     {
         if(prodotto==null)throw new IllegalArgumentException("\nInserire un articolo valido\n");
         this.prodotto=prodotto;
@@ -26,8 +26,16 @@ public class InCarrello {
 
     //SETTER
 
-    public void setQuantita(int quantita) {
-        this.quantita = quantita;
+    public void incrementQuantita(int quantita)
+    {
+        if(quantita>0)
+            this.quantita+=quantita;
+        else throw new IllegalArgumentException("Quantità non valida");
+    }
+    public void decrementQuantita(int quantita){
+        if(quantita>0&&quantita<=this.quantita){
+            this.quantita-=quantita;
+        }else throw new IllegalArgumentException("Quantità non valida");
     }
 
 

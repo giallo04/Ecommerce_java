@@ -6,16 +6,19 @@ import Entity.Merce.Prodotto;
 public class RigaOrdine {
     Prodotto prodotto;
     int qtaProdotto;
-
+    float prezzo;
     public RigaOrdine(Prodotto prodotto, int qtaProdotto) {
         this.prodotto = prodotto;
         this.qtaProdotto = qtaProdotto;
+        this.prezzo=prodotto.getPrezzo();
     }
 
     public int getQtaProdotto() {
         return qtaProdotto;
     }
-
+    public float getPrezzo() {
+        return prezzo;
+    }
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof RigaOrdine that)) return false;

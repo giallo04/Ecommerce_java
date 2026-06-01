@@ -1,6 +1,10 @@
-package Kekko;
+package Entity.client;
+
+import Entity.Ordini.Ordine;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Utente {
 
@@ -8,13 +12,12 @@ public class Utente {
     private String cognome;
     private String email;
     private String password;
-    private String imgPath;
     private Indirizzo indirizzo;
-    private List<Ordine> ordini;
+    private ArrayList<Ordine> ordini;
     private Carrello carrello;
 
     //COSTRUTTORE
-    public Utente(String nome,String cognome,String email,String password,String imgPath, Indirizzo indirizzo)
+    public Utente(String nome,String cognome,String email,String password, Indirizzo indirizzo)
     {
         if(nome==null){
 
@@ -36,7 +39,6 @@ public class Utente {
             throw new IllegalArgumentException("\nInserisci una password\n");
         }
         this.password=password;
-        this.imgPath=imgPath;
 
         if(indirizzo==null)
         {
@@ -66,35 +68,35 @@ public class Utente {
     }
 
     public String getImgPath() {
-        return imgPath;
+        return "users/"+email+".png";
     }
 
     public Indirizzo getIndirizzo() {
         return indirizzo;
     }
 
-    public void ModificaProfilo(String nome,String cognome,String email,String password,String imgPath, Indirizzo indirizzo)
+    public void ModificaProfilo(String nome,String cognome,String email,String password, Indirizzo indirizzo)
     {
         this.nome=nome;
         this.cognome=cognome;
         this.email=email;
         this.password=password;
-        this.imgPath=imgPath;
         this.indirizzo=indirizzo;
 
     }
+//TODO add setter per tutti i campi per modificare i dati
 
-
-    public void storicoOrdini()
+    public List<Ordine> storicoOrdini()
     {
-        for(int i=0;i<ordini.size();i++)
-        {
-            System.out.println(ordini.get(i).toString());
-        }
+        return  Collections.unmodifiableList(ordini);
     }
 
-    public boolean effettuaOrdine()
-    {}
-
-    //FAI EFFETTUA ORDINE E LE INTERFACCE
+    public boolean effettuaOrdine() {
+        Ordine order = carrello.effettuaOrdine(indirizzo);
+        if (order != null) {
+            ordini.add(order);
+            return true;
+        }
+        else return false;
+    }
 }
