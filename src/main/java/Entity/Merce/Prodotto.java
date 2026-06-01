@@ -1,5 +1,6 @@
 package Entity.Merce;
 
+import Entity.Ordini.RigaOrdine;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -21,10 +22,7 @@ public class Prodotto {
     private  String categoria;
     private int sconto;
     private int quantita;
-
-    //TODO collegare a riga @OneToMany (mappedBy ="prodotto")
-    //private List<RigaOrdine> rigaOrdini=new ArrayList<RigaOrdine>();
-
+    //TODO collegare prodotto con ordine in persistenza
     public Prodotto(String nome, float prezzo, String descrizione, int quantita, String categoria)
             throws IllegalArgumentException {
         if (nome.isEmpty() || prezzo <= 0 || descrizione.isEmpty() || categoria.isEmpty() || quantita < 0) {
