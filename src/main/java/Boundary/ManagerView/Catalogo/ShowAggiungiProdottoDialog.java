@@ -1,5 +1,8 @@
 package Boundary.ManagerView.Catalogo;
 
+import Boundary.DTO.ProductDTO;
+import Controller.CatalogoController;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -63,15 +66,13 @@ public class ShowAggiungiProdottoDialog extends JDialog {
         String descrizione = this.descrizione.getText();
         String imgPath = this.imgPath.getText();
         String categoria = this.categoria.getText();
+        CatalogoController catalogoController = new CatalogoController();
         if(nome.isEmpty() || prezzo.isEmpty() || descrizione.isEmpty() || imgPath.isEmpty() || categoria.isEmpty()){
             JOptionPane.showMessageDialog(null, "Compila tutti i campi");
             return;
         }else{
-          if(Controller.Stub.addProduct(imgPath,nome,prezzo,descrizione) ){
-              JOptionPane.showMessageDialog(null, "Prodotto aggiunto con successo");
-          }else {
-              JOptionPane.showMessageDialog(null, "Errore durante l'aggiunta del prodotto");
-          }
+          ProductDTO prod=new ProductDTO(nome,descrizione,Float.parseFloat(prezzo),0,categoria,Integer.parseInt(qt.getValue().toString()),0,imgPath);
+          JOptionPane.showMessageDialog(null,catalogoController.addProduct(prod));
         }
 
         dispose();

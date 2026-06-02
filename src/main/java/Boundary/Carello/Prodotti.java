@@ -80,7 +80,6 @@ public class Prodotti {
 
         Prezzo.setText(prezzoFormattato);
         Categoria.setText(item.getProdotto().getCategoria());
-
         int quantita = item.getQuantita();
         Quantita.setText(String.valueOf(quantita));
 
