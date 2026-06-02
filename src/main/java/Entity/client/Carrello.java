@@ -14,6 +14,8 @@ public class Carrello {
     public Collection<RigaCarrello> getProdotti() {
         return prodotti.values();//ESTRAE TUTTI I VALORI IGNORANDO LA CHIAVE
     }
+
+
     public float getTotale() {
         float tot=0;
         Collection<RigaCarrello> prod=prodotti.values();
@@ -22,6 +24,8 @@ public class Carrello {
         }
         return tot;
     }
+
+
     public void mostraProdotti()
     {
         for(RigaCarrello item : getProdotti())

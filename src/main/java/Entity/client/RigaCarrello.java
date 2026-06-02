@@ -32,6 +32,8 @@ public class RigaCarrello {
             this.quantita+=quantita;
         else throw new IllegalArgumentException("Quantità non valida");
     }
+
+
     public void decrementQuantita(int quantita){
         if(quantita>0&&quantita<=this.quantita){
             this.quantita-=quantita;
