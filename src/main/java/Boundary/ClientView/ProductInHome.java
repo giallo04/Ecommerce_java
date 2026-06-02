@@ -1,5 +1,6 @@
 package Boundary.ClientView;
 
+import Boundary.App;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import Boundary.Utils.StyleUtils;
 
@@ -72,9 +73,10 @@ public class ProductInHome implements Comparable<ProductInHome>{
     public JPanel getPane(){
         return pane;
     }
-    private void goToProduct(){
-        //TODO implementare la pagina del prodotto
-        System.out.println("prodotto cliccato");
+        private void goToProduct(){
+            ProductDetail productDetail=new ProductDetail(productName.getText());
+            productDetail.pack();
+            productDetail.setVisible(true);
     }
     private void addToCart(){
         //TODO implementare l'aggiunta al carrello' chiamando il controller

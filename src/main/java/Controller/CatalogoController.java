@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CatalogoController {
@@ -81,5 +82,24 @@ public class CatalogoController {
             }catch (IllegalArgumentException e){
                 return "Prodotto non trovato";
             }
+    }
+    public ProductDTO getProdotto(String nome){//TODO change ,for now return a default product
+        Catalogo catalogo=Catalogo.getInstance();
+        List<Prodotto> prodotti=catalogo.getProdotti();
+        for (Prodotto p : prodotti) {
+            if (p.getNome().equals(nome)) {
+                return new ProductDTO(
+                        p.getNome(),
+                        p.getDescrizione(),
+                        p.getPrezzo(),
+                        p.getSconto(),
+                        p.getCategoria(),
+                        p.getQuantita(),
+                        p.getProduct_id(),
+                        "/products/" + p.getNome().trim() + ".png"
+                );
+            }
+        }
+        return new ProductDTO("Cmf phone 2","Bellissimo telefono smart",1243,10,"Elettronica",10,0,"/products/Cmfphone2.png");
     }
 }
