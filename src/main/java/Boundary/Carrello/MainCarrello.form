@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Boundary.Carrello.MainCarrello">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="7" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="863" height="674"/>
+    </constraints>
+    <properties>
+      <background color="-16776961"/>
+      <foreground color="-16776961"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="dea7a" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Segoe UI Black" size="36"/>
+          <foreground color="-1"/>
+          <text value="SHOPFLOW 🌐"/>
+        </properties>
+      </component>
+      <hspacer id="2edba">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <vspacer id="ba37b">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <scrollpane id="49337" binding="scrollpanel">
+        <constraints>
+          <grid row="1" column="1" row-span="5" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="86bec" binding="catalogo" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints/>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+        </children>
+      </scrollpane>
+      <component id="6c690" class="javax.swing.JLabel" binding="prezzoTotale">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-1"/>
+          <text value="Label"/>
+        </properties>
+      </component>
+      <component id="e1762" class="javax.swing.JButton" binding="buttonEffettuaOrdine">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+          <foreground color="-16776961"/>
+          <text value="Button"/>
+        </properties>
+      </component>
+      <component id="2a0dc" class="javax.swing.JLabel" binding="nameUtente">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-1"/>
+          <text value="Label"/>
+        </properties>
+      </component>
+      <component id="ef0a8" class="javax.swing.JButton" binding="modificaProfiloButton">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+          <contentAreaFilled value="true"/>
+          <font name="Segoe UI Black" size="18"/>
+          <foreground color="-16776961"/>
+          <margin top="0" left="0" bottom="0" right="0"/>
+          <text value="Modifica profilo1"/>
+        </properties>
+      </component>
+      <component id="7297d" class="javax.swing.JButton" binding="visualizzaOrdiniButton">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+          <contentAreaFilled value="true"/>
+          <font name="Segoe UI Black" size="18"/>
+          <foreground color="-16776961"/>
+          <text value="Ordini"/>
+        </properties>
+      </component>
+      <component id="23a8d" class="javax.swing.JLabel" binding="photoProfilo">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <minimum-size width="100" height="100"/>
+            <preferred-size width="150" height="150"/>
+            <maximum-size width="150" height="150"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-16776961"/>
+          <icon value="users/dios@napoli_1.png"/>
+          <text value=""/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

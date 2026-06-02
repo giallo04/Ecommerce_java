@@ -1,18 +1,17 @@
 package Entity.client;
 
+import Entity.Merce.Catalogo;
 import Entity.Merce.Prodotto;
 
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.Collection;
+import java.util.*;
 
 public class Carrello {
 
     private Map<Long, RigaCarrello> prodotti=new LinkedHashMap<>();//UTILIZZO QUESTA LINKEDHASKMAP PERCHè UNISCE I VANTAGGI DELL' ARRAYLIST, CHE MOSTRA IN MANIERA ORDINATA I PRODTTTI, CON L'HASHMAP CHE MI FORNISCE TEMPO DI ACCESSO MINORE
 
 
-    public Collection<RigaCarrello> getProdotti() {
-        return prodotti.values();//ESTRAE TUTTI I VALORI IGNORANDO LA CHIAVE
+    public ArrayList<RigaCarrello> getProdotti() {
+        return new ArrayList<>(prodotti.values());//ESTRAE TUTTI I VALORI IGNORANDO LA CHIAVE
     }
 
 
@@ -55,5 +54,10 @@ public class Carrello {
         prodotti.remove(prodotto.getProduct_id());
     }
 
+
+    /*public static Carrello getInstance(){
+        return instance;
+    }
+*/
 
 }
