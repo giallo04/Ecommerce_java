@@ -9,7 +9,7 @@ import java.util.Collection; // Ti servirà per estrarre i prodotti
 public class Carrello {
 
     private Map<Long, InCarrello> prodotti=new LinkedHashMap<>();//UTILIZZO QUESTA LINKEDHASKMAP PERCHè UNISCE I VANTAGGI DELL' ARRAYLIST, CHE MOSTRA IN MANIERA ORDINATA I PRODTTTI, CON L'HASHMAP CHE MI FORNISCE TEMPO DI ACCESSO MINORE
-    private float prezzoTotale;
+    private static float prezzoTotale;
 
 
     public Collection<InCarrello> getProdotti() {
@@ -38,11 +38,15 @@ public class Carrello {
             InCarrello nuovo=new InCarrello(prodotto, quantita);
             prodotti.put(id,nuovo);
         }
+
+        prezzoTotale=prezzoTotale+prodotto.getPrezzo();
     }
 
-    public void rimuoviProdotto(long idProdotto)
+    public void rimuoviProdotto(Prodotto prodotto)
     {
-        prodotti.remove(idProdotto);
+
+        prodotti.remove(prodotto.getProduct_id());
+        prezzoTotale=prezzoTotale- prodotto.getPrezzo();
     }
 
 
