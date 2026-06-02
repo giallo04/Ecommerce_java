@@ -33,4 +33,25 @@ public class Indirizzo {
     public int getCap() {
         return cap;
     }
+
+    public void setCitta(String citta) {
+        this.citta = citta;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public void setVia(String via) {
+        this.via = via;
+    }
+
+    public void setCap(int cap) {
+        this.cap = cap;
+    }
+
+    @Override
+    public String toString() {
+        return citta+"in provincia di "+provincia+" via "+via+" cap "+cap;
+    }
 }

@@ -71,11 +71,11 @@ public class Utente {
         return "users/"+email+".png";
     }
 
-    public Indirizzo getIndirizzo() {
-        return indirizzo;
+    public String getIndirizzo() {
+        return indirizzo.toString();
     }
 
-    public void ModificaProfilo(String nome,String cognome,String email,String password, Indirizzo indirizzo)
+    public void ModificaProfilo(String nome,String cognome,String email,String password, Indirizzo indirizzo)//Indirizzo contenimento o associazione?TODO
     {
         this.nome=nome;
         this.cognome=cognome;
@@ -91,12 +91,4 @@ public class Utente {
         return  Collections.unmodifiableList(ordini);
     }
 
-    public boolean effettuaOrdine() {
-        Ordine order = carrello.effettuaOrdine(indirizzo);
-        if (order != null) {
-            ordini.add(order);
-            return true;
-        }
-        else return false;
-    }
 }

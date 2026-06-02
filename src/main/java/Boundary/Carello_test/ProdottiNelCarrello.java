@@ -1,6 +1,6 @@
-package Boundary.Carello;
+package Boundary.Carello_test;
 
-import Entity.Kekko.InCarrello;
+import Entity.client.RigaCarrello;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -109,11 +109,11 @@ public class ProdottiNelCarrello {
         return mainPanel;
     }
 
-    public void mostraProdotti(Collection<InCarrello> prodotti) {
+    public void mostraProdotti(Collection<RigaCarrello> prodotti) {
 
         listaProdotti.removeAll();
 
-        for(InCarrello item : prodotti)
+        for(RigaCarrello item : prodotti)
         {
             Prodotti quadratoProdotto=new Prodotti(item);
 

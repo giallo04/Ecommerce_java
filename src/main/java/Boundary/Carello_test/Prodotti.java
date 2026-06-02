@@ -1,7 +1,6 @@
-package Boundary.Carello;
+package Boundary.Carello_test;
 
-
-import Entity.Kekko.InCarrello;
+import Entity.client.RigaCarrello;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -72,7 +71,7 @@ public class Prodotti {
         return mainPanel;
     }
 
-    public Prodotti(InCarrello item) {
+    public Prodotti(RigaCarrello item) {
         Nome.setText(item.getProdotto().getNome());
         Descrizione.setText(item.getProdotto().getDescrizione());
         float prezzo = item.getProdotto().getPrezzo();

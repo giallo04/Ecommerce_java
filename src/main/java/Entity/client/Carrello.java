@@ -1,76 +1,55 @@
 package Entity.client;
 
 import Entity.Merce.Prodotto;
-import Entity.Ordini.GestoreOrdini;
-import Entity.Ordini.Ordine;
-import Entity.Ordini.RigaOrdine;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Collection;
 
 public class Carrello {
 
-    private final List<RigaCarrello> prodotti;
+    private Map<Long, RigaCarrello> prodotti=new LinkedHashMap<>();//UTILIZZO QUESTA LINKEDHASKMAP PERCHè UNISCE I VANTAGGI DELL' ARRAYLIST, CHE MOSTRA IN MANIERA ORDINATA I PRODTTTI, CON L'HASHMAP CHE MI FORNISCE TEMPO DI ACCESSO MINORE
 
-    public Carrello() {
-        this.prodotti = new ArrayList<>();
+
+    public Collection<RigaCarrello> getProdotti() {
+        return prodotti.values();//ESTRAE TUTTI I VALORI IGNORANDO LA CHIAVE
     }
-
-    public List<RigaCarrello> getProdotti() {
-        return Collections.unmodifiableList(prodotti);
-    }
-
-    public void aggiungiProdotto(Prodotto prodotto, int quantita) {
-        if (quantita <= 0) return;
-
-        for (RigaCarrello riga : prodotti) {
-            if (riga.getProdotto().equals(prodotto)) {
-                riga.incrementQuantita(quantita);
-                return;
-            }
+    public float getTotale() {
+        float tot=0;
+        Collection<RigaCarrello> prod=prodotti.values();
+        for(RigaCarrello riga:prod){
+            tot=tot+(riga.getQuantita()*riga.getProdotto().getPrezzo());
         }
-        prodotti.add(new RigaCarrello(prodotto, quantita));
+        return tot;
     }
-
-    public void rimuoviProdotto(Prodotto prodotto, int quantita) {
-        if (quantita <= 0) return;
-
-        Iterator<RigaCarrello> iterator = prodotti.iterator();
-        while (iterator.hasNext()) {
-            RigaCarrello riga = iterator.next();
-            if (riga.getProdotto().equals(prodotto)) {
-                if (riga.getQuantita() > quantita) {
-                    riga.decrementQuantita(quantita);
-                } else {
-                    iterator.remove();
-                }
-                break;
-            }
+    public void mostraProdotti()
+    {
+        for(RigaCarrello item : getProdotti())
+        {
+            System.out.print(prodotti.toString());
         }
     }
 
-    public Ordine effettuaOrdine(Indirizzo indirizzo) {
-        if (prodotti.isEmpty()) return null;
-        for (RigaCarrello riga : prodotti) {
-            if (riga.getQuantita() > riga.getProdotto().getQuantita()) {
-                return null;
-            }
-        }
-        Ordine order = new Ordine(indirizzo);
-        for (RigaCarrello riga : prodotti) {
-            order.addRigaOrdine(riga.getProdotto(), riga.getQuantita());
-        }
-        for (RigaCarrello riga : prodotti) {
-            int nuovaScorta = riga.getProdotto().getQuantita() - riga.getQuantita();
-            riga.getProdotto().setQuantita(nuovaScorta);
-        }
-        prodotti.clear();
+    public void aggiungiProdotto(Prodotto prodotto, int quantita)
+    {
+        long id=prodotto.getProduct_id();
 
-        GestoreOrdini gestore = GestoreOrdini.getInstance();
-        gestore.addOrdine(order);
+        if(prodotti.containsKey(id))
+        {
+            RigaCarrello esistente=prodotti.get(id);
+            esistente.incrementQuantita(quantita);
+        }
+        else{
 
-        return order;
+            RigaCarrello nuovo=new RigaCarrello(prodotto, quantita);
+            prodotti.put(id,nuovo);
+        }
     }
+
+    public void rimuoviProdotto(Prodotto prodotto)
+    {
+        prodotti.remove(prodotto.getProduct_id());
+    }
+
+
 }
