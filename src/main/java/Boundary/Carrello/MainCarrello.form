@@ -38,7 +38,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="86bec" binding="catalogo" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+          <grid id="86bec" binding="catalogo" layout-manager="GridBagLayout">
             <constraints/>
             <properties/>
             <border type="none"/>
@@ -74,7 +74,7 @@
           <text value="Label"/>
         </properties>
       </component>
-      <component id="ef0a8" class="javax.swing.JButton" binding="modificaProfiloButton">
+      <component id="ef0a8" class="javax.swing.JButton" binding="modificaProfiloButto">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -84,7 +84,7 @@
           <font name="Segoe UI Black" size="18"/>
           <foreground color="-16776961"/>
           <margin top="0" left="0" bottom="0" right="0"/>
-          <text value="Modifica profilo1"/>
+          <text value="Modifica profilo"/>
         </properties>
       </component>
       <component id="7297d" class="javax.swing.JButton" binding="visualizzaOrdiniButton">

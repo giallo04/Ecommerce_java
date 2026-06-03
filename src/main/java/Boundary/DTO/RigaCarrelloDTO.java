@@ -23,4 +23,8 @@ public class RigaCarrelloDTO {
 
         return this.productDTO.getPrezzo() * this.quantita;
     }
+
+    public void setQuantita(int quantita) {
+        this.quantita = quantita;
+    }
 }
