@@ -1,7 +1,4 @@
 package Boundary.ManagerView.Catalogo;
-
-import Boundary.DTO.ProductDTO;
-import Controller.CatalogoController;
 import Controller.Stub;
 import Boundary.Utils.TableUtils;
 
@@ -11,7 +8,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Catalogo {
     private final JPanel pane;
@@ -26,15 +22,8 @@ public class Catalogo {
 
     private void loadCatalogo() {
         //Static definition of the table
-        CatalogoController controller = new CatalogoController();
-        ArrayList<ProductDTO> products = controller.loadCatalogo();
-        String[][] dati = new String[products.size()][4];
-        for(int i=0;i<products.size();i++){
-            dati[i][0]=Long.toString(products.get(i).getId());
-            dati[i][1]=products.get(i).getNome();
-            dati[i][2]=Float.toString(products.get(i).getPrezzo());
-            dati[i][3]=Integer.toString(products.get(i).getQuantita());
-        }
+        //load products from database
+        String[][] dati=new String[0][0];
         model = new DefaultTableModel(dati, new String[]{"ID", "Nome", "Prezzo","Quantità"}){
             @Override
             public boolean isCellEditable(int row, int col) { return false; }

@@ -1,8 +1,6 @@
 package Boundary.Login;
 
 import Boundary.App;
-import Boundary.PasswordValidator;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -78,10 +76,9 @@ public class LoginPage {
         }
     }
     private void enterData(){
-        //validate data entered TODO
+        //validate data entered TODO with controller
         String email = textField1.getText();
-        PasswordValidator validator = new PasswordValidator(passwordField1.getText());
-        if(validator.isValid()){
+        if(passwordField1.getText().length()>7){
             //mando al controller
             if(email.equals("admin")){
                 App.mostraDashBoard();
@@ -89,7 +86,7 @@ public class LoginPage {
               App.mostraHome();
             }
         }else{
-            JOptionPane.showMessageDialog(null, validator.getErrorMessage());
+            JOptionPane.showMessageDialog(null,"Password troppo corta");
         }
     }
     private void loadRegisterGUI(){

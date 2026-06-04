@@ -1,6 +1,7 @@
 package Boundary.ClientView;
 
 import Boundary.App;
+import Boundary.ClientView.Catalogo.ProductInHome;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import Boundary.Utils.StyleUtils;
 

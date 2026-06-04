@@ -1,7 +1,6 @@
 package Boundary.Login;
 
 import Boundary.App;
-import Boundary.PasswordValidator;
 import Boundary.Utils.ImageUtils;
 
 import javax.swing.*;
@@ -32,6 +31,7 @@ public class RegistrazioneForm extends JDialog {
 
     public RegistrazioneForm () {
         setContentPane(pane);
+        imgLabel.setVisible(false);
         setModalityType(ModalityType.APPLICATION_MODAL);
         getRootPane().setDefaultButton(registerButton);
 
@@ -153,9 +153,8 @@ public class RegistrazioneForm extends JDialog {
 
         } else {
             emailField.putClientProperty("JComponent.outline", null);
-            PasswordValidator validator = new PasswordValidator(new String(passwordField1.getPassword()));
-            if (!validator.isValid()) {
-                JOptionPane.showMessageDialog(null, validator.getErrorMessage());
+            if (passwordField1.getPassword().length < 8) {
+                JOptionPane.showMessageDialog(null, "Password troppo corta, minimo 8 caratteri");
                 passwordField1.setText("");
                 passwordField1.putClientProperty("JComponent.outline", "error");
                 passwordField1.requestFocus();

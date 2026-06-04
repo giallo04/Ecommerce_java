@@ -1,8 +1,6 @@
-package Boundary.ClientView;
+package Boundary.ClientView.Catalogo;
 
-import Boundary.DTO.ProductDTO;
 import Boundary.Utils.ImageUtils;
-import Controller.CatalogoController;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 
 import javax.swing.*;
@@ -31,14 +29,7 @@ public class ProductDetail extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         //Get the product info from the controller
-        productName.setText(name);
-        CatalogoController catalogoController=new CatalogoController();
-        ProductDTO productDTO=catalogoController.getProdotto(name);
-        productPrice.setText("$"+productDTO.getPrezzo());
-        descrizione.setText(productDTO.getDescrizione());
-        imgLabel.setIcon(ImageUtils.getIconScaled(productDTO.getImgPath(),250));
-        offerPane.setVisible(productDTO.getSconto()>0);
-        offerLabel.setText("Prodotto scontato del "+productDTO.getSconto()+"%");
+//TODO Load the card with the products data
         offerPane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(242, 126, 91), 2, 20));
         categoryPane.setBorder(new FlatLineBorder(new Insets(10,10,10,10),new Color(104,113,207), 2, 20));
 
@@ -52,13 +43,7 @@ public class ProductDetail extends JDialog {
         removeFromCart.setFont(new Font("Segoe UI", Font.BOLD, 16));
 
 
-        descrizione.setLineWrap(true);
-        categoryLabel.setText(productDTO.getCategoria());
-        if(productDTO.getQuantita()>0) inMagazzinoLabel.setText("In magazzino: "+productDTO.getQuantita());
-        else{
-            inMagazzinoLabel.setText("Non disponibile");
-            inMagazzinoLabel.setForeground(Color.RED);
-        }
+
         addToCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
