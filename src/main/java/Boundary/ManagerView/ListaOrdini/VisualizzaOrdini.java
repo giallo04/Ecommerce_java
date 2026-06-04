@@ -12,16 +12,19 @@ public class VisualizzaOrdini {
     private JPanel contentPane;
     private JTable tabellaOrdini;
     private DefaultTableModel model;
+    private JPanel upperPanel;
 
     // COSTRUTTORE: Inizializza il pannello e costruisce la UI
     public VisualizzaOrdini() {
-        contentPane = new JPanel(new BorderLayout());
+        contentPane = new JPanel(new BorderLayout(20,0));
+        upperPanel = new JPanel(new BorderLayout());
         VisualizzaTabella();
+
     }
 
     // Creazione tabella
     private void VisualizzaTabella() {
-        String[] col = new String[]{"ID Ordine", "Cliente", "Totale"}; // Esempio di colonne fisiche
+        String[] col = new String[]{"Data", "Indirizzo", "Totale", "Stato Ordine"}; // Esempio di colonne fisiche
 
         // BUG RISOLTO: Assegnato correttamente a model (variabile di istanza)
         model = new DefaultTableModel(col, 0) {
@@ -34,7 +37,14 @@ public class VisualizzaOrdini {
 
         JPanel card = TableUtils.wrapInCard("Ordini Effettuati", tabellaOrdini);
 
-        contentPane.add(buildControlPanel(sorter), BorderLayout.NORTH);
+        upperPanel.add(buildControlPanel(sorter), BorderLayout.WEST);
+        JButton mioBottone = new JButton("Modifica Ordine");
+        mioBottone.setPreferredSize(new Dimension(200, 20));
+        mioBottone.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        upperPanel.add(mioBottone, BorderLayout.EAST); // NOTA: Cambiato in EAST o CENTER, vedi sotto
+        upperPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+
+        contentPane.add(upperPanel, BorderLayout.NORTH);
         contentPane.add(card, BorderLayout.CENTER);
     }
 
