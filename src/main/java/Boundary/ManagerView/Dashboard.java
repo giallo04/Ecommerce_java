@@ -2,6 +2,7 @@ package Boundary.ManagerView;
 
 import Boundary.App;
 import Boundary.ManagerView.Catalogo.Catalogo;
+import Boundary.ManagerView.ListaOrdini.VisualizzaOrdini;
 import Boundary.Utils.StyleUtils;
 import javax.swing.*;
 import java.awt.*;
@@ -68,7 +69,12 @@ public class Dashboard {
         statisticheButton.addActionListener(e -> {onStatistiche();});
 
         catalogoButton.addActionListener(e -> {onCatalogo();});
-
+        ordiniButton.addActionListener(e -> {contentPanel.removeAll();
+            VisualizzaOrdini pane=new VisualizzaOrdini();
+            contentPanel.add(pane.getContentPane());
+            contentPanel.revalidate();
+            contentPanel.repaint();
+        });
         logoutButton.addActionListener(e -> {App.mostraLogin();});
 
         //main menu catalogo
