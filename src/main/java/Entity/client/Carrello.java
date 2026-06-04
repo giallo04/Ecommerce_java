@@ -1,5 +1,6 @@
 package Entity.client;
 
+import Database.GestorePersistenza;
 import Entity.Merce.Catalogo;
 import Entity.Merce.Prodotto;
 
@@ -7,6 +8,7 @@ import java.util.*;
 
 public class Carrello {
 
+    private String email;
     private Map<Long, RigaCarrello> prodotti=new LinkedHashMap<>();//UTILIZZO QUESTA LINKEDHASKMAP PERCHè UNISCE I VANTAGGI DELL' ARRAYLIST, CHE MOSTRA IN MANIERA ORDINATA I PRODTTTI, CON L'HASHMAP CHE MI FORNISCE TEMPO DI ACCESSO MINORE
 
 
@@ -49,15 +51,28 @@ public class Carrello {
         }
     }
 
-    public void rimuoviProdotto(Prodotto prodotto)
+    public void rimuoviProdotto(long idProdotto)
     {
-        prodotti.remove(prodotto.getProduct_id());
+        GestorePersistenza gp = new GestorePersistenza();
+        Prodotto prodotto = gp.trovaPerId(Prodotto.class, idProdotto);
+        prodotti.remove(idProdotto);
+        gp.modifica(this);
+    }
+
+    public void aumentaQuantita(long idProdotto, int quantita)
+    {
+        RigaCarrello riga = prodotti.get(idProdotto);
+
+        if(riga == null)
+            throw new IllegalArgumentException("Prodotto non presente nel carrello");
+
+        riga.incrementQuantita(quantita);
+
+        GestorePersistenza gp = new GestorePersistenza();
+        gp.modifica(this);
     }
 
 
-    /*public static Carrello getInstance(){
-        return instance;
-    }
-*/
+
 
 }

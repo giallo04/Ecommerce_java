@@ -1,10 +1,12 @@
 package Entity.client;
 
+import Database.GestorePersistenza;
 import Entity.Ordini.Ordine;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class Utente {
 
@@ -76,6 +78,8 @@ public class Utente {
         return indirizzo.toString();
     }
 
+    public Carrello getCarrello() {return carrello;}
+
     public void ModificaProfilo(String nome,String cognome,String email,String password, String citta, String provincia,String via,int cap)
     {
         if(nome!=null){
@@ -113,6 +117,12 @@ public class Utente {
         return  Collections.unmodifiableList(ordini);
     }
 
+
+    public static Utente caricaDaEmail(String email)
+    {
+        GestorePersistenza gp=new GestorePersistenza();
+        return gp.cercaPrimoPerCampi(Utente.class, Map.of("email",email));
+    }
 
 
     //TODO effettuaOrdine

@@ -1,5 +1,6 @@
 package Boundary.Carrello;
 
+import Boundary.DTO.CarrelloDTO;
 import Boundary.DTO.RigaCarrelloDTO;
 import Controller.CarrelloController;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -15,6 +16,7 @@ import java.util.Locale;
 
 public class MainCarrello {
 
+
     private JPanel mainPanel;
     private JLabel prezzoTotale;
     private JButton buttonEffettuaOrdine;
@@ -25,67 +27,46 @@ public class MainCarrello {
     private JScrollPane scrollpanel;
     private JPanel catalogo;
 
-    public MainCarrello() {
-        // Assicuriamo l'esistenza dei pannelli fondamentali
-        if (mainPanel == null) mainPanel = new JPanel(new BorderLayout());
-        if (catalogo == null) catalogo = new JPanel();
-        if (scrollpanel == null) scrollpanel = new JScrollPane(catalogo);
+    private CarrelloDTO carrelloDTO;
+    private CarrelloController controller;
 
-        initListeners();
+
+    public MainCarrello(CarrelloDTO carrelloDTO, CarrelloController controller)
+    {
+        $$$setupUI$$$();
+        this.carrelloDTO = carrelloDTO;
+        this.controller = controller;
+        caricaCarrello();
     }
 
-    private void initListeners() {
-        if (modificaProfiloButton != null) {
-            modificaProfiloButton.addActionListener(e -> System.out.println("Bottone Modifica Profilo cliccato!"));
-        }
-        if (visualizzaOrdiniButton != null) {
-            visualizzaOrdiniButton.addActionListener(e -> System.out.println("Bottone Ordini cliccato!"));
-        }
-        if (buttonEffettuaOrdine != null) {
-            buttonEffettuaOrdine.addActionListener(e -> System.out.println("Bottone Effettua Ordine cliccato!"));
-        }
-    }
+    private void caricaCarrello()
+    {
+        controller.loadCarrello(carrelloDTO);
 
-    /**
-     * Sostituito e corretto per forzare il refresh del Viewport dello scrollpanel
-     */
-    public void popolaCatalogoProdotti(List<RigaCarrelloDTO> listaProdotti, CarrelloController controller) {
-        // 1. Svuota completamente il pannello catalogo da vecchi elementi
         catalogo.removeAll();
 
-        // 2. Forza il layout a griglia (0 righe = dinamiche, 1 colonna, 10px di spazio verticale)
-        catalogo.setLayout(new GridLayout(0, 1, 0, 10));
-
-        // 3. Ciclo sui prodotti reali passati dal controller
-        for (RigaCarrelloDTO prod : listaProdotti) {
-            panelProdotti cardProdotto = new panelProdotti(prod, controller);
-
-            // Inseriamo la radice visiva della singola card nel catalogo
-            catalogo.add(cardProdotto.$$$getRootComponent$$$());
+        for(RigaCarrelloDTO rigaDTO: carrelloDTO.getProdottiInCarrello())
+        {
+            panelProdotti card=new panelProdotti(rigaDTO, controller, carrelloDTO,this);
+            catalogo.add(card.getPanel());
         }
 
-        // 4. CORREZIONE COSTRUTTIVA: Riaffida il catalogo modificato allo scrollpanel
-        // Questo ricalcola l'altezza delle card (evita che collassino a 0 pixel)
-        scrollpanel.setViewportView(catalogo);
+        aggiornaTotale(carrelloDTO.prezzoTotale());
 
-        // 5. Chiediamo a Swing di ricalcolare i componenti e ridisegnare la grafica
         catalogo.revalidate();
         catalogo.repaint();
-        scrollpanel.revalidate();
-        scrollpanel.repaint();
-        mainPanel.revalidate();
-        mainPanel.repaint();
-
-        System.out.println("[DEBUG UI] Prodotti inseriti a schermo. Totale card: " + listaProdotti.size());
     }
+
+    public void refresh()
+    {
+        caricaCarrello();
+    }
+
 
     public JPanel getMainPanel() {
         return mainPanel;
     }
 
-    {
-        $$$setupUI$$$();
-    }
 
     private void $$$setupUI$$$() {
         mainPanel = new JPanel();
@@ -105,7 +86,7 @@ public class MainCarrello {
         scrollpanel = new JScrollPane();
         mainPanel.add(scrollpanel, new GridConstraints(1, 1, 5, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         catalogo = new JPanel();
-        catalogo.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        catalogo.setLayout(new GridLayout(0, 2));
         scrollpanel.setViewportView(catalogo);
         prezzoTotale = new JLabel();
         prezzoTotale.setForeground(new Color(-1));
@@ -127,7 +108,7 @@ public class MainCarrello {
         if (modificaProfiloButtonFont != null) modificaProfiloButton.setFont(modificaProfiloButtonFont);
         modificaProfiloButton.setForeground(new Color(-16776961));
         modificaProfiloButton.setMargin(new Insets(0, 0, 0, 0));
-        modificaProfiloButton.setText("Modifica profilo1");
+        modificaProfiloButton.setText("Modifica profilo");
         mainPanel.add(modificaProfiloButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         visualizzaOrdiniButton = new JButton();
         visualizzaOrdiniButton.setBackground(new Color(-1));
@@ -144,6 +125,9 @@ public class MainCarrello {
         mainPanel.add(photoProfilo, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(100, 100), new Dimension(150, 150), new Dimension(150, 150), 0, false));
     }
 
+    /**
+     * @noinspection ALL
+     */
     private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
         if (currentFont == null) return null;
         String resultName;
@@ -163,9 +147,8 @@ public class MainCarrello {
         return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 
-    public JComponent $$$getRootComponent$$$() {
-        return mainPanel;
-    }
+
+
 
     public void aggiornaTotale(float totale) {
         prezzoTotale.setText(String.format("Totale: € %.2f", totale));
