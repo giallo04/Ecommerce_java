@@ -199,6 +199,57 @@ public class GestorePersistenza {
         }
     }
 
+//Use contains to find a match in specified field
+    public <T> List<T> cercaNeiCampi(Class<T> classe,
+                                     Map<String, Object> campi) {
+
+        EntityManager em = JpaUtil.getInstance().getEntityManager();
+
+        try {
+            StringBuilder jpql = new StringBuilder();
+
+            jpql.append("SELECT e FROM ")
+                    .append(classe.getSimpleName())
+                    .append(" e");
+
+            if (!campi.isEmpty()) {
+                jpql.append(" WHERE ");
+
+                int contatore = 0;
+
+                for (String nomeCampo : campi.keySet()) {
+                    if (contatore > 0) {
+                        jpql.append(" OR ");
+                    }
+
+                    String nomeParametro = nomeCampo.replace(".", "_");
+
+                    jpql.append("e.")
+                            .append(nomeCampo)
+                            .append(" contains :")
+                            .append(nomeParametro);
+
+                    contatore++;
+                }
+            }
+
+            TypedQuery<T> query = em.createQuery(
+                    jpql.toString(),
+                    classe
+            );
+
+            for (String nomeCampo : campi.keySet()) {
+                String nomeParametro = nomeCampo.replace(".", "_");
+                query.setParameter(nomeParametro, campi.get(nomeCampo));
+            }
+
+            return query.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
+
     /*
      * Cerca il primo oggetto persistente che soddisfa un insieme di condizioni.
      *

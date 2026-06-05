@@ -20,61 +20,65 @@ public class Prodotto {
     private String nome;
     private float prezzo;
     private  String descrizione;
-    private  String categoria;
+    private  Categoria categoria;
     private int sconto;
     private int quantita;
-    //TODO collegare prodotto con ordine in persistenza
-    public Prodotto(String nome, float prezzo, String descrizione, int quantita, String categoria)
-            throws IllegalArgumentException {
-        if (nome.isEmpty() || prezzo <= 0 || descrizione.isEmpty() || categoria.isEmpty() || quantita < 0) {
-            throw new IllegalArgumentException();
-        }
-        this.nome = nome;
-        this.prezzo = prezzo;
-        this.descrizione = descrizione;
-        this.categoria = categoria;
-        this.quantita = quantita;
-        this.sconto = 0;
+
+
+    public Prodotto(String nome, float prezzo, String descrizione, int quantita, Categoria categoria){
+        setNome(nome);
+        setPrezzo(prezzo);
+        setDescrizione(descrizione);
+        setCategoria(categoria);
+        this.quantita=quantita;
+        this.sconto=0;
     }
 
 
     public String getNome()             { return nome; }
     public float getPrezzo()            { return prezzo; }
     public String getDescrizione()      { return descrizione; }
-    public String getCategoria()        { return categoria; }
+    public Categoria getCategoria()        { return categoria; }
     public int getQuantita()            { return quantita; }
     public int getSconto()              { return sconto; } // int, non String
 
     public void setNome(String nome) {
-        if (nome.isEmpty()) throw new IllegalArgumentException();
+        if (nome.isEmpty()) throw new IllegalArgumentException("Nome non puo essere vuoto");
         this.nome = nome;
     }
     public void setPrezzo(float prezzo) {
-        if (prezzo <= 0) throw new IllegalArgumentException();
+        if (prezzo <= 0) throw new IllegalArgumentException("Prezzo non puo essere negativo");
         this.prezzo = prezzo;
     }
     public void setSconto(int sconto) {
-        if (sconto < 0 || sconto > 100) throw new IllegalArgumentException();
+        if (sconto < 0 || sconto > 100) throw new IllegalArgumentException("Sconto non valido");
         this.sconto = sconto;
     }
-    public void setQuantita(int quantita) {
-        if (quantita < 0) throw new IllegalArgumentException();
-        this.quantita = quantita;
-    }
+  public void incrementQt(int quantita){
+        if(quantita<0){
+            throw new IllegalArgumentException("Quantità non puo essere negativa");
+        }else {
+            this.quantita+=quantita;
+        }
+  }
+  public void decrementQt(int quantita){
+        if(quantita<0){
+            throw new IllegalArgumentException("Quantità non puo essere negativa");
+        }else if(quantita>this.quantita){
+            throw new IllegalArgumentException("Al momento non ci sono "+quantita+" "+nome+" in magazzino");
+        }else {
+            this.quantita-=quantita;
+        }
+  }
     public void setDescrizione(String descrizione) {
         if (descrizione.isEmpty()) throw new IllegalArgumentException();
         this.descrizione = descrizione;
     }
-    public void setCategoria(String categoria) {
-        if (categoria.isEmpty()) throw new IllegalArgumentException();
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
     public long getProduct_id() {
         return product_id;
     }
-
-
-
-
 
 }
