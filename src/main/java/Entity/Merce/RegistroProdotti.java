@@ -29,7 +29,7 @@ public class RegistroProdotti {
         return gestore.cercaPrimoPerCampi(Prodotto.class, Map.of("nome",nome));
     }
     public Prodotto cercaProdottoId(Long id){
-        return gestore.trovaPerId(Prodotto.class,id);
+        return (Prodotto)  gestore.trovaPerId(Prodotto.class,id);
     }
     public void aggiornaProdotto(Long product_id,String nome, String descrizione, float prezzo, Categoria categoria,int quantita,int sconto) throws IllegalArgumentException{
         Prodotto prodotto=cercaProdottoId(product_id);
@@ -40,6 +40,9 @@ public class RegistroProdotti {
             prodotto.setPrezzo(prezzo);
             prodotto.setSconto(sconto);
             prodotto.setCategoria(categoria);
+            prodotto.setDescrizione(descrizione);
+            if(quantita>0) prodotto.incrementQt(quantita);
+            else prodotto.decrementQt(-quantita);
             gestore.aggiorna(prodotto);
         }
     }

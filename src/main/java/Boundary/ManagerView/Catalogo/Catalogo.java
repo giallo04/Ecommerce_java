@@ -1,7 +1,8 @@
 package Boundary.ManagerView.Catalogo;
-import Controller.Stub;
+import Controller.CatalogoController;
 import Boundary.Utils.TableUtils;
 
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -23,20 +24,34 @@ public class Catalogo {
     private void loadCatalogo() {
         //Static definition of the table
         //load products from database
-        String[][] dati=new String[0][0];
-        model = new DefaultTableModel(dati, new String[]{"ID", "Nome", "Prezzo","Quantità"}){
+        pane.removeAll();
+        model = new DefaultTableModel(null, new String[]{"ID", "Nome", "Prezzo","Quantità","Categoria", "Sconto"}){
             @Override
             public boolean isCellEditable(int row, int col) { return false; }
         };
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
 
         table = buildTable(model, sorter);
-
         JPanel card = TableUtils.wrapInCard("Gestione Catalogo", table);
 
         card.add(buildControlPanel(sorter), BorderLayout.SOUTH);
 
         pane.add(card, BorderLayout.CENTER);
+        CatalogoController controller=new CatalogoController();
+        List <String[]> dati=controller.caricaCatalogo();
+        if(dati!=null) {
+            for (String[] d : dati) {
+                String id=d[CatalogoController.ID];
+                String nome=d[CatalogoController.NOME];
+                String prezzo=d[CatalogoController.PREZZO];
+                String quantita=d[CatalogoController.QUANTITA];
+                String categoria=d[CatalogoController.CATEGORIA];
+                String sconto=d[CatalogoController.SCONTO];
+                model.addRow(new String[]{id,nome,prezzo,quantita,categoria,sconto});
+            }
+        }
+        pane.revalidate();
+        pane.repaint();
     }
 
     private JTable buildTable(DefaultTableModel model, TableRowSorter<DefaultTableModel> sorter) {
@@ -100,11 +115,12 @@ public class Catalogo {
 
     private void onMod() {
         int viewRow = table.getSelectedRow();
-        String id=(String) model.getValueAt(viewRow,0);
+        if (viewRow == -1) {JOptionPane.showMessageDialog(pane, "Seleziona un prodotto da modificare"); return;}
+        String id=model.getValueAt(viewRow,0).toString();
         ShowModificaProdottoDialog dialog = new ShowModificaProdottoDialog(id);
         dialog.pack();
         dialog.setVisible(true);
-        // TODO: Controller.saveDati(model.getDataVector());
+        loadCatalogo();
     }
 
     private void onRemove() {

@@ -13,6 +13,15 @@ import java.util.List;
 
 public class CatalogoController {
 
+    public static final int  ID=0;
+    public static final int  IMG_PATH=1;
+    public static final int  NOME=2;
+    public static final int  PREZZO=3;
+    public static final int  QUANTITA=4;
+    public static final int  CATEGORIA=5;
+    public static final int  SCONTO=6;
+    public static final int  PREZZO_CON_SCONTO=7;
+    public static final int  DESCRIZIONE=8;
     private  String messaggio_errore;//Used to pass error messages to the view
 
     private void setMsg(String msg){messaggio_errore=msg;}
@@ -59,49 +68,42 @@ public List<String[]> caricaProdottiStringa(String stringa){
         RegistroProdotti registro=new RegistroProdotti();
         try{
             Prodotto prodotto=registro.cercaProdottoId(id);
-            String[] prodotto_array=new String[]{
-                    String.valueOf(prodotto.getProduct_id()),
-                    "products/"+String.valueOf(prodotto.getProduct_id())+".png",//Hardcoded image path
-                    prodotto.getNome(),
-                    prodotto.getDescrizione(),
-                    String.valueOf(prodotto.getPrezzo()),
-                    String.valueOf(prodotto.getQuantita()),
-                    prodotto.getCategoria().toString(),
-                    String.valueOf(prodotto.getSconto())
-            };
-        }catch (IllegalArgumentException e){
-                setMsg(e.getMessage());//Passo il messaggio di errore
-                return null;
-            }
-        return null;
+            ArrayList<Prodotto> prodotti=new ArrayList<>();
+            prodotti.add(prodotto);
+            return convertToGui(prodotti).getFirst();
+            }catch (IllegalArgumentException e){
+                    setMsg(e.getMessage());//Passo il messaggio di errore
+                    return null;
+                }
         }
 
         public boolean aggiungiProdotto(String nome, String prezzo, String descrizione,String categoria,String quantita,String imgPath){
             RegistroProdotti registro=new RegistroProdotti();
             try{
                 long id=registro.aggiungiProdotto(nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita));
-                System.out.println("prodotto id  "+id);
-                //Try to save the image in FileSystem
-                Path sorgente= Path.of(imgPath);
-                Path destinazione=Path.of("src/main/resources/products/"+id+".png");
-                Files.copy(sorgente,destinazione);
+                copyImage(id,imgPath);
                 return true;
             }catch (IllegalArgumentException e){
                 setMsg(e.getMessage());
                 return false;
             }catch (IOException e){
                 setMsg("Errore durante il salvataggio dell'immagine");
-                e.printStackTrace();
                 return false;
             }
         }
-        public boolean modificaProdotto(Long id,String nome, String prezzo, String descrizione,String categoria,String quantita){
+        public boolean modificaProdotto(Long id,String nome, String prezzo, String descrizione,String categoria,String quantita,String sconto,String imgPath){
             RegistroProdotti registro=new RegistroProdotti();
             try{
-                registro.aggiornaProdotto(id,nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita),0);
+                registro.aggiornaProdotto(id,nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita),Integer.parseInt(sconto));
+                if(!imgPath.isEmpty()){
+                    copyImage(id,imgPath);
+                }
                 return true;
             }catch (IllegalArgumentException e){
                 setMsg(e.getMessage());
+                return false;
+            }catch (IOException e){
+                setMsg("Errore durante il salvataggio dell'immagine");
                 return false;
             }
         }
@@ -126,7 +128,11 @@ public List<String[]> caricaProdottiStringa(String stringa){
         RegistroProdotti registro=new RegistroProdotti();
         return convertToGui(registro.cercaProdottoPerStringaECategoria(stringa, Categoria.valueOf(categoria)));
     }
-
+    private void copyImage(Long id, String imgPath) throws IOException {
+        Path sorgente= Path.of(imgPath);
+        Path destinazione=Path.of("src/main/resources/products/"+id+".png");
+        Files.copy(sorgente,destinazione);
+    }
 
 
     }

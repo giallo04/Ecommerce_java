@@ -169,7 +169,7 @@ public class MainPage {
         if(prodotti == null) return null;
         ArrayList<ProductInHome> products = new ArrayList<>();
         for(String[] p : prodotti){
-            products.add(new ProductInHome(p[2], p[3], p[5], p[6], p[1]));
+            products.add(new ProductInHome(p[CatalogoController.NOME],p[CatalogoController.PREZZO],p[CatalogoController.CATEGORIA],p[CatalogoController.SCONTO],p[CatalogoController.IMG_PATH]));
         }
         return products;
     }
