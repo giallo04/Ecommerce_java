@@ -1,10 +1,7 @@
 package Entity.Merce;
 
 import Entity.Ordini.RigaOrdine;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +17,8 @@ public class Prodotto {
     private String nome;
     private float prezzo;
     private  String descrizione;
+
+    @Enumerated (EnumType.STRING)
     private  Categoria categoria;
     private int sconto;
     private int quantita;
