@@ -1,7 +1,6 @@
 package Entity.client;
 
 import Database.GestorePersistenza;
-import Entity.Merce.Catalogo;
 import Entity.Merce.Prodotto;
 
 import java.util.*;
@@ -56,7 +55,7 @@ public class Carrello {
         GestorePersistenza gp = new GestorePersistenza();
         Prodotto prodotto = gp.trovaPerId(Prodotto.class, idProdotto);
         prodotti.remove(idProdotto);
-        gp.modifica(this);
+        gp.aggiorna(this);
     }
 
     public void aumentaQuantita(long idProdotto, int quantita)
@@ -69,7 +68,7 @@ public class Carrello {
         riga.incrementQuantita(quantita);
 
         GestorePersistenza gp = new GestorePersistenza();
-        gp.modifica(this);
+        gp.aggiorna(this);
     }
 
 
