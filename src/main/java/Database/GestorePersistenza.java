@@ -226,7 +226,7 @@ public class GestorePersistenza {
 
                     jpql.append("e.")
                             .append(nomeCampo)
-                            .append(" contains :")
+                            .append(" LIKE :")
                             .append(nomeParametro);
 
                     contatore++;
@@ -240,7 +240,7 @@ public class GestorePersistenza {
 
             for (String nomeCampo : campi.keySet()) {
                 String nomeParametro = nomeCampo.replace(".", "_");
-                query.setParameter(nomeParametro, campi.get(nomeCampo));
+                query.setParameter(nomeParametro, "%"+campi.get(nomeCampo)+"%");
             }
 
             return query.getResultList();

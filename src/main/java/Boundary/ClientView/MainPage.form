@@ -181,9 +181,6 @@
               <font name="Segoe UI Black" size="20"/>
               <model>
                 <item value="Categorie"/>
-                <item value="Elettronica"/>
-                <item value="Moda"/>
-                <item value="Cibo"/>
               </model>
             </properties>
           </component>

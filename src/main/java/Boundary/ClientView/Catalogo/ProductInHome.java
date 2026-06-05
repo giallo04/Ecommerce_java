@@ -20,7 +20,7 @@ public class ProductInHome implements Comparable<ProductInHome>{
     private JLabel productPrice;
     private JLabel categoryLabel;
     private JPanel infoPanel;
-    public ProductInHome(String name, String price, String category, String offer){
+    public ProductInHome(String name, String price, String category, String offer,String imgPath){
         //estetica
         Color customColor = new Color(79,70,229);
         infoPanel.setBackground(Color.WHITE);
@@ -30,17 +30,17 @@ public class ProductInHome implements Comparable<ProductInHome>{
         addToCart.setBackground(customColor);
 
         pane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(104,113,207), 2, 20));
-        if(Integer.parseInt(offer)>0) offerPane.setVisible(true);
-        offerPane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(242, 126, 91), 2, 20));
-        offerLabel.setText("Prodotto scontato del "+offer+"%");
+        if(Integer.parseInt(offer)>0){
+            offerPane.setVisible(true);
+            offerPane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(242, 126, 91), 2, 20));
+            offerLabel.setText("Prodotto scontato del "+offer+"%");
+        }
         //Set parametri
         productName.setText(name);
-        productPrice.setText("$"+price);
+        productPrice.setText(price);
         categoryLabel.setText(category);
 
-        String imgUrl = "/products/" + name + ".png";
-        imgUrl = imgUrl.replace(" ", "");
-       image.setIcon(ImageUtils.getIconScaled(imgUrl,250));
+       image.setIcon(ImageUtils.getIconScaled(imgPath,250));
 
         //codice per hover pane custom
         Color coloreNormale = new Color(245, 245, 245);
@@ -73,7 +73,7 @@ public class ProductInHome implements Comparable<ProductInHome>{
         return pane;
     }
         private void goToProduct(){
-            ProductDetail productDetail=new ProductDetail(productName.getText());
+            ProductDetail productDetail=new ProductDetail(getName());
             productDetail.pack();
             productDetail.setVisible(true);
     }
@@ -92,7 +92,7 @@ public boolean isOffer(){
 }
     @Override
     public int compareTo(ProductInHome o) {
-        return Integer.compare(Integer.parseInt(productPrice.getText().replace("$","")), Integer.parseInt(o.productPrice.getText().replace("$","")));
+        return Float.compare(Float.parseFloat(productPrice.getText().replace("$ ","")), Float.parseFloat(o.productPrice.getText().replace("$","")));
     }
 
 }

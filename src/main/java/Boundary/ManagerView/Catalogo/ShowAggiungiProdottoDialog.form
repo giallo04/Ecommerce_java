@@ -199,7 +199,7 @@
                   <text value="Categoria   "/>
                 </properties>
               </component>
-              <component id="ca14e" class="javax.swing.JTextField" binding="categoria">
+              <component id="b6906" class="javax.swing.JComboBox" binding="categoriaBox">
                 <constraints border-constraint="Center"/>
                 <properties/>
               </component>

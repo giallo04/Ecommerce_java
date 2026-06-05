@@ -2,6 +2,8 @@ package Entity.Merce;
 
 import Database.GestorePersistenza;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +13,7 @@ public class RegistroProdotti {
     public  RegistroProdotti(){
         gestore=new GestorePersistenza();
     }
-    public void aggiungiProdotto(String nome, String descrizione, float prezzo, Categoria categoria,int quantita) throws IllegalArgumentException{
+    public Long aggiungiProdotto(String nome, String descrizione, float prezzo, Categoria categoria,int quantita) throws IllegalArgumentException{
         //Cerca se il prodotto esiste gia
         Prodotto prodottoEsistente=cercaProdottoNome(nome);
         if(prodottoEsistente!=null){
@@ -20,6 +22,7 @@ public class RegistroProdotti {
             Prodotto prodotto=new Prodotto(nome,prezzo,descrizione,quantita,categoria);
             //Creo il prodotto e lo aggiungo al catalogo
             gestore.salva(prodotto);
+            return prodotto.getProduct_id();
         }
     }
     public Prodotto cercaProdottoNome(String nome){
@@ -48,13 +51,24 @@ public void eliminaProdotto(Long id){
        }
 }
 public List<Prodotto> cercaProdottiPerCategoria(Categoria categoria){
-        return gestore.cercaPerCampi(Prodotto.class,Map.of("categoria",categoria.toString()));
+        return gestore.cercaPerCampi(Prodotto.class,Map.of("categoria",categoria));
 }
 public List<Prodotto> cercaProdottiPerStringa(String stringa){
         return gestore.cercaNeiCampi(Prodotto.class,Map.of("nome",stringa, "descrizione",stringa));
 }
+public List<Prodotto> cercaProdottoPerStringaECategoria(String stringa, Categoria categoria){
+        List<Prodotto> prodotti=cercaProdottiPerStringa(stringa);
+        if(prodotti==null)return null;
+        else{
+            List<Prodotto> risultati=new ArrayList<>();
+            for(Prodotto p:prodotti){
+                if(p.getCategoria()==categoria)risultati.add(p);
+            }
+            return risultati;
+        }
+    }
 public List<Prodotto> caricaCatalogo(){
-        return gestore.cercaPerCampo(Prodotto.class, "", null);
+        return gestore.cercaPerCampi(Prodotto.class, Collections.emptyMap());
 }
 
 }
