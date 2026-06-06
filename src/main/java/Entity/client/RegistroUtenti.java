@@ -1,33 +1,44 @@
 package Entity.client;
 
 import Database.GestorePersistenza;
+import Entity.Merce.Categoria;
+import Entity.Merce.Prodotto;
 
 import java.util.Map;
 
 public class RegistroUtenti {
 
     private GestorePersistenza gestorePersistenza;
-    private Long current_user_id;
-    //private Long carrello_id;
 
-    public RegistroUtenti(Long current_user_id)
+    public RegistroUtenti()
     {
-        this.current_user_id=current_user_id;
         this.gestorePersistenza=new GestorePersistenza();
     }
 
-    public Utente cercaUtentePerId(Long idUtente)
+    public Utente cercaUtentePerId(long idUtente)
     {
         return gestorePersistenza.trovaPerId(Utente.class,idUtente);
     }
 
-    public boolean salvaUtente(Utente utente)
+    public boolean registraUtente(Utente utente)
     {
         return gestorePersistenza.salva(utente);
     }
-
+    public void aggiornaUtente(long user_id,String nome,String cognome,String email,String password,Indirizzo indirizzo) throws IllegalArgumentException{
+        Utente utente=cercaUtentePerId(user_id);
+        if(utente==null){
+            throw new IllegalArgumentException("Utente "+user_id+" non esistente nel database");
+        }else {
+            Utente utenteEsistente=cercaUtentePerEmail(email);
+            if(utenteEsistente==null||utenteEsistente.getUser_id()==user_id) {
+            utente.modificaProfilo(nome,cognome,email,password);
+            }else{
+                throw new IllegalArgumentException("Esiste già un prodotto con il nome "+nome+" nel catalogo");
+            }
+        }
+    }
     public Utente cercaUtentePerEmail(String email)
     {
-        return (Utente) gestorePersistenza.cercaPerCampo(Utente.class, "email", (email));//RESTITUISCE LISTA UTENTI CON STESSA EMAIL
+        return (Utente) gestorePersistenza.cercaPrimoPerCampi(Utente.class,Map.of("email",email));
     }
 }

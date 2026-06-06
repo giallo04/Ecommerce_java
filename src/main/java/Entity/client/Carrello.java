@@ -1,70 +1,46 @@
 package Entity.client;
 
-import Database.GestorePersistenza;
 import Entity.Merce.Prodotto;
-import jakarta.persistence.Embeddable;
-
+import jakarta.persistence.*;
 import java.util.*;
+
 @Embeddable
 public class Carrello {
 
-
-    private Map<Long, RigaCarrello> prodotti=new LinkedHashMap<>();//UTILIZZO QUESTA LINKEDHASKMAP PERCHè UNISCE I VANTAGGI DELL' ARRAYLIST, CHE MOSTRA IN MANIERA ORDINATA I PRODTTTI, CON L'HASHMAP CHE MI FORNISCE TEMPO DI ACCESSO MINORE
-
-
-
+    // Risolto: Diciamo a Hibernate di usare la relazione "prodotto" dentro RigaCarrello come chiave della Mappa
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = RigaCarrello.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    @MapKey(name = "prodotto")
+    private Map<Long, RigaCarrello> prodotti = new LinkedHashMap<>();
 
     public ArrayList<RigaCarrello> getProdotti() {
-        return new ArrayList<>(prodotti.values());//ESTRAE TUTTI I VALORI IGNORANDO LA CHIAVE
+        return new ArrayList<>(prodotti.values());
     }
 
-
     public float getTotale() {
-        float totale=0;
-        Collection<RigaCarrello> prod=prodotti.values();
-        for(RigaCarrello riga:prod){
-            totale=totale+(riga.getQuantita()*riga.getProdotto().getPrezzo());
+        float totale = 0;
+        for (RigaCarrello riga : prodotti.values()) {
+            totale += riga.calcolaSubTotale();
         }
         return totale;
     }
 
-
-
-
-    public void aggiungiProdotto(Prodotto prodotto, int quantita)
-    {
-        long id=prodotto.getProduct_id();
-
-        if(prodotti.containsKey(id))
-        {
-            RigaCarrello esistente=prodotti.get(id);
-            esistente.incrementQuantita();
-        }
-        else{
-
-            RigaCarrello nuovo=new RigaCarrello(prodotto, quantita);
-            prodotti.put(id,nuovo);
+    public void aggiungiProdotto(Prodotto prodotto, int quantita) {
+        long id = prodotto.getProduct_id();
+        if (prodotti.containsKey(id)) {
+            RigaCarrello esistente = prodotti.get(id);
+            esistente.incrementQuantita(quantita);
+        } else {
+            RigaCarrello nuovo = new RigaCarrello(prodotto, quantita);
+            prodotti.put(id, nuovo);
         }
     }
 
-    public void rimuoviProdotto(long idProdotto)
-    {
-        GestorePersistenza gp = new GestorePersistenza();
-        Prodotto prodotto = gp.trovaPerId(Prodotto.class, idProdotto);
+    public void rimuoviProdotto(long idProdotto) {
         prodotti.remove(idProdotto);
-        gp.aggiorna(this);
     }
 
-    public void svuotaCarrello()
-    {
-        Collection<RigaCarrello> prod=prodotti.values();
-        for(RigaCarrello riga:prod)
-        {
-            rimuoviProdotto(riga.getProdotto().getProduct_id());
-        }
+    public void svuotaCarrello() {
+        prodotti.clear();
     }
-
-
-
-
 }

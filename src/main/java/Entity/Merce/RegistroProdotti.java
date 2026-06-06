@@ -13,7 +13,7 @@ public class RegistroProdotti {
     public  RegistroProdotti(){
         gestore=new GestorePersistenza();
     }
-    public Long aggiungiProdotto(String nome, String descrizione, float prezzo, Categoria categoria,int quantita) throws IllegalArgumentException{
+    public long aggiungiProdotto(String nome, String descrizione, float prezzo, Categoria categoria,int quantita) throws IllegalArgumentException{
         //Cerca se il prodotto esiste gia
         Prodotto prodottoEsistente=cercaProdottoNome(nome);
         if(prodottoEsistente!=null){
@@ -28,10 +28,10 @@ public class RegistroProdotti {
     public Prodotto cercaProdottoNome(String nome){
         return gestore.cercaPrimoPerCampi(Prodotto.class, Map.of("nome",nome));
     }
-    public Prodotto cercaProdottoId(Long id){
+    public Prodotto cercaProdottoId(long id){
         return (Prodotto)  gestore.trovaPerId(Prodotto.class,id);
     }
-    public void aggiornaProdotto(Long product_id,String nome, String descrizione, float prezzo, Categoria categoria,int quantita,int sconto) throws IllegalArgumentException{
+    public void aggiornaProdotto(long product_id,String nome, String descrizione, float prezzo, Categoria categoria,int quantita,int sconto) throws IllegalArgumentException{
         Prodotto prodotto=cercaProdottoId(product_id);
         if(prodotto==null){
             throw new IllegalArgumentException("Prodotto "+product_id+" non presente nel catalogo");
@@ -51,7 +51,7 @@ public class RegistroProdotti {
             }
         }
     }
-public void eliminaProdotto(Long id){
+public void eliminaProdotto(long id){
         //Verifica internamente se esiste
        boolean result=gestore.elimina(Prodotto.class,id);
        if(!result){

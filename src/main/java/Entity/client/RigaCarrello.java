@@ -1,15 +1,15 @@
 package Entity.client;
 import Entity.Merce.Prodotto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class RigaCarrello {
 
-    @Id @ManyToOne
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long riga_id;
+    @ManyToOne @JoinColumn(name = "product_id")
     private Prodotto prodotto;
-    int quantita;
+    private int quantita;
 
     public RigaCarrello() {}
     public RigaCarrello(Prodotto prodotto, int quantita)
@@ -32,9 +32,9 @@ public class RigaCarrello {
 
     //SETTER
 
-    public void incrementQuantita()
+    public void incrementQuantita(int qt)
     {
-        this.quantita+=1;
+        this.quantita+=qt;
     }
 
 

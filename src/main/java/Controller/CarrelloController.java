@@ -7,7 +7,7 @@ public class CarrelloController {
 
     public boolean aggiungiAlCarrello()
     {
-
+        return true;
     }
 
 }

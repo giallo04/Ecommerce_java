@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 public class Indirizzo {
 
 
-    private Long id;
     private String citta;
     private String provincia;
     private String via;
