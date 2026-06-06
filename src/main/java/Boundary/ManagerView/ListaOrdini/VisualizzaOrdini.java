@@ -7,7 +7,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-
+//contentpane.removeAll()
 public class VisualizzaOrdini {
     private JPanel contentPane;
     private JTable tabellaOrdini;

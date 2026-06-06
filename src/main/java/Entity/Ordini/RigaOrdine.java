@@ -2,9 +2,11 @@ package Entity.Ordini;
 
 import java.util.Objects;
 import Entity.Merce.Prodotto;
+import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 
 public class RigaOrdine {
+
     private Prodotto prodotto;
     int qtaProdotto;
     float prezzo;

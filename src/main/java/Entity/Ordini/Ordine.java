@@ -2,6 +2,8 @@ package Entity.Ordini;
 
 import Entity.Merce.Prodotto;
 import Entity.client.Indirizzo;
+import Entity.client.Utente;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,12 +11,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Ordine {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long order_id;
+
     private LocalDate data;
     private Indirizzo indirizzo;
     private StatoOrdine statoOrdine;
     private ArrayList<RigaOrdine> inOrdine;
 
+     @ManyToOne
+     @JoinColumn(name = "user_id")
+     private Utente user_id;
+
+     
     //costruttore
     public Ordine(Indirizzo indirizzo) { //il resto degli attributi non devono esistere al di fuori dell'ordine quindi vengono creati nel costruttore
         this.indirizzo = indirizzo;
@@ -22,6 +34,7 @@ public class Ordine {
         this.statoOrdine = StatoOrdine.INSERITO;
         this.inOrdine = new ArrayList<>();
     }
+    protected  Ordine(){};
 
     //getter e setter
     public LocalDate getData() {

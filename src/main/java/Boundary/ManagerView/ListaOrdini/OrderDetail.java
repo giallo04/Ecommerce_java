@@ -1,6 +1,7 @@
 package Boundary.ManagerView.ListaOrdini;
 
 import Entity.Ordini.RigaOrdine;
+import jakarta.persistence.Entity;
 
 import javax.swing.*;
 import java.awt.*;
