@@ -126,10 +126,14 @@ public class Catalogo {
     private void onRemove() {
         int viewRow = table.getSelectedRow();
         if (viewRow == -1) {
-            JOptionPane.showMessageDialog(pane, "Seleziona un prodotto.");
-            return;
+            JOptionPane.showMessageDialog(pane, "Seleziona un prodotto.");   return; }
+        String id=model.getValueAt(viewRow,0).toString();
+        CatalogoController controller=new CatalogoController();
+        if(controller.eliminaProdotto(Long.parseLong(id))){
+            JOptionPane.showMessageDialog(pane, "Prodotto eliminato con successo");
+        }else {
+            JOptionPane.showMessageDialog(pane, controller.getMsg());
         }
-        model.removeRow(table.convertRowIndexToModel(viewRow));//TODO call to controller
         loadCatalogo();
     }
 

@@ -71,7 +71,7 @@ public class Utente {
     }
 
     public String getImgPath() {
-        return "users/"+imgPath+".png";
+        return "img/users/" +imgPath+".png";
     }
 
     public String getIndirizzo() {

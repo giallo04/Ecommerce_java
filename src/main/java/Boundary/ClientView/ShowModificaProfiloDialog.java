@@ -6,9 +6,6 @@ import javax.swing.*;
 import Boundary.Utils.ImageUtils;
 import Controller.Stub;
 
-import java.util.Arrays;
-import java.util.Iterator;
-
 public class ShowModificaProfiloDialog extends RegistrazioneForm {
     public ShowModificaProfiloDialog() {
         super();
@@ -27,7 +24,7 @@ public class ShowModificaProfiloDialog extends RegistrazioneForm {
         nomeField.setText(info[0]);
         cognomeField.setText(info[1]);
         emailField.setText(info[2]);
-        imgLabel.setIcon(ImageUtils.getIconScaled("/users/dios@napoli.png",150));//just a test
+        imgLabel.setIcon(ImageUtils.getIconScaled("img/users/dios@napoli.png",150));//just a test
         imgLabel.setVisible(true);
         boxCitta.setSelectedItem(info[4]);
         boxProvincia.setSelectedItem(info[5]);

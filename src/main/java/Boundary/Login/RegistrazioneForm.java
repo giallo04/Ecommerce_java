@@ -1,6 +1,5 @@
 package Boundary.Login;
 
-import Boundary.App;
 import Boundary.Utils.ImageUtils;
 
 import javax.swing.*;
@@ -37,7 +36,7 @@ public class RegistrazioneForm extends JDialog {
         setModalityType(ModalityType.APPLICATION_MODAL);
         getRootPane().setDefaultButton(registerButton);
 
-        imgLabel.setIcon(ImageUtils.getIconScaled("/products/notFound.png",100));//just a test
+        imgLabel.setIcon(ImageUtils.getIconScaled("/products_img/products/notFound.png",100));//just a test
         citta = new java.util.HashMap<String, String[]>();
         citta.put("Napoli", new String[]{"Napoli", "Pozzuoli", "Giugliano in Campania", "Torre del Greco", "Casoria", "Castellammare di Stabia", "Afragola", "Pompei"});
         citta.put("Milano", new String[]{"Milano", "Sesto San Giovanni", "Cinisello Balsamo", "Legnano", "Rho", "Cologno Monzese", "Paderno Dugnano"});
