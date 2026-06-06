@@ -1,7 +1,14 @@
 package Entity.client;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Embeddable
 public class Indirizzo {
 
+
+    private Long id;
     private String citta;
     private String provincia;
     private String via;
@@ -9,13 +16,23 @@ public class Indirizzo {
 
 
 
-    public Indirizzo(String citta, String provincia,String via,int cap)
+    public Indirizzo(String citta, String provincia,String via,int cap)throws IllegalArgumentException
     {
-        this.citta=citta;
-        this.provincia=provincia;
-        this.via=via;
-        this.cap=cap;
+        if(citta==null && provincia==null && via==null && cap==0)
+        { throw new IllegalArgumentException("\nInserire citta', provincia, via e cap validi!\n");
+        } else {
+            this.citta = citta;
+            this.provincia = provincia;
+            this.via = via;
+            this.cap = cap;
+        }
     }
+
+    public Indirizzo() {
+        //COSTRUTTORE VUOTO RICHIESTO DA HIBERNATE
+    }
+
+
 
 
     public String getCitta() {
