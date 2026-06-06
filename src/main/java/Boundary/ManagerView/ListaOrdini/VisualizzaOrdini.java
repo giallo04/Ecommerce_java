@@ -7,6 +7,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 //contentpane.removeAll()
 public class VisualizzaOrdini {
     private JPanel contentPane;
@@ -40,12 +43,59 @@ public class VisualizzaOrdini {
         JButton mioBottone = new JButton("Modifica Ordine");
         mioBottone.setPreferredSize(new Dimension(200, 20));
         mioBottone.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        mioBottone.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 1. Controlla se è stata selezionata una riga
+                int selectedRow = tabellaOrdini.getSelectedRow();
+
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(contentPane,
+                            "Seleziona un ordine dalla tabella per modificarlo.",
+                            "Nessuna selezione",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                int modelRow = tabellaOrdini.convertRowIndexToModel(selectedRow);
+
+                // 2. Recupera i dati dalle colonne del modello
+                // Colonne: 0 = Data, 1 = Indirizzo, 2 = Totale, 3 = Stato Ordine
+                String data = model.getValueAt(modelRow, 0).toString();
+                String indirizzo = model.getValueAt(modelRow, 1).toString();
+                String statoAttuale = model.getValueAt(modelRow, 3).toString();
+
+                // 3. Trova il Frame principale per passarlo al JDialog
+                Frame topFrame = (Frame) SwingUtilities.getWindowAncestor(contentPane);
+
+                // 4. Crea e mostra il Dialog OrderDetails
+                OrderDetails dialog = new OrderDetails(topFrame, data, indirizzo, statoAttuale);
+                dialog.pack();
+                dialog.setLocationRelativeTo(contentPane); // Centra il dialog rispetto alla tabella
+                dialog.setVisible(true); // Questa chiamata è bloccante finché il dialog non si chiude
+
+                // 5. Se l'utente ha premuto OK, aggiorna la tabella
+                if (dialog.isConfirmed()) {
+                    String nuovoStato = dialog.getNuovoStato();
+
+                    // Aggiorna il modello della tabella alla colonna dell'Id dello Stato (indice 3)
+                    model.setValueAt(nuovoStato, modelRow, 3);
+
+                    // TODO: Qui andrà la chiamata al tuo Controller/Database per salvare il nuovo stato dell'ordine
+                    // esempio: ordineController.aggiornaStato(ordineId, nuovoStato);
+
+                    JOptionPane.showMessageDialog(contentPane, "Stato dell'ordine aggiornato con successo!");
+                }
+            }
+        });
+
         upperPanel.add(mioBottone, BorderLayout.EAST); // NOTA: Cambiato in EAST o CENTER, vedi sotto
         upperPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         contentPane.add(upperPanel, BorderLayout.NORTH);
         contentPane.add(card, BorderLayout.CENTER);
     }
+
 
     private JTable buildTable(DefaultTableModel model, TableRowSorter<DefaultTableModel> sorter) {
         JTable t = TableUtils.createStyledTable(model);
