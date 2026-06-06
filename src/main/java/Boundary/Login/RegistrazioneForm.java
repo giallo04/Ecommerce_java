@@ -26,6 +26,8 @@ public class RegistrazioneForm extends JDialog {
     protected JButton showButton;
     protected JTextField imgPath;
     protected JButton openButton;
+    protected JLabel password1Label;
+    protected JLabel password2Label;
 
     Map<String, String[]> citta;
 
@@ -112,9 +114,11 @@ public class RegistrazioneForm extends JDialog {
                 char echoChar='•';
                 if(passwordField1.getEchoChar()==echoChar){
                     passwordField1.setEchoChar((char)0);
+                    passwordField2.setEchoChar((char)0);
                     showButton.setIcon(new ImageIcon(getClass().getResource("/images/hide.png")));
                 }else{
                     passwordField1.setEchoChar(echoChar);
+                    passwordField2.setEchoChar(echoChar);
                     showButton.setIcon(new ImageIcon(getClass().getResource("/images/show.png")));
                 }
             }

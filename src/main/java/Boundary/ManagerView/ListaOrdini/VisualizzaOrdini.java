@@ -31,7 +31,6 @@ public class VisualizzaOrdini {
             @Override
             public boolean isCellEditable(int row, int col) { return false; }
         };
-
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
         tabellaOrdini = buildTable(model, sorter);
 
