@@ -1,6 +1,5 @@
 package Boundary.Login;
 
-import Boundary.App;
 import Boundary.Utils.ImageUtils;
 
 import javax.swing.*;
@@ -26,6 +25,8 @@ public class RegistrazioneForm extends JDialog {
     protected JButton showButton;
     protected JTextField imgPath;
     protected JButton openButton;
+    protected JLabel password1Label;
+    protected JLabel password2Label;
 
     Map<String, String[]> citta;
 
@@ -35,7 +36,7 @@ public class RegistrazioneForm extends JDialog {
         setModalityType(ModalityType.APPLICATION_MODAL);
         getRootPane().setDefaultButton(registerButton);
 
-        imgLabel.setIcon(ImageUtils.getIconScaled("/products/notFound.png",100));//just a test
+        imgLabel.setIcon(ImageUtils.getIconScaled("/products_img/products/notFound.png",100));//just a test
         citta = new java.util.HashMap<String, String[]>();
         citta.put("Napoli", new String[]{"Napoli", "Pozzuoli", "Giugliano in Campania", "Torre del Greco", "Casoria", "Castellammare di Stabia", "Afragola", "Pompei"});
         citta.put("Milano", new String[]{"Milano", "Sesto San Giovanni", "Cinisello Balsamo", "Legnano", "Rho", "Cologno Monzese", "Paderno Dugnano"});
@@ -112,9 +113,11 @@ public class RegistrazioneForm extends JDialog {
                 char echoChar='•';
                 if(passwordField1.getEchoChar()==echoChar){
                     passwordField1.setEchoChar((char)0);
+                    passwordField2.setEchoChar((char)0);
                     showButton.setIcon(new ImageIcon(getClass().getResource("/images/hide.png")));
                 }else{
                     passwordField1.setEchoChar(echoChar);
+                    passwordField2.setEchoChar(echoChar);
                     showButton.setIcon(new ImageIcon(getClass().getResource("/images/show.png")));
                 }
             }

@@ -11,6 +11,6 @@ public class Stub {
         return new String[]{"Diego","Armando","dios@napoli","ForzaNapoli","Napoli","Giugliano in Campania","8123","via de Dios"};//STUB
     }
     public  String getUserImgUrl(){
-        return  "/users"+getUserInfo()[2]+".png";
+        return  "/img/users" +getUserInfo()[2]+".png";
     }
 }

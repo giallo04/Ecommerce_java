@@ -4,7 +4,6 @@ import Entity.Merce.Categoria;
 import Entity.Merce.Prodotto;
 import Entity.Merce.RegistroProdotti;
 
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CatalogoController {
+    private final String PRODUCTS_IMG_PATH="img/products/";
 
     public static final int  ID=0;
     public static final int  IMG_PATH=1;
@@ -33,7 +33,7 @@ public class CatalogoController {
         for(Prodotto p:prodotti){
             String[] prodotto=new String[]{
                     String.valueOf(p.getProduct_id()),
-                    "/products/"+String.valueOf(p.getProduct_id())+".png",//Hardcoded image path
+                    PRODUCTS_IMG_PATH+String.valueOf(p.getProduct_id())+".png",//Hardcoded image path
                     p.getNome(),
                     "$ "+String.valueOf(p.getPrezzo()),
                     String.valueOf(p.getQuantita()),
@@ -111,9 +111,13 @@ public List<String[]> caricaProdottiStringa(String stringa){
             RegistroProdotti registro=new RegistroProdotti();
             try{
                 registro.eliminaProdotto(id);
+                Files.delete(Path.of(PRODUCTS_IMG_PATH+id+".png"));
                 return true;
             }catch (IllegalArgumentException e){
                 setMsg(e.getMessage());
+                return false;
+            }catch (IOException e){
+                setMsg("Errore durante l'eliminazione dell'immagine dal File System");
                 return false;
             }
         }
@@ -129,8 +133,8 @@ public List<String[]> caricaProdottiStringa(String stringa){
         return convertToGui(registro.cercaProdottoPerStringaECategoria(stringa, Categoria.valueOf(categoria)));
     }
     private void copyImage(Long id, String imgPath) throws IOException {
-        Path sorgente= Path.of(imgPath);
-        Path destinazione=Path.of("src/main/resources/products/"+id+".png");
+        Path sorgente= Path.of(imgPath.trim());
+        Path destinazione=Path.of(PRODUCTS_IMG_PATH+id+".png");
         Files.copy(sorgente,destinazione);
     }
 

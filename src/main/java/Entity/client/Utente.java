@@ -2,128 +2,129 @@ package Entity.client;
 
 import Database.GestorePersistenza;
 import Entity.Ordini.Ordine;
-import jakarta.persistence.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
-@Entity
 public class Utente {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
-
-    private String  nome;
-    private String  cognome;
-    private String  email;
-    private String  password;
-    @Embedded
+    private String nome;
+    private String cognome;
+    private String email;
+    private String password;
     private Indirizzo indirizzo;
-    @Embedded
-    private Carrello carrello=new Carrello();
+    private String imgPath;
+    private ArrayList<Ordine> ordini;
+    private Carrello carrello;
 
-
-
-
-
-
-    public Utente(String nome, String cognome, String email, String password, Indirizzo indirizzo)throws IllegalArgumentException
+    //COSTRUTTORE
+    public Utente(String nome,String cognome,String email,String password, String imgPath, String citta, String provincia,String via,int cap) throws IllegalArgumentException
     {
-        if(nome==null && cognome==null && email==null &&indirizzo==null) {
-            throw  new IllegalArgumentException("\nNome, cognome, email e indirizzo devono essere validi\n");
-        } else{
+        if(nome==null){
 
-            this.nome = nome;
-            this.cognome = cognome;
-            this.email = email;
-            this.indirizzo = indirizzo;
-            }
+            throw new IllegalArgumentException("\nInserisci un nome\n");
+        }
+        this.nome=nome;
+        if(cognome==null){
 
-        if(!verficapassword(password)) {
-            throw  new IllegalArgumentException();
-        } else {
+            throw new IllegalArgumentException("\nInserisci un cognome\n");
+        }
+        this.cognome=cognome;
+        if(email==null){
+
+            throw new IllegalArgumentException("\nInserisci un email\n");
+        }
+        this.email=email;
+        if(password==null){
+
+            throw new IllegalArgumentException("\nInserisci una password\n");
+        }
+        this.password=password;
+
+
+        this.indirizzo=new Indirizzo(citta,provincia,via,cap);
+
+        this.imgPath=imgPath;
+
+        this.ordini=new ArrayList<Ordine>();
+        this.carrello=new Carrello();
+    }
+
+
+    //METODI DI GETTER
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getImgPath() {
+        return "users/"+imgPath+".png";
+    }
+
+    public String getIndirizzo() {
+        return indirizzo.toString();
+    }
+
+    public Carrello getCarrello() {return carrello;}
+
+    public void ModificaProfilo(String nome,String cognome,String email,String password, String citta, String provincia,String via,int cap)
+    {
+        if(nome!=null){
+
+            this.nome=nome;
+        }
+
+        if(cognome!=null){
+
+            this.cognome=cognome;
+        }
+
+        if(email!=null)
+        {
+            this.email=email;
+        }
+
+        if(password!=null)
+        {
             this.password = password;
         }
 
+        if(citta!=null && via!=null&& provincia!=null) {
+            indirizzo.setCap(cap);
+            indirizzo.setProvincia(provincia);
+            indirizzo.setVia(via);
+            indirizzo.setCitta(citta);
+        }
 
     }
 
-    public Utente() {
-        //COSTRUTTORE VUOTO RICHIESTO DA HIBERNATE
-    }
 
-
-    public String getNome() {return nome;}
-
-    public String getCognome() {return cognome;}
-
-    public String getEmail() {return email;}
-
-    public String getPassword() {return password;}
-
-    public Indirizzo getIndirizzo() {return indirizzo;}
-
-    public Long getUser_id() {return user_id;}
-
-
-
-    private boolean verficapassword(String password)
+    public List<Ordine> storicoOrdini()
     {
-        if (password == null || password.length() < 8)
-        {
-            return false;
-        }
-
-        boolean haMaiuscola = false;
-        boolean haNumero = false;
-        boolean haSpeciale = false;
-
-        for (char c : password.toCharArray())
-        {
-            if (Character.isUpperCase(c)) {
-                haMaiuscola = true;
-            }
-            else if (Character.isDigit(c)) {
-                haNumero = true;
-            }
-            else if (!Character.isLetterOrDigit(c)) {
-                haSpeciale = true;
-            }
-        }
-
-        return haMaiuscola && haNumero && haSpeciale;
+        return  Collections.unmodifiableList(ordini);
     }
 
 
-    public void modificaProfilo(String nome, String cognome, String email, String password)
+    public static Utente caricaDaEmail(String email)
     {
-        this.nome = nome;
-        this.cognome = cognome;
-        this.email = email;
-        if(verficapassword(password)) {
-            this.password = password;
-        }
+        GestorePersistenza gp=new GestorePersistenza();
+        return gp.cercaPrimoPerCampi(Utente.class, Map.of("email",email));
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Utente utente = (Utente) o;
-        return this.user_id==utente.user_id;
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(user_id);
-    }
+    //TODO effettuaOrdine
 
-    @Override
-    public String toString() {
-        return "Utente{" +
-                "User_id=" + user_id +
-                ", Nome='" + nome + '\'' +
-                ", Cognome='" + cognome + '\'' +
-                ", Email='" + email + '\'' +
-                ", indirizzo=" + indirizzo +
-                '}';
-    }
 }

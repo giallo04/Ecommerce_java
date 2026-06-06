@@ -36,14 +36,19 @@ public class RegistroProdotti {
         if(prodotto==null){
             throw new IllegalArgumentException("Prodotto "+product_id+" non presente nel catalogo");
         }else {
-            prodotto.setNome(nome);
-            prodotto.setPrezzo(prezzo);
-            prodotto.setSconto(sconto);
-            prodotto.setCategoria(categoria);
-            prodotto.setDescrizione(descrizione);
-            if(quantita>0) prodotto.incrementQt(quantita);
-            else prodotto.decrementQt(-quantita);
-            gestore.aggiorna(prodotto);
+            Prodotto prodottoEsistente=cercaProdottoNome(nome);
+            if(prodottoEsistente==null||prodottoEsistente.getProduct_id()==product_id) {
+                prodotto.setNome(nome);
+                prodotto.setPrezzo(prezzo);
+                prodotto.setSconto(sconto);
+                prodotto.setCategoria(categoria);
+                prodotto.setDescrizione(descrizione);
+                if (quantita > 0) prodotto.incrementQt(quantita);
+                else prodotto.decrementQt(-quantita);
+                gestore.aggiorna(prodotto);
+            }else{
+                throw new IllegalArgumentException("Esiste già un prodotto con il nome "+nome+" nel catalogo");
+            }
         }
     }
 public void eliminaProdotto(Long id){
