@@ -92,7 +92,12 @@ public boolean isOffer(){
 }
     @Override
     public int compareTo(ProductInHome o) {
-        return Float.compare(Float.parseFloat(productPrice.getText().replace("$ ","")), Float.parseFloat(o.productPrice.getText().replace("$","")));
+
+        String priceStr1 = this.productPrice.getText().replace("$", "").replace(",", ".").trim();
+        String priceStr2 = o.productPrice.getText().replace("$", "").replace(",", ".").trim();
+
+        // 2. Converti in float e confronta
+        return Float.compare(Float.parseFloat(priceStr1), Float.parseFloat(priceStr2));
     }
 
 }

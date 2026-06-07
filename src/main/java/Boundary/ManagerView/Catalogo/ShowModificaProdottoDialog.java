@@ -43,7 +43,7 @@ public class ShowModificaProdottoDialog extends JDialog {
         }
 
         nome.setText(data[CatalogoController.NOME]);
-        prezzo.setText(data[CatalogoController.PREZZO].replace("$ ",""));
+        prezzo.setText(data[CatalogoController.PREZZO].replace("$ ","").replace(",","."));
         descrizione.setText(data[CatalogoController.DESCRIZIONE]);
         imgPath.setText(data[CatalogoController.IMG_PATH]);
         categoriaBox.setSelectedItem(data[CatalogoController.CATEGORIA]);

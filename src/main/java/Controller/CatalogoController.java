@@ -35,7 +35,7 @@ public class CatalogoController {
                     String.valueOf(p.getProduct_id()),
                     PRODUCTS_IMG_PATH+String.valueOf(p.getProduct_id())+".png",//Hardcoded image path
                     p.getNome(),
-                    "$ "+String.valueOf(p.getPrezzo()),
+                    "$ "+String.format("%.2f",p.getPrezzo()),
                     String.valueOf(p.getQuantita()),
                     p.getCategoria().toString(),
                     String.valueOf(p.getSconto()),
