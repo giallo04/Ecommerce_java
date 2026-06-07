@@ -1,5 +1,6 @@
 package Boundary.ManagerView;
 
+import Controller.AccountController;
 import Eseguibile.App;
 import Boundary.ManagerView.Catalogo.Catalogo;
 import Boundary.ManagerView.ListaOrdini.VisualizzaOrdini;
@@ -20,7 +21,7 @@ public class Dashboard {
     private JButton logoutButton;
 
 
-    private final JPanel contentPanel;//Hp:Non si aggiorna dinamicamente
+    private final JPanel contentPanel;
     private JLabel labelNUtenti;
     private JLabel labelNOrdini;
 
@@ -43,7 +44,10 @@ public class Dashboard {
         StyleUtils.styleButton(logoutButton);
 
         // --- TOP PANEL ---
-        if (labelNUtenti == null) labelNUtenti = new JLabel("1.248");
+        if (labelNUtenti == null) {
+                AccountController controller=new AccountController();
+                labelNUtenti=new JLabel(controller.getNumberUtenti());
+        }
         if (labelNOrdini == null) labelNOrdini = new JLabel("342");//TODO CONTROLLER FOR DATA RECOVERY
 
         // TOP PANEL

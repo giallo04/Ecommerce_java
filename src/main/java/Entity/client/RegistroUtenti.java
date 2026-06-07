@@ -4,6 +4,7 @@ import Database.GestorePersistenza;
 import Entity.Merce.Categoria;
 import Entity.Merce.Prodotto;
 
+import java.util.List;
 import java.util.Map;
 
 public class RegistroUtenti {
@@ -42,5 +43,11 @@ public class RegistroUtenti {
     public Utente cercaUtentePerEmail(String email)
     {
         return (Utente) gestorePersistenza.cercaPrimoPerCampi(Utente.class,Map.of("email",email));
+    }
+
+    public int conteggioUtenti(){
+        GestorePersistenza gestore=new GestorePersistenza();
+        List<Utente> user=gestore.cercaPerCampi(Utente.class, Map.of());
+        return user.size();
     }
 }

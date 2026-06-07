@@ -122,6 +122,10 @@ public class AccountController {
         }
         return false;
     }
+    public String getNumberUtenti(){
+        RegistroUtenti registroUtenti=new RegistroUtenti();
+        return String.valueOf(registroUtenti.conteggioUtenti());
+    }
 
 
     public String[] caricaProfilo(){
