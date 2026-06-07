@@ -9,13 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
 public class ProductDetail extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextArea descrizione;
     private JLabel productName;
-  //  private JLabel productPrice;
+    private JLabel productPrice;
     private JButton addToCart;
     private JButton removeFromCart;
     private JLabel imgLabel;
@@ -26,9 +27,8 @@ public class ProductDetail extends JDialog {
     private JLabel inMagazzinoLabel;
     private JPanel categoryPane;
     private JPanel generalInfoPane;
-    private JTextField productPrice;
-    private JTextField discountPrice;
-  //  private JLabel discountPrice;
+    private JLabel discountPrice;
+    private int quantitaDisponibile;
     public ProductDetail(String name) {
         setContentPane(contentPane);
         setModal(true);
@@ -54,8 +54,8 @@ public class ProductDetail extends JDialog {
         descrizione.setText(data[CatalogoController.DESCRIZIONE]);
         offerLabel.setText(data[CatalogoController.SCONTO] + "% OFF");
         categoryLabel.setText(data[CatalogoController.CATEGORIA]);
-        discountPrice.setText(data[CatalogoController.PREZZO_CON_SCONTO]);
-        int quantitaDisponibile = Integer.parseInt(data[CatalogoController.QUANTITA]);
+        discountPrice.setText("New: "+data[CatalogoController.PREZZO_CON_SCONTO]);
+        quantitaDisponibile = Integer.parseInt(data[CatalogoController.QUANTITA]);
         quantityLabel.setText("0");
 
         if (quantitaDisponibile > 0) {
@@ -75,7 +75,7 @@ public class ProductDetail extends JDialog {
         offerPane.setVisible(hasDiscount);
         discountPrice.setVisible(hasDiscount);
         if(hasDiscount){
-            productPrice.putClientProperty("FlatLaf.style","font: strikeThrough");
+            productPrice.setText("Old: "+data[CatalogoController.PREZZO]);
         }
 
         offerPane.setBorder(new FlatLineBorder(new Insets(4, 10, 4, 10), new Color(242, 126, 91), 1, 12));
@@ -98,7 +98,6 @@ public class ProductDetail extends JDialog {
         descrizione.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         productPrice.setBorder(null);
         discountPrice.setBorder(null);
-
 
         StyleUtils.styleButton(addToCart);
         StyleUtils.styleButton(removeFromCart);
@@ -140,6 +139,9 @@ public class ProductDetail extends JDialog {
 
         if (newQuantity < 0) {
             newQuantity = 0;
+        }
+        if (newQuantity > quantitaDisponibile) {
+            newQuantity =quantitaDisponibile;
         }
 
         quantityLabel.setText(String.valueOf(newQuantity));

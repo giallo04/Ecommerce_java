@@ -164,12 +164,10 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="824a1" class="javax.swing.JTextField" binding="discountPrice">
+              <component id="1d31c" class="javax.swing.JLabel" binding="discountPrice">
                 <constraints/>
                 <properties>
-                  <editable value="false"/>
-                  <enabled value="false"/>
-                  <focusable value="false"/>
+                  <text value=""/>
                 </properties>
               </component>
             </children>
@@ -181,12 +179,10 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="1142f" class="javax.swing.JTextField" binding="productPrice">
+              <component id="74eba" class="javax.swing.JLabel" binding="productPrice">
                 <constraints/>
                 <properties>
-                  <editable value="false"/>
-                  <enabled value="false"/>
-                  <focusable value="false"/>
+                  <text value=""/>
                 </properties>
               </component>
             </children>

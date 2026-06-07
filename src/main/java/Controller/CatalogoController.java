@@ -39,7 +39,7 @@ public class CatalogoController {
                     String.valueOf(p.getQuantita()),
                     p.getCategoria().toString(),
                     String.valueOf(p.getSconto()),
-                    String.valueOf(p.getPrezzo()-p.getPrezzo()*p.getSconto()/100),//Prezzo con sconto
+                    "$ "+String.format("%.2f", p.getPrezzo() - p.getPrezzo() * p.getSconto() / 100.0),
                     p.getDescrizione()
             };
 
