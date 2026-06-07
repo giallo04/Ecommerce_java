@@ -61,6 +61,7 @@ public class Ordine {
         return Collections.unmodifiableList(inOrdine);
     }
 
+    //modifica ordine
     public void setStatoOrdine(StatoOrdine statoOrdine) {
 
         if(statoOrdine.ordinal() < this.statoOrdine.ordinal()) throw new IllegalArgumentException("Lo stato inserito non è valido");

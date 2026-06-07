@@ -49,6 +49,7 @@ public class VisualizzaOrdini {
                 // 1. Controlla se è stata selezionata una riga
                 int selectedRow = tabellaOrdini.getSelectedRow();
 
+                //ERRORE RIGA NON SELEZIONATA
                 if (selectedRow == -1) {
                     JOptionPane.showMessageDialog(contentPane,
                             "Seleziona un ordine dalla tabella per modificarlo.",
@@ -57,6 +58,7 @@ public class VisualizzaOrdini {
                     return;
                 }
 
+
                 int modelRow = tabellaOrdini.convertRowIndexToModel(selectedRow);
 
                 // 2. Recupera i dati dalle colonne del modello
@@ -64,6 +66,15 @@ public class VisualizzaOrdini {
                 String data = model.getValueAt(modelRow, 0).toString();
                 String indirizzo = model.getValueAt(modelRow, 1).toString();
                 String statoAttuale = model.getValueAt(modelRow, 3).toString();
+
+                //ERRORE ORDINE SELEZIONATO ANNULLATO O CONSEGNATO
+                if (statoAttuale.equalsIgnoreCase("CONSEGNATO") || statoAttuale.equalsIgnoreCase("ANNULLATO")) {
+                    JOptionPane.showMessageDialog(contentPane,
+                            "Non è possibile modificare un ordine che si trova in stato: " + statoAttuale,
+                            "Modifica non consentita",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 // 3. Trova il Frame principale per passarlo al JDialog
                 Frame topFrame = (Frame) SwingUtilities.getWindowAncestor(contentPane);
@@ -83,6 +94,7 @@ public class VisualizzaOrdini {
 
                     // TODO: Qui andrà la chiamata al tuo Controller/Database per salvare il nuovo stato dell'ordine
                     // esempio: ordineController.aggiornaStato(ordineId, nuovoStato);
+
 
                     JOptionPane.showMessageDialog(contentPane, "Stato dell'ordine aggiornato con successo!");
                 }

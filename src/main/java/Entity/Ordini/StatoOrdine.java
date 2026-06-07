@@ -1,5 +1,17 @@
 package Entity.Ordini;
 
 public enum StatoOrdine {
-    INSERITO, IN_PREPARAZIONE, SPEDITO, CONSEGNATO, ANNULLATO //TODO aggiungi parametri numericci relativi per le comparazioni
+    INSERITO(1, false),
+    IN_PREPARAZIONE(2, false),
+    SPEDITO(3, false),
+    CONSEGNATO(4, true),
+    ANNULLATO(5, true);
+
+    private final int livello;
+    private final boolean terminale;
+
+    StatoOrdine(int livello, boolean terminale){
+        this.livello = livello;
+        this.terminale = terminale;
+    }
 }
