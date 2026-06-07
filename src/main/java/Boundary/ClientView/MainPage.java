@@ -1,14 +1,12 @@
 package Boundary.ClientView;
 
-import Boundary.App;
+import Eseguibile.App;
 import Boundary.ClientView.Catalogo.ProductInHome;
 import Controller.CatalogoController;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import Boundary.Utils.StyleUtils;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;

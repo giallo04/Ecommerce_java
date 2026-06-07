@@ -1,14 +1,12 @@
-package Boundary;
+package Eseguibile;
 
 import javax.swing.*;
 import java.awt.*;
 
-import Boundary.ClientView.ShowModificaProfiloDialog;
 import Boundary.Login.LoginPage;
 import Boundary.Login.RegistrazioneForm;
 import Boundary.ClientView.MainPage;
 import Boundary.ManagerView.Dashboard;
-import Boundary.ManagerView.Statistiche;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import themes.MyTheme;
 

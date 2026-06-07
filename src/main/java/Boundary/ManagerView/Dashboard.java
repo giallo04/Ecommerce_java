@@ -1,6 +1,6 @@
 package Boundary.ManagerView;
 
-import Boundary.App;
+import Eseguibile.App;
 import Boundary.ManagerView.Catalogo.Catalogo;
 import Boundary.ManagerView.ListaOrdini.VisualizzaOrdini;
 import Boundary.Utils.StyleUtils;

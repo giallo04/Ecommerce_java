@@ -1,6 +1,6 @@
 package Boundary.Login;
 
-import Boundary.App;
+import Eseguibile.App;
 import Controller.AccountController;
 
 import javax.swing.*;
