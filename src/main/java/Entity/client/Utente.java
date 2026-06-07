@@ -18,7 +18,7 @@ public class Utente {
     @Embedded
     private Indirizzo indirizzo;
     @Embedded
-    private final Carrello carrello=new Carrello();
+    private  Carrello carrello=new Carrello();
 
     public static String hidePassword(String password, String email) {
         return String.valueOf((password + email).hashCode());

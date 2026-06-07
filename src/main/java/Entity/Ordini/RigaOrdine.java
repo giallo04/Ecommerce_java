@@ -2,15 +2,21 @@ package Entity.Ordini;
 
 import java.util.Objects;
 import Entity.Merce.Prodotto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
+@Entity
 public class RigaOrdine {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long riga_id;
+    @ManyToOne @JoinColumn(name = "product_id")
     private Prodotto prodotto;
     int qtaProdotto;
     float prezzo;
 
+
+    protected RigaOrdine() {}
     //costruttore
     public RigaOrdine(Prodotto prodotto, int qtaProdotto) {
         this.prodotto = prodotto;

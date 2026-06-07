@@ -1,6 +1,8 @@
 package Boundary.ClientView.Catalogo;
 
 import Boundary.Utils.ImageUtils;
+import Boundary.Utils.StyleUtils; // Assicurati di aver importato la tua utility
+import Controller.CatalogoController;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 
 import javax.swing.*;
@@ -13,7 +15,7 @@ public class ProductDetail extends JDialog {
     private JButton buttonCancel;
     private JTextArea descrizione;
     private JLabel productName;
-    private JLabel productPrice;
+  //  private JLabel productPrice;
     private JButton addToCart;
     private JButton removeFromCart;
     private JLabel imgLabel;
@@ -23,53 +25,100 @@ public class ProductDetail extends JDialog {
     private JLabel quantityLabel;
     private JLabel inMagazzinoLabel;
     private JPanel categoryPane;
-
+    private JPanel generalInfoPane;
+    private JTextField productPrice;
+    private JTextField discountPrice;
+  //  private JLabel discountPrice;
     public ProductDetail(String name) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-        //Get the product info from the controller
-//TODO Load the card with the products data
-        offerPane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(242, 126, 91), 2, 20));
-        categoryPane.setBorder(new FlatLineBorder(new Insets(10,10,10,10),new Color(104,113,207), 2, 20));
+
+        CatalogoController controller = new CatalogoController();
+        String[] data = controller.caricaProdotto(name);
+
+        if (data == null) {
+            JOptionPane.showMessageDialog(null, controller.getMsg());
+            dispose();
+            return;
+        }
+
+        initUI(data);
+        initListeners();
+    }
+
+    private void initUI(String[] data) {
+        // 1. Popolamento Dati Testuali
+        productName.setText(data[CatalogoController.NOME]);
+        productPrice.setText(data[CatalogoController.PREZZO]);
+        descrizione.setText(data[CatalogoController.DESCRIZIONE]);
+        offerLabel.setText(data[CatalogoController.SCONTO] + "% OFF");
+        categoryLabel.setText(data[CatalogoController.CATEGORIA]);
+        discountPrice.setText(data[CatalogoController.PREZZO_CON_SCONTO]);
+        int quantitaDisponibile = Integer.parseInt(data[CatalogoController.QUANTITA]);
+        quantityLabel.setText("0");
+
+        if (quantitaDisponibile > 0) {
+            inMagazzinoLabel.setText("In magazzino (" + quantitaDisponibile + ")");
+        } else {
+            inMagazzinoLabel.setText("Non disponibile");
+            addToCart.setEnabled(false);
+            removeFromCart.setEnabled(false);
+            buttonOK.setEnabled(false);
+        }
+
+
+        imgLabel.setIcon(ImageUtils.getIconScaled(data[CatalogoController.IMG_PATH], 250));
+        imgLabel.setVisible(true);
+
+        boolean hasDiscount = Integer.parseInt(data[CatalogoController.SCONTO]) > 0;
+        offerPane.setVisible(hasDiscount);
+        discountPrice.setVisible(hasDiscount);
+        if(hasDiscount){
+            productPrice.putClientProperty("FlatLaf.style","font: strikeThrough");
+        }
+
+        offerPane.setBorder(new FlatLineBorder(new Insets(4, 10, 4, 10), new Color(242, 126, 91), 1, 12));
+        offerPane.setBackground(new Color(242, 126, 91));
+        categoryPane.setBorder(new FlatLineBorder(new Insets(4, 10, 4, 10), new Color(104, 113, 207), 1, 12));
+        categoryPane.setBackground(new Color(100, 130, 207));
+        generalInfoPane.setBorder(new FlatLineBorder(new Insets(4, 10, 4, 10), new Color(30, 30, 30), 1, 20));
+        generalInfoPane.setBackground(new Color(50, 50, 50));
+
+
 
         quantityLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
         descrizione.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         productName.setFont(new Font("Segoe UI", Font.BOLD, 24));
         productPrice.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        discountPrice.setFont(new Font("Segoe UI", Font.BOLD, 24));
         inMagazzinoLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        offerLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
         categoryLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        addToCart.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        removeFromCart.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        descrizione.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        productPrice.setBorder(null);
+        discountPrice.setBorder(null);
 
 
+        StyleUtils.styleButton(addToCart);
+        StyleUtils.styleButton(removeFromCart);
+        StyleUtils.styleButton(buttonOK);
+        StyleUtils.styleButton(buttonCancel);
 
-        addToCart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                quantityLabel.setText(String.valueOf(Integer.parseInt(quantityLabel.getText())+1));
-            }
-        });
-        removeFromCart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(Integer.parseInt(quantityLabel.getText())==0) quantityLabel.setText("0");
-                else quantityLabel.setText(String.valueOf(Integer.parseInt(quantityLabel.getText())-1));
-            }
-        });
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        addToCart.setHorizontalAlignment(SwingConstants.CENTER);
+        removeFromCart.setHorizontalAlignment(SwingConstants.CENTER);
+        buttonOK.setHorizontalAlignment(SwingConstants.CENTER);
+        buttonCancel.setHorizontalAlignment(SwingConstants.CENTER);
+    }
 
-        // call onCancel() when cross is clicked
+    private void initListeners() {
+        addToCart.addActionListener(e -> updateQuantity(1));
+        removeFromCart.addActionListener(e -> updateQuantity(-1));
+
+        buttonOK.addActionListener(e -> onOK());
+        buttonCancel.addActionListener(e -> onCancel());
+
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -77,21 +126,31 @@ public class ProductDetail extends JDialog {
             }
         });
 
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        // Chiusura tramite il tasto ESCAPE
+        contentPane.registerKeyboardAction(
+                e -> onCancel(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT
+        );
+    }
+
+    private void updateQuantity(int delta) {
+        int currentQuantity = Integer.parseInt(quantityLabel.getText());
+        int newQuantity = currentQuantity + delta;
+
+        if (newQuantity < 0) {
+            newQuantity = 0;
+        }
+
+        quantityLabel.setText(String.valueOf(newQuantity));
     }
 
     private void onOK() {
-        // add your code here TODO aggiungere al carrello
+        // TODO aggiungere al carrello
         dispose();
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 }

@@ -76,6 +76,18 @@ public List<String[]> caricaProdottiStringa(String stringa){
                     return null;
                 }
         }
+        public String[] caricaProdotto(String nome){
+            RegistroProdotti registro=new RegistroProdotti();
+            try{
+                Prodotto prodotto=registro.cercaProdottoNome(nome);
+                ArrayList<Prodotto> prodotti=new ArrayList<>();
+                prodotti.add(prodotto);
+                return convertToGui(prodotti).getFirst();
+            }catch (IllegalArgumentException e){
+                setMsg(e.getMessage());
+                return null;
+            }
+        }
 
         public boolean aggiungiProdotto(String nome, String prezzo, String descrizione,String categoria,String quantita,String imgPath){
             RegistroProdotti registro=new RegistroProdotti();

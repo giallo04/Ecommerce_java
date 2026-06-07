@@ -16,15 +16,16 @@ public class Ordine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long order_id;
+    private long user_id;
 
     private LocalDate data;
+    @Embedded
     private Indirizzo indirizzo;
     private StatoOrdine statoOrdine;
-    private ArrayList<RigaOrdine> inOrdine;
 
-     @ManyToOne
-     @JoinColumn(name = "user_id")
-     private Utente user_id;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "order_id")
+    private List<RigaOrdine> inOrdine = new ArrayList<>();
 
      
     //costruttore
