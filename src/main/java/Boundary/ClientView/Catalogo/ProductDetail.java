@@ -62,8 +62,7 @@ public class ProductDetail extends JDialog {
             inMagazzinoLabel.setText("In magazzino (" + quantitaDisponibile + ")");
         } else {
             inMagazzinoLabel.setText("Non disponibile");
-            Color nonDisponibileColor = new Color(150, 0, 0);
-            inMagazzinoLabel.setForeground(nonDisponibileColor);
+            inMagazzinoLabel.setForeground(new Color(150, 0, 0));
             addToCart.setEnabled(false);
             removeFromCart.setEnabled(false);
             buttonOK.setEnabled(false);
