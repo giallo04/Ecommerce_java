@@ -62,7 +62,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="5f22a" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="5f22a" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="10" left="5" bottom="10" right="5"/>
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -90,7 +90,17 @@
                       <text value="Modifica profilo"/>
                     </properties>
                   </component>
-                  <component id="dc21e" class="javax.swing.JButton" binding="visualizzaOrdiniButton">
+                  <component id="dc21e" class="javax.swing.JButton" binding="homeButton">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <contentAreaFilled value="true"/>
+                      <font name="Segoe UI Black" size="18"/>
+                      <text value="Home"/>
+                    </properties>
+                  </component>
+                  <component id="b6247" class="javax.swing.JButton" binding="visualizzaOrdiniButton">
                     <constraints>
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -130,21 +140,18 @@
           </grid>
         </children>
       </grid>
-      <grid id="36e50" binding="viewPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="36e50" binding="viewPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <minimum-size width="920" height="720"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <visible value="true"/>
+        </properties>
         <border type="none"/>
         <children>
-          <vspacer id="af378">
-            <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-            </constraints>
-          </vspacer>
           <scrollpane id="e49f2" binding="scrollPane">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -153,6 +160,43 @@
             <border type="none"/>
             <children/>
           </scrollpane>
+          <grid id="c390a" binding="carrelloPanel" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="cadb5" binding="carrelloScrollPane">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </scrollpane>
+              <component id="8c560" class="javax.swing.JLabel" binding="totaleLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Segoe UI Black" size="20"/>
+                  <text value="Totale carrello: $403"/>
+                </properties>
+              </component>
+              <component id="6749a" class="javax.swing.JButton" binding="effettuaOrdineButton">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <contentAreaFilled value="true"/>
+                  <font name="Segoe UI Black" size="18"/>
+                  <text value="Effettua ordine"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
       <component id="c154" class="javax.swing.JLabel">

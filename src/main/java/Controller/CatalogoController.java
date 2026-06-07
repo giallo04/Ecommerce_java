@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CatalogoController {
@@ -22,7 +23,7 @@ public class CatalogoController {
     public static final int  SCONTO=6;
     public static final int  PREZZO_CON_SCONTO=7;
     public static final int  DESCRIZIONE=8;
-    private  String messaggio_errore;//Used to pass error messages to the view
+    private  String messaggio_errore;
 
     private void setMsg(String msg){messaggio_errore=msg;}
     public String getMsg(){return messaggio_errore;}
@@ -33,7 +34,7 @@ public class CatalogoController {
         for(Prodotto p:prodotti){
             String[] prodotto=new String[]{
                     String.valueOf(p.getProduct_id()),
-                    PRODUCTS_IMG_PATH+String.valueOf(p.getProduct_id())+".png",//Hardcoded image path
+                    PRODUCTS_IMG_PATH+String.valueOf(p.getProduct_id())+".png",
                     p.getNome(),
                     "$ "+String.format("%.2f",p.getPrezzo()),
                     String.valueOf(p.getQuantita()),
@@ -48,6 +49,43 @@ public class CatalogoController {
         return risultati;
     }
 
+
+    public List<String[]> caricaProdotti(String query, String categoria, boolean soloOfferte, int ordinamento) {
+        RegistroProdotti registro = new RegistroProdotti();
+        List<Prodotto> prodotti;
+
+        boolean hasQuery    = query    != null && !query.trim().isEmpty();
+        boolean hasCategoria = categoria != null;
+
+        if (!hasQuery && !hasCategoria)
+            prodotti = registro.caricaCatalogo();
+        else if (hasQuery && !hasCategoria)
+            prodotti = registro.cercaProdottiPerStringa(query);
+        else if (!hasQuery)
+            prodotti = registro.cercaProdottiPerCategoria(Categoria.valueOf(categoria));
+        else
+            prodotti = registro.cercaProdottoPerStringaECategoria(query, Categoria.valueOf(categoria));
+
+        if (soloOfferte)
+            prodotti.removeIf(p -> p.getSconto() <= 0);
+
+        switch (ordinamento) {
+            case 1: // Nome
+                prodotti.sort(Comparator.comparing(p -> p.getNome().toLowerCase()));
+                break;
+            case 2: // Prezzo crescente
+                prodotti.sort(Comparator.comparingDouble(Prodotto::getPrezzo));
+                break;
+            case 3: // Prezzo decrescente
+                prodotti.sort(Comparator.comparingDouble(Prodotto::getPrezzo).reversed());
+                break;
+            default:
+                break;
+        }
+
+        return prodotti.isEmpty() ? null : convertToGui(prodotti);
+    }
+
     public List<String[]> caricaCatalogo(){
         RegistroProdotti registro=new RegistroProdotti();
         List<Prodotto> prodotti=registro.caricaCatalogo();
@@ -56,14 +94,6 @@ public class CatalogoController {
             return convertToGui(prodotti);
         }
     }
-    public List<String[]> caricaProdottiCategoria(String categoria){
-        RegistroProdotti registro=new RegistroProdotti();
-        return convertToGui(registro.cercaProdottiPerCategoria(Categoria.valueOf(categoria)));
-    }
-public List<String[]> caricaProdottiStringa(String stringa){
-        RegistroProdotti registro=new RegistroProdotti();
-        return convertToGui(registro.cercaProdottiPerStringa(stringa));
-}
     public String[] caricaProdotto(Long id){
         RegistroProdotti registro=new RegistroProdotti();
         try{
@@ -71,78 +101,74 @@ public List<String[]> caricaProdottiStringa(String stringa){
             ArrayList<Prodotto> prodotti=new ArrayList<>();
             prodotti.add(prodotto);
             return convertToGui(prodotti).getFirst();
-            }catch (IllegalArgumentException e){
-                    setMsg(e.getMessage());//Passo il messaggio di errore
-                    return null;
-                }
+        }catch (IllegalArgumentException e){
+            setMsg(e.getMessage());
+            return null;
         }
-        public String[] caricaProdotto(String nome){
-            RegistroProdotti registro=new RegistroProdotti();
-            try{
-                Prodotto prodotto=registro.cercaProdottoNome(nome);
-                ArrayList<Prodotto> prodotti=new ArrayList<>();
-                prodotti.add(prodotto);
-                return convertToGui(prodotti).getFirst();
-            }catch (IllegalArgumentException e){
-                setMsg(e.getMessage());
-                return null;
-            }
+    }
+    public String[] caricaProdotto(String nome){
+        RegistroProdotti registro=new RegistroProdotti();
+        try{
+            Prodotto prodotto=registro.cercaProdottoNome(nome);
+            ArrayList<Prodotto> prodotti=new ArrayList<>();
+            prodotti.add(prodotto);
+            return convertToGui(prodotti).getFirst();
+        }catch (IllegalArgumentException e){
+            setMsg(e.getMessage());
+            return null;
         }
+    }
 
-        public boolean aggiungiProdotto(String nome, String prezzo, String descrizione,String categoria,String quantita,String imgPath){
-            RegistroProdotti registro=new RegistroProdotti();
-            try{
-                long id=registro.aggiungiProdotto(nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita));
+    public boolean aggiungiProdotto(String nome, String prezzo, String descrizione,String categoria,String quantita,String imgPath){
+        RegistroProdotti registro=new RegistroProdotti();
+        try{
+            long id=registro.aggiungiProdotto(nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita));
+            copyImage(id,imgPath);
+            return true;
+        }catch (IllegalArgumentException e){
+            setMsg(e.getMessage());
+            return false;
+        }catch (IOException e){
+            setMsg("Errore durante il salvataggio dell'immagine");
+            return false;
+        }
+    }
+    public boolean modificaProdotto(Long id,String nome, String prezzo, String descrizione,String categoria,String quantita,String sconto,String imgPath){
+        RegistroProdotti registro=new RegistroProdotti();
+        try{
+            registro.aggiornaProdotto(id,nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita),Integer.parseInt(sconto));
+            if(!imgPath.isEmpty()){
                 copyImage(id,imgPath);
-                return true;
-            }catch (IllegalArgumentException e){
-                setMsg(e.getMessage());
-                return false;
-            }catch (IOException e){
-                setMsg("Errore durante il salvataggio dell'immagine");
-                return false;
             }
+            return true;
+        }catch (IllegalArgumentException e){
+            setMsg(e.getMessage());
+            return false;
+        }catch (IOException e){
+            setMsg("Errore durante il salvataggio dell'immagine");
+            return false;
         }
-        public boolean modificaProdotto(Long id,String nome, String prezzo, String descrizione,String categoria,String quantita,String sconto,String imgPath){
-            RegistroProdotti registro=new RegistroProdotti();
-            try{
-                registro.aggiornaProdotto(id,nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita),Integer.parseInt(sconto));
-                if(!imgPath.isEmpty()){
-                    copyImage(id,imgPath);
-                }
-                return true;
-            }catch (IllegalArgumentException e){
-                setMsg(e.getMessage());
-                return false;
-            }catch (IOException e){
-                setMsg("Errore durante il salvataggio dell'immagine");
-                return false;
-            }
+    }
+    public boolean eliminaProdotto(Long id){
+        RegistroProdotti registro=new RegistroProdotti();
+        try{
+            registro.eliminaProdotto(id);
+            Files.delete(Path.of(PRODUCTS_IMG_PATH+id+".png"));
+            return true;
+        }catch (IllegalArgumentException e){
+            setMsg(e.getMessage());
+            return false;
+        }catch (IOException e){
+            setMsg("Errore durante l'eliminazione dell'immagine dal File System");
+            return false;
         }
-        public boolean eliminaProdotto(Long id){
-            RegistroProdotti registro=new RegistroProdotti();
-            try{
-                registro.eliminaProdotto(id);
-                Files.delete(Path.of(PRODUCTS_IMG_PATH+id+".png"));
-                return true;
-            }catch (IllegalArgumentException e){
-                setMsg(e.getMessage());
-                return false;
-            }catch (IOException e){
-                setMsg("Errore durante l'eliminazione dell'immagine dal File System");
-                return false;
-            }
-        }
+    }
     public List<String> getCategorie(){
         List<String> categorie=new ArrayList<>();
         for(Categoria c:Categoria.values()){
             categorie.add(c.toString());
         }
         return categorie;
-    }
-    public List<String[]> caricaPerCategoriaAndStringa(String categoria,String stringa){
-        RegistroProdotti registro=new RegistroProdotti();
-        return convertToGui(registro.cercaProdottoPerStringaECategoria(stringa, Categoria.valueOf(categoria)));
     }
 
     public List<String[]> inEsaurimento(){
@@ -160,7 +186,4 @@ public List<String[]> caricaProdottiStringa(String stringa){
         Path destinazione=Path.of(PRODUCTS_IMG_PATH+id+".png");
         Files.copy(sorgente,destinazione);
     }
-
-
-    }
-
+}

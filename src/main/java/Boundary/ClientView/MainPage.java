@@ -10,21 +10,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
 
 public class MainPage {
+
+    private final CatalogoController controller;
     private JPanel pane;
 
     // Pannello laterale
     private JPanel leftPanel;
     private JCheckBox offerteCheckBox;
-    private JComboBox<String> ordineComboBox; // Aggiunto parametro di tipo generico
+    private JComboBox<String> ordineComboBox;
     private JButton modificaProfiloButton;
     private JButton visualizzaOrdiniButton;
+    private JButton homeButton;
 
     // Pannello superiore
     private JPanel topPanel;
-    private JComboBox<String> categoriaComboBox; // Aggiunto parametro di tipo generico
+    private JComboBox<String> categoriaComboBox;
     private JTextField queryTextField;
     private JButton ricercaButton;
     private JButton carrelloButton;
@@ -34,6 +36,13 @@ public class MainPage {
     private JPanel viewPanel;
     private JScrollPane scrollPane;
     private JPanel productsPanel;
+
+    //Carrello view
+    private JPanel carrelloPanel;
+    private JScrollPane carrelloScrollPane;
+    private JPanel carrelloViewPanel;
+    private JButton effettuaOrdineButton;
+    private JLabel totaleLabel;
 
     public MainPage(){
 
@@ -50,16 +59,16 @@ public class MainPage {
         queryTextField.putClientProperty("JTextField.placeholderText", "Cerca prodotto...");
         topPanel.setBorder(new FlatLineBorder(insets, customColor, 1, arc));
 
-     queryTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-         @Override
-         public void keyReleased(java.awt.event.KeyEvent evt) {
-             if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
-                 updateView();
-         }
-     });
+        queryTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
+                    updateView();
+            }
+        });
 
         // Caricamento categorie
-        CatalogoController controller = new CatalogoController();
+        controller = new CatalogoController();
         List<String> categorie = controller.getCategorie();
         for(String c : categorie){
             categoriaComboBox.addItem(c);
@@ -79,10 +88,12 @@ public class MainPage {
         StyleUtils.styleButton(logoutButton);
         StyleUtils.styleButton(modificaProfiloButton);
         StyleUtils.styleButton(visualizzaOrdiniButton);
+        StyleUtils.styleButton(homeButton);
 
         logoutButton.addActionListener(e -> goToLogin());
         modificaProfiloButton.addActionListener(e -> goToProfile());
         visualizzaOrdiniButton.addActionListener(e -> goToOrder());
+        homeButton.addActionListener(e -> goToHome());
 
         // Pannello centrale
         viewPanel.setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), customColor, 0, arc));
@@ -91,6 +102,12 @@ public class MainPage {
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
         productsPanel.setLayout(new GridLayout(0, 3, 20, 20));
 
+        //Carrello view
+        carrelloPanel.setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), customColor, 0, arc));
+        carrelloViewPanel = new JPanel();
+        carrelloScrollPane.setViewportView(carrelloViewPanel);
+        carrelloViewPanel.setLayout(new GridLayout(0, 1, 20, 20));
+        carrelloPanel.setVisible(false);
         updateView();
     }
 
@@ -101,56 +118,57 @@ public class MainPage {
     // Navigazione
     private void goToProduct(){}
     private void goToLogin(){ App.mostraLogin(); }
-    private void goToCart(){}
+    private void goToCart(){
+        carrelloPanel.setVisible(true);
+        ArrayList<ProductInHome> p=new ArrayList<>();
+        p.add(new ProductInHome("Prodotto 1", "100", "Categoria", "10", "img/products/1.png"));
+        p.add(new ProductInHome("Prodotto 1", "100", "Categoria", "10", "img/products/13.png"));
+        renderCarrello(p);
+    }
     private void goToOrder(){}
     private void goToProfile(){
         ShowModificaProfiloDialog dialog = new ShowModificaProfiloDialog();
         dialog.pack();
         dialog.setVisible(true);
     }
+    private void goToHome(){
+        carrelloPanel.setVisible(false);
+    }
 
 
     private void updateView() {
-
-        List<String[]> prodottiGrezzi = search();
-
-        ArrayList<ProductInHome> prodotti = convertToProduct(prodottiGrezzi);
-        if(prodotti == null) return;
-        // 3. Filtra per offerte:
-        if (offerteCheckBox.isSelected()) {
-            prodotti.removeIf(p -> !p.isOffer());
-        }
-
-        int scelta = ordineComboBox.getSelectedIndex();
-        switch(scelta){
-            case 1: // Nome (A-Z)
-                prodotti.sort((p1, p2) -> p1.getName().compareToIgnoreCase(p2.getName()));
-                break;
-            case 2: // Prezzo crescente (Presume che ProductInHome implementi Comparable)
-                Collections.sort(prodotti);
-                break;
-            case 3: // Prezzo decrescente
-                prodotti.sort(Collections.reverseOrder());
-                break;
-            default:
-                break;
-        }
-        renderProducts(prodotti);
-    }
-
-    private List<String[]> search(){
+        //mi salvo lo stato della main page
         String askFor = queryTextField.getText().trim();
-        CatalogoController controller = new CatalogoController();
+        String categoria = categoriaComboBox.getSelectedIndex() == 0
+                ? null
+                : categoriaComboBox.getSelectedItem().toString();
+        boolean soloOfferte = offerteCheckBox.isSelected();
+        int ordinamento = ordineComboBox.getSelectedIndex();
 
-        if(askFor.isEmpty() && categoriaComboBox.getSelectedIndex() == 0){
-            return controller.caricaCatalogo();
-        } else if(categoriaComboBox.getSelectedIndex() == 0 && !askFor.isEmpty()){
-            return controller.caricaProdottiStringa(askFor);
-        } else if(askFor.isEmpty() && categoriaComboBox.getSelectedIndex() != 0){
-            return controller.caricaProdottiCategoria(categoriaComboBox.getSelectedItem().toString());
-        } else {
-            return controller.caricaPerCategoriaAndStringa(categoriaComboBox.getSelectedItem().toString(), askFor);
-        }
+        SwingWorker<List<String[]>, Void> worker = new SwingWorker<>() {
+            @Override
+            protected List<String[]> doInBackground() {
+                return controller.caricaProdotti(askFor, categoria, soloOfferte, ordinamento);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    List<String[]> prodottiGrezzi = get();
+                    ArrayList<ProductInHome> prodotti = convertToProduct(prodottiGrezzi);
+                    renderProducts(prodotti);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(
+                            pane,
+                            "Errore durante il caricamento dei prodotti.",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
+        };
+        worker.execute();
     }
 
     private void renderProducts(ArrayList<ProductInHome> products) {
@@ -162,7 +180,16 @@ public class MainPage {
         productsPanel.revalidate();
         productsPanel.repaint();
     }
-//String name, String price, String category, String offer,String imgPath){
+    private void renderCarrello(ArrayList<ProductInHome> products) {
+        carrelloViewPanel.removeAll();
+        if(products == null) return;
+        for(ProductInHome p : products){
+            carrelloViewPanel.add(p.getPane());
+        }
+        carrelloViewPanel.revalidate();
+        carrelloViewPanel.repaint();
+    }
+
     private ArrayList<ProductInHome> convertToProduct(List<String[]> prodotti){
         if(prodotti == null) return null;
         ArrayList<ProductInHome> products = new ArrayList<>();
