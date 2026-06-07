@@ -51,32 +51,35 @@ public class RegistroProdotti {
             }
         }
     }
-public void eliminaProdotto(long id){
-        //Verifica internamente se esiste
-       boolean result=gestore.elimina(Prodotto.class,id);
-       if(!result){
-           throw new IllegalArgumentException("Prodotto "+id+" non presente nel catalogo");
-       }
-}
-public List<Prodotto> cercaProdottiPerCategoria(Categoria categoria){
-        return gestore.cercaPerCampi(Prodotto.class,Map.of("categoria",categoria));
-}
-public List<Prodotto> cercaProdottiPerStringa(String stringa){
-        return gestore.cercaNeiCampi(Prodotto.class,Map.of("nome",stringa, "descrizione",stringa));
-}
-public List<Prodotto> cercaProdottoPerStringaECategoria(String stringa, Categoria categoria){
-        List<Prodotto> prodotti=cercaProdottiPerStringa(stringa);
-        if(prodotti==null)return null;
-        else{
-            List<Prodotto> risultati=new ArrayList<>();
-            for(Prodotto p:prodotti){
-                if(p.getCategoria()==categoria)risultati.add(p);
-            }
-            return risultati;
-        }
+    public void eliminaProdotto(long id){
+            //Verifica internamente se esiste
+           boolean result=gestore.elimina(Prodotto.class,id);
+           if(!result){
+               throw new IllegalArgumentException("Prodotto "+id+" non presente nel catalogo");
+           }
     }
-public List<Prodotto> caricaCatalogo(){
-        return gestore.cercaPerCampi(Prodotto.class, Collections.emptyMap());
-}
-
+    public List<Prodotto> cercaProdottiPerCategoria(Categoria categoria){
+            return gestore.cercaPerCampi(Prodotto.class,Map.of("categoria",categoria));
+    }
+    public List<Prodotto> cercaProdottiPerStringa(String stringa){
+            return gestore.cercaNeiCampi(Prodotto.class,Map.of("nome",stringa, "descrizione",stringa));
+    }
+    public List<Prodotto> cercaProdottoPerStringaECategoria(String stringa, Categoria categoria){
+            List<Prodotto> prodotti=cercaProdottiPerStringa(stringa);
+            if(prodotti==null)return null;
+            else{
+                List<Prodotto> risultati=new ArrayList<>();
+                for(Prodotto p:prodotti){
+                    if(p.getCategoria()==categoria)risultati.add(p);
+                }
+                return risultati;
+            }
+        }
+    public List<Prodotto> caricaCatalogo(){
+            return gestore.cercaPerCampi(Prodotto.class, Collections.emptyMap());
+    }
+    public List<Prodotto> caricaProdottiInEsaurimento(){
+        GestorePersistenza gestore=new GestorePersistenza();
+        return  gestore.cercePerCampoOrdinato(Prodotto.class, "quantita", true);
+    }
 }

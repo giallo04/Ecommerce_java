@@ -249,6 +249,39 @@ public class GestorePersistenza {
             em.close();
         }
     }
+//restituisce una lista ORDINATA secondo un campo
+    public <T> List<T> cercePerCampoOrdinato(Class<T> classe,String nomeCampo,boolean asc){
+        EntityManager em = JpaUtil.getInstance().getEntityManager();
+        try {
+            StringBuilder jpql = new StringBuilder();
+            jpql.append("SELECT e FROM ")
+                    .append(classe.getSimpleName())
+                    .append(" e ORDER BY e.")
+                    .append(nomeCampo)
+                    .append(" ");
+            if(asc){
+                jpql.append("ASC");
+            }else{
+                jpql.append("DESC");
+            }
+            TypedQuery<T> query = em.createQuery(
+                    jpql.toString(),
+                    classe
+            );
+            return query.getResultList();
+        }catch (RuntimeException e) {
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            throw e;
+
+        }finally {
+            em.close();
+        }
+    }
+
 
     /*
      * Cerca il primo oggetto persistente che soddisfa un insieme di condizioni.

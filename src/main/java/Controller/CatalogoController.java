@@ -144,6 +144,17 @@ public List<String[]> caricaProdottiStringa(String stringa){
         RegistroProdotti registro=new RegistroProdotti();
         return convertToGui(registro.cercaProdottoPerStringaECategoria(stringa, Categoria.valueOf(categoria)));
     }
+
+    public List<String[]> inEsaurimento(){
+        RegistroProdotti registroProdotti=new RegistroProdotti();
+        List<Prodotto> risultati=registroProdotti.caricaProdottiInEsaurimento();
+        if(risultati.isEmpty())return null;
+        List<String[]> prodotti=new ArrayList<>();
+        for(Prodotto p:risultati){
+            prodotti.add(new String[]{p.getNome(),String.valueOf(p.getQuantita())});
+        }
+        return prodotti;
+    }
     private void copyImage(Long id, String imgPath) throws IOException {
         Path sorgente= Path.of(imgPath.trim());
         Path destinazione=Path.of(PRODUCTS_IMG_PATH+id+".png");
