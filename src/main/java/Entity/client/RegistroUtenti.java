@@ -32,6 +32,8 @@ public class RegistroUtenti {
             Utente utenteEsistente=cercaUtentePerEmail(email);
             if(utenteEsistente==null||utenteEsistente.getUser_id()==user_id) {
             utente.modificaProfilo(nome,cognome,email,password);
+            utente.setIndirizzo(indirizzo);
+            gestorePersistenza.aggiorna(utente);
             }else{
                 throw new IllegalArgumentException("Esiste già un prodotto con il nome "+nome+" nel catalogo");
             }

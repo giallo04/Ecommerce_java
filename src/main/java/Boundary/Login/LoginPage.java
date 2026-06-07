@@ -1,6 +1,8 @@
 package Boundary.Login;
 
 import Boundary.App;
+import Controller.AccountController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -76,18 +78,21 @@ public class LoginPage {
         }
     }
     private void enterData(){
-        //validate data entered TODO with controller
         String email = textField1.getText();
-        if(passwordField1.getText().length()>7){
-            //mando al controller
-            if(email.equals("admin")){
-                App.mostraDashBoard();
-            }else{
-              App.mostraHome();
-            }
-        }else{
-            JOptionPane.showMessageDialog(null,"Password troppo corta");
-        }
+       if(email.contains("@")){
+           if(passwordField1.getPassword().length>8){
+               AccountController controller=new AccountController();
+               if(controller.login(email,passwordField1.getText())){
+                   App.mostraHome();
+               }else{
+                   JOptionPane.showMessageDialog(null,controller.get_msg());
+               }
+           }else{
+               JOptionPane.showMessageDialog(null,"La password deve essere lunga almeno 8 caratteri");
+           }
+       }else{
+           JOptionPane.showMessageDialog(null,"Email non valida");
+       }
     }
     private void loadRegisterGUI(){
         App.mostraRegistrazione();

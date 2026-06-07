@@ -4,6 +4,7 @@ import Boundary.Login.RegistrazioneForm;
 
 import javax.swing.*;
 import Boundary.Utils.ImageUtils;
+import Controller.AccountController;
 import Controller.Stub;
 
 public class ShowModificaProfiloDialog extends RegistrazioneForm {
@@ -19,22 +20,48 @@ public class ShowModificaProfiloDialog extends RegistrazioneForm {
         fillForm();
     }
     private void fillForm(){
-        Stub stub = new Stub();
-        String[] info=stub.getUserInfo();
-        nomeField.setText(info[0]);
-        cognomeField.setText(info[1]);
-        emailField.setText(info[2]);
-        imgLabel.setIcon(ImageUtils.getIconScaled("img/users/dios@napoli.png",150));//just a test
+        AccountController controller=new AccountController();
+        String[] info=controller.caricaProfilo();
+        nomeField.setText(info[AccountController.NOME]);
+        cognomeField.setText(info[AccountController.COGNOME]);
+        //carico tutti i campi
+        imgLabel.setIcon(ImageUtils.getIconScaled(info[AccountController.IMMAGINE],150));
         imgLabel.setVisible(true);
-        boxCitta.setSelectedItem(info[4]);
-        boxProvincia.setSelectedItem(info[5]);
-        capField.setText(info[6]);
-        viaField.setText(info[7]);
-
+        emailField.setText(info[AccountController.EMAIL]);
+        emailField.setEnabled(false);
+        boxCitta.setSelectedItem(info[AccountController.CITTA]);
+        boxProvincia.setSelectedItem(info[AccountController.PROVINCIA]);
+        viaField.setText(info[AccountController.VIA]);
+        capField.setText(info[AccountController.CAP]);
     }
     @Override
     protected void onOk() {
-        JOptionPane.showMessageDialog(null, "Profilo modificato con successo");//TODO chiamare il controller
+        String nome=nomeField.getText();
+        String cognome=cognomeField.getText();
+        String citta=boxCitta.getSelectedItem().toString();
+        String provincia=boxProvincia.getSelectedItem().toString();
+        String via=viaField.getText();
+        String cap=capField.getText();
+        String passwordNuova=passwordField2.getText();
+        String passwordVecchia=passwordField1.getText();
+        if(checkFields()){
+            AccountController controller=new AccountController();
+            //chiamo modifica profilo con i campi dei label
+            if(controller.modificaProfilo(nome,cognome,citta,provincia,via,cap,imgPath.getText(),passwordVecchia,passwordNuova)){
+                JOptionPane.showMessageDialog(this, "Profilo modificato con successo");
+            }else{
+                JOptionPane.showMessageDialog(this, controller.get_msg());
+                return;
+            }
+
+        }else{
+            JOptionPane.showMessageDialog(this, "Compila tutti i campi");
+            return;
+        }
         dispose();
+    }
+
+    private boolean checkFields(){
+        return !(nomeField.getText().isEmpty() || cognomeField.getText().isEmpty() || emailField.getText().isEmpty() || boxCitta.getSelectedItem().toString().isEmpty() || boxProvincia.getSelectedItem().toString().isEmpty() || viaField.getText().isEmpty() || capField.getText().isEmpty());
     }
 }

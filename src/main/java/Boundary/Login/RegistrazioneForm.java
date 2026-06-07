@@ -1,6 +1,7 @@
 package Boundary.Login;
 
 import Boundary.Utils.ImageUtils;
+import Controller.AccountController;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -36,7 +37,6 @@ public class RegistrazioneForm extends JDialog {
         setModalityType(ModalityType.APPLICATION_MODAL);
         getRootPane().setDefaultButton(registerButton);
 
-        imgLabel.setIcon(ImageUtils.getIconScaled("/products_img/products/notFound.png",100));//just a test
         citta = new java.util.HashMap<String, String[]>();
         citta.put("Napoli", new String[]{"Napoli", "Pozzuoli", "Giugliano in Campania", "Torre del Greco", "Casoria", "Castellammare di Stabia", "Afragola", "Pompei"});
         citta.put("Milano", new String[]{"Milano", "Sesto San Giovanni", "Cinisello Balsamo", "Legnano", "Rho", "Cologno Monzese", "Paderno Dugnano"});
@@ -59,7 +59,9 @@ public class RegistrazioneForm extends JDialog {
                 fileChooser.showOpenDialog(null);
                 String filePath = fileChooser.getSelectedFile().getAbsolutePath();
                 imgPath.setText(filePath);
-            }//TODO carica immagine
+                imgLabel.setIcon(ImageUtils.getIconScaled(filePath,150));//Prendo l'immagine
+                imgLabel.setVisible(true);
+            }
         });
         boxCitta.setRenderer(new DefaultListCellRenderer() {
             @Override
@@ -137,44 +139,34 @@ public class RegistrazioneForm extends JDialog {
         }
     }
 
-
     private boolean checkPasswords() {
         return Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword());
     }
 
-    private boolean checkEmail() {
-        return emailField.getText().contains("@");
-    }
 
     protected void onOk() {
-        if (!checkEmail()) {
-            JOptionPane.showMessageDialog(null, "Email non valida");
-            emailField.setText("");
-            emailField.putClientProperty("JComponent.outline", "error");
-            emailField.requestFocus();
+            if(emailField.getText().contains("@") ){
+                if(checkPasswords()){
+                    //controllo se tutti i campi sono stati compilati
+                    if(nomeField.getText().isEmpty() || cognomeField.getText().isEmpty() || emailField.getText().isEmpty() || capField.getText().isEmpty() || viaField.getText().isEmpty() || boxCitta.getSelectedItem() == null || boxProvincia.getSelectedItem() == null || imgPath.getText().isEmpty() || passwordField1.getPassword().length < 8){
+                        JOptionPane.showMessageDialog(null,"Compila tutti i campi");
+                    }else{
+                        AccountController controller=new AccountController();
+                        if(controller.register(emailField.getText(),passwordField1.getText(),nomeField.getText(),cognomeField.getText(),boxCitta.getSelectedItem().toString(),boxProvincia.getSelectedItem().toString(),viaField.getText(),capField.getText(),imgPath.getText())){
+                            JOptionPane.showMessageDialog(null,controller.get_msg());
+                            dispose();
+                        }else{
+                            JOptionPane.showMessageDialog(null,controller.get_msg());
+                            return;
+                        }
+                    }
 
-
-        } else {
-            emailField.putClientProperty("JComponent.outline", null);
-            if (passwordField1.getPassword().length < 8) {
-                JOptionPane.showMessageDialog(null, "Password troppo corta, minimo 8 caratteri");
-                passwordField1.setText("");
-                passwordField1.putClientProperty("JComponent.outline", "error");
-                passwordField1.requestFocus();
-            } else {
-                passwordField1.putClientProperty("JComponent.outline", null);
-                if (!checkPasswords()) {
-                    JOptionPane.showMessageDialog(null, "Le password non coincidono");
-                    passwordField1.setText("");
-                    passwordField2.setText("");
-                    passwordField1.putClientProperty("JComponent.outline", "error");
-                    passwordField2.putClientProperty("JComponent.outline", "error");
-                    passwordField1.requestFocus();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Registrazione effettuata con successo");
-                    dispose();
-                }
+                }else {
+                        JOptionPane.showMessageDialog(null,"Le password non coincidono");
+                    }
+            }else{
+                JOptionPane.showMessageDialog(null,"Email non valida");
             }
-        }
+            return;
     }
 }
