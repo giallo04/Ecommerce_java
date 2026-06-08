@@ -1,5 +1,7 @@
 package Boundary.ClientView;
 
+import Boundary.ClientView.Carrello.ProductInCart;
+import Controller.CarrelloController;
 import Eseguibile.App;
 import Boundary.ClientView.Catalogo.ProductInHome;
 import Controller.CatalogoController;
@@ -106,8 +108,11 @@ public class MainPage {
         carrelloPanel.setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), customColor, 0, arc));
         carrelloViewPanel = new JPanel();
         carrelloScrollPane.setViewportView(carrelloViewPanel);
-        carrelloViewPanel.setLayout(new GridLayout(0, 1, 20, 20));
+        carrelloScrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        carrelloViewPanel.setLayout(new GridLayout(0, 1, 0, 0));
+        carrelloScrollPane.getHorizontalScrollBar().setEnabled(false);
         carrelloPanel.setVisible(false);
+        effettuaOrdineButton.addActionListener(e ->makeOrder());
         updateView();
     }
 
@@ -118,14 +123,50 @@ public class MainPage {
     // Navigazione
     private void goToProduct(){}
     private void goToLogin(){ App.mostraLogin(); }
-    private void goToCart(){
-        carrelloPanel.setVisible(true);
-        ArrayList<ProductInHome> p=new ArrayList<>();
-        p.add(new ProductInHome("Prodotto 1", "100", "Categoria", "10", "img/products/1.png"));
-        p.add(new ProductInHome("Prodotto 1", "100", "Categoria", "10", "img/products/13.png"));
-        renderCarrello(p);
+
+    private void makeOrder(){
+        CarrelloController controller = new CarrelloController();
+        if(controller.effettuaOrdine()){
+            JOptionPane.showMessageDialog(null, "Ordine effettuato con successo!");
+            refreshCart();
+            return;
+        }else{
+            JOptionPane.showMessageDialog(null, controller.getMsg());
+            return;
+        }
+
     }
-    private void goToOrder(){}
+    private void goToCart() {
+        if(carrelloPanel.isVisible()) {
+            carrelloPanel.setVisible(false);
+            return;
+        }else {
+            carrelloPanel.setVisible(true);
+            refreshCart();
+        }
+    }
+
+    private void refreshCart() {
+        CarrelloController controller = new CarrelloController();
+        List<String[]> prodInCart = controller.caricaCarrello();
+        totaleLabel.setText(controller.caricaTotale());
+
+        carrelloViewPanel.removeAll();
+        if (prodInCart == null) return;
+
+        for (String[] prodotto : prodInCart) {
+            ProductInCart p = new ProductInCart(
+                    prodotto[CarrelloController.ID],
+                    prodotto[CarrelloController.QUANTITA],
+                    this::refreshCart
+            );
+            carrelloViewPanel.add(p.getPane());
+        }
+        carrelloViewPanel.revalidate();
+        carrelloViewPanel.repaint();
+    }
+    private void goToOrder(){//TODO
+    }
     private void goToProfile(){
         ShowModificaProfiloDialog dialog = new ShowModificaProfiloDialog();
         dialog.pack();
@@ -172,29 +213,24 @@ public class MainPage {
     }
 
     private void renderProducts(ArrayList<ProductInHome> products) {
+        if(products == null) {
+            JOptionPane.showMessageDialog(pane, "Nessun prodotto trovato.","Info",JOptionPane.INFORMATION_MESSAGE);
+            queryTextField.setText("");
+            return;
+        }
         productsPanel.removeAll();
-        if(products == null) return;
         for(ProductInHome p : products){
             productsPanel.add(p.getPane());
         }
         productsPanel.revalidate();
         productsPanel.repaint();
     }
-    private void renderCarrello(ArrayList<ProductInHome> products) {
-        carrelloViewPanel.removeAll();
-        if(products == null) return;
-        for(ProductInHome p : products){
-            carrelloViewPanel.add(p.getPane());
-        }
-        carrelloViewPanel.revalidate();
-        carrelloViewPanel.repaint();
-    }
 
     private ArrayList<ProductInHome> convertToProduct(List<String[]> prodotti){
         if(prodotti == null) return null;
         ArrayList<ProductInHome> products = new ArrayList<>();
         for(String[] p : prodotti){
-            products.add(new ProductInHome(p[CatalogoController.NOME],p[CatalogoController.PREZZO],p[CatalogoController.CATEGORIA],p[CatalogoController.SCONTO],p[CatalogoController.IMG_PATH]));
+            products.add(new ProductInHome(p[CatalogoController.ID],p[CatalogoController.NOME],p[CatalogoController.PREZZO],p[CatalogoController.CATEGORIA],p[CatalogoController.SCONTO],p[CatalogoController.IMG_PATH],this::refreshCart));
         }
         return products;
     }

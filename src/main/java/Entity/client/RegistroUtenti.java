@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class RegistroUtenti {
 
-    private Long current_user_id;
     private GestorePersistenza gestorePersistenza;
 
     public RegistroUtenti()
@@ -46,12 +45,13 @@ public class RegistroUtenti {
     {
         return (Utente) gestorePersistenza.cercaPrimoPerCampi(Utente.class,Map.of("email",email));
     }
-
+    public void aggiornaUtente(Utente utente)
+    {
+        gestorePersistenza.aggiorna(utente);
+    }
     public int conteggioUtenti(){
         GestorePersistenza gestore=new GestorePersistenza();
         List<Utente> user=gestore.cercaPerCampi(Utente.class, Map.of());
         return user.size();
     }
-
-    public Long getCurrent_user_id() {return current_user_id;}
 }

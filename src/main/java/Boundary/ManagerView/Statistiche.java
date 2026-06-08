@@ -1,6 +1,7 @@
 package Boundary.ManagerView;
 
 import Controller.CatalogoController;
+import Controller.OrdiniController;
 import Controller.Stub;
 
 import javax.swing.*;
@@ -24,13 +25,11 @@ public class Statistiche {
                 new String[]{"Prodotto", "Quantità residua"},data
 
         ));
-
         sections.add(buildSection(
                 "Ordini in attesa di consegna",
                 new String[]{"Ordine", "Cliente", "Indirizzo", "Totale"},
                 Collections.emptyList()   // TODO: replace with real controller call
         ));
-
         sections.add(buildSection(
                 "Prodotti più venduti",
                 new String[]{"Prodotto", "Vendite"},

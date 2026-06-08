@@ -42,7 +42,7 @@ public class Utente {
         this.cognome = cognome;
         this.email = email;
         this.indirizzo = indirizzo;
-        verificapassword(password);
+        verificaPassword(password);
         this.password = hidePassword(password, email);
     }
 
@@ -97,12 +97,12 @@ public class Utente {
     }
 
     public void setPassword(String password) throws IllegalArgumentException {
-        verificapassword(password);
+        verificaPassword(password);
         this.password = hidePassword(password, this.email);
     }
 
 
-    private void verificapassword(String password) throws IllegalArgumentException {
+    private void verificaPassword(String password) throws IllegalArgumentException {
         if (password == null || password.length() < 8) {
             throw new IllegalArgumentException("La password deve essere lunga almeno 8 caratteri");
         }
@@ -152,14 +152,7 @@ public class Utente {
         return Objects.hash(user_id);
     }
 
-    @Override
-    public String toString() {
-        return "Utente{" +
-                "User_id=" + user_id +
-                ", Nome='" + nome + '\'' +
-                ", Cognome='" + cognome + '\'' +
-                ", Email='" + email + '\'' +
-                ", indirizzo=" + indirizzo +
-                '}';
+    public boolean verificaCredito(float totale){
+        return true;
     }
 }

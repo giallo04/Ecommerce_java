@@ -1,5 +1,6 @@
 package Boundary.ClientView.Catalogo;
 
+import Controller.CarrelloController;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import Boundary.Utils.StyleUtils;
 
@@ -10,7 +11,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import Boundary.Utils.ImageUtils;
-public class ProductInHome implements Comparable<ProductInHome>{
+public class ProductInHome{
+    private long id;
+    private Runnable onCartChanged;
     private JPanel pane;
     private JPanel offerPane;
     private JLabel offerLabel;
@@ -20,7 +23,9 @@ public class ProductInHome implements Comparable<ProductInHome>{
     private JLabel productPrice;
     private JLabel categoryLabel;
     private JPanel infoPanel;
-    public ProductInHome(String name, String price, String category, String offer,String imgPath){
+    public ProductInHome(String id,String name, String price, String category, String offer,String imgPath,Runnable onCartChanged){
+        this.onCartChanged=onCartChanged;
+        this.id=Long.parseLong(id);
         //estetica
         Color customColor = new Color(79,70,229);
         infoPanel.setBackground(Color.WHITE);
@@ -73,13 +78,19 @@ public class ProductInHome implements Comparable<ProductInHome>{
         return pane;
     }
         private void goToProduct(){
-            ProductDetail productDetail=new ProductDetail(getName());
+            ProductDetail productDetail=new ProductDetail(getName(),onCartChanged);
             productDetail.pack();
             productDetail.setVisible(true);
     }
     private void addToCart(){
-        //TODO implementare l'aggiunta al carrello' chiamando il controller
-        JOptionPane.showMessageDialog(null, "Prodotto aggiunto al carrello");
+        CarrelloController controller=new CarrelloController();
+        if(controller.aggiungiAlCarrello(id,1)){
+            JOptionPane.showMessageDialog(null, "Prodotto aggiunto al carrello");
+            onCartChanged.run();
+        }else{
+            JOptionPane.showMessageDialog(null, controller.getMsg());
+        }
+        return;
     }
     public String getName(){
         return productName.getText();
@@ -90,14 +101,5 @@ public class ProductInHome implements Comparable<ProductInHome>{
 public boolean isOffer(){
         return offerPane.isVisible();
 }
-    @Override
-    public int compareTo(ProductInHome o) {
-
-        String priceStr1 = this.productPrice.getText().replace("$", "").replace(",", ".").trim();
-        String priceStr2 = o.productPrice.getText().replace("$", "").replace(",", ".").trim();
-
-        // 2. Converti in float e confronta
-        return Float.compare(Float.parseFloat(priceStr1), Float.parseFloat(priceStr2));
-    }
 
 }

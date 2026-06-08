@@ -30,11 +30,12 @@ public class Ordine {
 
      
     //costruttore
-    public Ordine(Indirizzo indirizzo) { //il resto degli attributi non devono esistere al di fuori dell'ordine quindi vengono creati nel costruttore
+    public Ordine(Indirizzo indirizzo,long user_id) { //il resto degli attributi non devono esistere al di fuori dell'ordine quindi vengono creati nel costruttore
         this.indirizzo = indirizzo;
         this.data = LocalDate.now();
         this.statoOrdine = StatoOrdine.INSERITO;
         this.inOrdine = new ArrayList<>();
+        this.user_id=user_id;
     }
     protected  Ordine(){};
 
@@ -71,7 +72,11 @@ public class Ordine {
     }
 
     public void addRigaOrdine(Prodotto prodotto, int qtaProdotto){
-        inOrdine.add(new RigaOrdine(prodotto,qtaProdotto));
+        if(prodotto.getQuantita()<qtaProdotto){
+            throw new IllegalArgumentException("Non ci sono "+qtaProdotto+" "+prodotto.getNome()+" in magazzino ordine non valido, per favore rimuovere "+(prodotto.getQuantita()-qtaProdotto)+" "+prodotto.getNome());//NON sapevo che scrivere
+        }else {
+            inOrdine.add(new RigaOrdine(prodotto, qtaProdotto));
+        }
     }
 
     @Override

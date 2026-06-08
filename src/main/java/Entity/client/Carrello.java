@@ -7,14 +7,13 @@ import java.util.*;
 @Embeddable
 public class Carrello {
 
-    // Risolto: Diciamo a Hibernate di usare la relazione "prodotto" dentro RigaCarrello come chiave della Mappa
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = RigaCarrello.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
-    @MapKey(name = "prodotto")
     private Map<Long, RigaCarrello> prodotti = new LinkedHashMap<>();
 
-    public ArrayList<RigaCarrello> getProdotti() {
-        return new ArrayList<>(prodotti.values());
+    public List<RigaCarrello> getProdotti() {
+        return List.copyOf(prodotti.values());
     }
 
     public float getTotale() {
@@ -36,8 +35,19 @@ public class Carrello {
         }
     }
 
-    public void rimuoviProdotto(long idProdotto) {
-        prodotti.remove(idProdotto);
+    public void rimuoviProdotto(long idProdotto,int quantita) {
+
+        if(prodotti.containsKey(idProdotto)){
+            RigaCarrello riga=prodotti.get(idProdotto);
+            if(riga.getQuantita()>=quantita){
+                riga.decrementQuantita(quantita);
+                if(riga.getQuantita()==0){
+                    prodotti.remove(idProdotto);
+                }
+            }else {
+                throw new IllegalArgumentException("Nel carrello non ci sono "+quantita+" "+riga.getProdotto().getNome()+" da eliminare");
+            }
+        };
     }
 
     public void svuotaCarrello() {

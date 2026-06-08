@@ -15,41 +15,58 @@ import java.util.List;
 public class CarrelloController {
     private final String PRODUCTS_IMG_PATH="img/products/";
 
+    public static final int  ID=0;
+   public static final int  QUANTITA=1;
+    private  String messaggio_errore;
 
-    public boolean aggiungiAlCarrello(Long idUtente, Prodotto prodotto, int quantita)
+
+    private void setMsg(String msg){messaggio_errore=msg;}
+    public String getMsg(){return messaggio_errore;}
+
+
+    public boolean aggiungiAlCarrello(long product_id, int quantita)
     {
+        long idUtente=AccountController.get_current_user_id();
         RegistroUtenti registroUtenti = new RegistroUtenti();
 
         Utente utente=registroUtenti.cercaUtentePerId(idUtente);
-        if(utente==null) return  false;
+        if(utente==null){ setMsg("Utente inesistente");return false;}
         else {
 
             Carrello carrello = utente.getCarrello();
 
-            carrello.aggiungiProdotto(prodotto, quantita);
+            try{
+                RegistroProdotti registroProdotto = new RegistroProdotti();
+                Prodotto prodotto=registroProdotto.cercaProdottoId(product_id);
+                carrello.aggiungiProdotto(prodotto, quantita);
+                registroUtenti.aggiornaUtente(utente);
+                return true;
+            }catch (IllegalArgumentException e){
+                setMsg(e.getMessage());
+                return false;
+            }
 
-
-            return true;
 
         }
 
     }
 
-    public boolean rimuoviDalCarrello(Long idUtente, Prodotto prodotto)
+    public boolean rimuoviDalCarrello(Long product_id, int quantita)
     {
         RegistroUtenti registroUtenti = new RegistroUtenti();
 
-        Utente utente=registroUtenti.cercaUtentePerId(registroUtenti.getCurrent_user_id());
-        if(utente==null) return  false;
+        Utente utente=registroUtenti.cercaUtentePerId(AccountController.get_current_user_id());
+        if(utente==null){ setMsg("Utente inesistente");return false;}
         else {
-
-            Carrello carrello = utente.getCarrello();
-
-            carrello.rimuoviProdotto(prodotto.getProduct_id());
-
-
-
-            return true;
+            try {
+                Carrello carrello = utente.getCarrello();
+                carrello.rimuoviProdotto(product_id, quantita);
+                registroUtenti.aggiornaUtente(utente);
+                return true;
+            }catch (IllegalArgumentException e){
+                setMsg(e.getMessage());
+                return false;
+            }
 
         }
     }
@@ -64,16 +81,8 @@ public class CarrelloController {
         {
             String[] prodotto=new String[]{
                     String.valueOf(riga.getProdotto().getProduct_id()),
-                    PRODUCTS_IMG_PATH+String.valueOf(riga.getProdotto().getProduct_id())+".png",
-                    riga.getProdotto().getNome(),
-                    "$ "+String.format("%.2f",riga.getProdotto().getPrezzo()),
-                    String.valueOf(riga.getQuantita()),
-                    riga.getProdotto().getCategoria().toString(),
-                    String.valueOf(riga.getProdotto().getSconto()),
-                    "$ "+String.format("%.2f", riga.getProdotto().getPrezzo() - riga.getProdotto().getPrezzo() * riga.getProdotto().getSconto() / 100.0),
-                    riga.getProdotto().getDescrizione()
+                    String.valueOf(riga.getQuantita())
                 };
-
             lista.add(prodotto);
         }
         return lista;
@@ -81,60 +90,71 @@ public class CarrelloController {
     }
 
 
-    public List<String[]> caricaCarrello(Carrello carrello)
+    public List<String[]> caricaCarrello()
     {
-        List<RigaCarrello> righe = carrello.getProdotti();
-        if (righe.isEmpty()) return null;
-        return convertToGui(righe);
-    }
-
-    public String caricaTotale(Carrello carrello)
-    {
-        return "$ " + String.format("%.2f", carrello.getTotale());
-    }
-
-    private boolean verificaCredito(float totale)
-    {
-        return true;
-    }
-
-
-
-    public boolean effettuaOrdine(Long idUtente)
-    {
+        long idUtente=AccountController.get_current_user_id();
         RegistroUtenti registroUtenti = new RegistroUtenti();
-        RegistroProdotti registroProdotto = new RegistroProdotti();
-
         Utente utente=registroUtenti.cercaUtentePerId(idUtente);
+        if(utente==null){ setMsg("Utente inesistente");return null;}
+        try {
+            Carrello carrello = utente.getCarrello();
+            List<RigaCarrello> righe = carrello.getProdotti();
+            if (righe.isEmpty()) return null;
+            else return convertToGui(righe);
+        }catch (IllegalArgumentException e){
+            setMsg(e.getMessage());
+            return null;
+        }
+
+    }
+
+    public String caricaTotale()
+    {
+        long user_id=AccountController.get_current_user_id();
+        RegistroUtenti registroUtenti = new RegistroUtenti();
+        Utente user=registroUtenti.cercaUtentePerId(user_id);
+        if(user==null){ setMsg("Utente inesistente");return null;}
+        else {
+            Carrello carrello = user.getCarrello();
+            return "$ "+String.format("%.2f",carrello.getTotale());
+        }
+    }
+
+    public boolean effettuaOrdine() {
+        long idUtente = AccountController.get_current_user_id();
+        RegistroUtenti registroUtenti = new RegistroUtenti();
+
+        Utente utente = registroUtenti.cercaUtentePerId(idUtente);
 
         Carrello carrello = utente.getCarrello();
 
         List<RigaCarrello> righe = carrello.getProdotti();
-        float totale=0;
-
-        for(RigaCarrello riga :righe)
-        {
-
-            Prodotto p=registroProdotto.cercaProdottoId(riga.getProdotto().getProduct_id());
-            if(p.getQuantita()>=riga.getQuantita())
-            {
-                totale+=riga.calcolaSubTotale();
-            }else return false;
-        }
-
-        if(verificaCredito(totale))
-        {
+        if (utente.verificaCredito(carrello.getTotale())) {
             RegistroOrdini registroOrdini = new RegistroOrdini();
-            Ordine ordine=new Ordine(utente.getIndirizzo());
-
-            for(RigaCarrello riga :righe)
-            {
-                ordine.addRigaOrdine(riga.getProdotto(),riga.getQuantita());
+            Ordine ordine = new Ordine(utente.getIndirizzo(),idUtente);
+            try {
+                for (RigaCarrello riga : righe) {
+                    ordine.addRigaOrdine(riga.getProdotto(), riga.getQuantita());
+                }
+                //Tolgo dal magazzino solo se tutti i prodotti sono stati ordinati correttamente
+                RegistroProdotti registroProdotti=new RegistroProdotti();
+                for (RigaCarrello riga : righe) {
+                    riga.getProdotto().decrementQt(riga.getQuantita());
+                    registroProdotti.aggiornaProdotto(riga.getProdotto());
+                }
+                //svuoto carrello
+                carrello.svuotaCarrello();
+                registroUtenti.aggiornaUtente(utente);
+            } catch (IllegalArgumentException e) {
+                setMsg(e.getMessage());
+                return false;
             }
             registroOrdini.registraOrdine(ordine);
-            System.out.println("Ordine effettuato correttamente e salvato");
             return true;
-        }else return false;
+        } else {
+            setMsg("Credito insufficiente per effettuare l'ordine");
+            return false;
+        }
     }
 
 }

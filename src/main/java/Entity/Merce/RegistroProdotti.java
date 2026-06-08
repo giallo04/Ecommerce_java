@@ -75,27 +75,15 @@ public class RegistroProdotti {
                 return risultati;
             }
         }
+        public void aggiornaProdotto(Prodotto prodotto){
+        gestore.aggiorna(prodotto);
+        }
     public List<Prodotto> caricaCatalogo(){
             return gestore.cercaPerCampi(Prodotto.class, Collections.emptyMap());
     }
     public List<Prodotto> caricaProdottiInEsaurimento(){
         GestorePersistenza gestore=new GestorePersistenza();
         return  gestore.cercePerCampoOrdinato(Prodotto.class, "quantita", true);
-    }
-
-    public void aggiornaQuantita(Long product_id, int quantita)
-    {
-        Prodotto prodotto=cercaProdottoId(product_id);
-        if(prodotto==null){
-            throw new IllegalArgumentException("Prodotto "+product_id+" non presente nel catalogo");
-        }else {
-            if(prodotto.getProduct_id()==product_id) {
-
-                if (quantita > 0) prodotto.incrementQt(quantita);
-                else prodotto.decrementQt(-quantita);
-                gestore.aggiorna(prodotto);
-            }
-        }
     }
 
 }

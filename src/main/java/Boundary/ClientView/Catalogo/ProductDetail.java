@@ -2,6 +2,7 @@ package Boundary.ClientView.Catalogo;
 
 import Boundary.Utils.ImageUtils;
 import Boundary.Utils.StyleUtils; // Assicurati di aver importato la tua utility
+import Controller.CarrelloController;
 import Controller.CatalogoController;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 
@@ -11,6 +12,8 @@ import java.awt.event.*;
 
 
 public class ProductDetail extends JDialog {
+    private Runnable onCartChanged;
+    private long productId;
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -29,7 +32,10 @@ public class ProductDetail extends JDialog {
     private JPanel generalInfoPane;
     private JLabel discountPrice;
     private int quantitaDisponibile;
-    public ProductDetail(String name) {
+
+
+    public ProductDetail(String name, Runnable onCartChanged) {
+        this.onCartChanged = onCartChanged;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -43,12 +49,13 @@ public class ProductDetail extends JDialog {
             return;
         }
 
-        initUI(data);
+        initDetail(data);
         initListeners();
     }
 
-    private void initUI(String[] data) {
-        // 1. Popolamento Dati Testuali
+    private void initDetail(String[] data) {
+
+        productId = Long.parseLong(data[CatalogoController.ID]);
         productName.setText(data[CatalogoController.NOME]);
         productPrice.setText(data[CatalogoController.PREZZO]);
         descrizione.setText(data[CatalogoController.DESCRIZIONE]);
@@ -126,7 +133,7 @@ public class ProductDetail extends JDialog {
             }
         });
 
-        // Chiusura tramite il tasto ESCAPE
+
         contentPane.registerKeyboardAction(
                 e -> onCancel(),
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
@@ -149,8 +156,20 @@ public class ProductDetail extends JDialog {
     }
 
     private void onOK() {
-        // TODO aggiungere al carrello
-        dispose();
+        CarrelloController controller = new CarrelloController();
+        if(quantityLabel.getText().equals("0")) {
+            JOptionPane.showMessageDialog(null,"Aggiungi al carrello prima di procedere");
+            return;
+        }else {
+            if (controller.aggiungiAlCarrello(productId, Integer.parseInt(quantityLabel.getText()))){
+                onCartChanged.run();
+                JOptionPane.showMessageDialog(null, "Prodotto aggiunto al carrello");
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, controller.getMsg());
+                return;
+            }
+        }
     }
 
     private void onCancel() {

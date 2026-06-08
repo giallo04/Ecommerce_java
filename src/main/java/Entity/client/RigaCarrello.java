@@ -17,6 +17,7 @@ public class RigaCarrello {
         if(prodotto==null)throw new IllegalArgumentException("\nInserire un articolo valido\n");
         this.prodotto=prodotto;
         if(quantita<=0)throw new IllegalArgumentException("\nInserire una quantità maggiore di zero, se si vuole inserire il prodotto nel carrello\n");
+        if(prodotto.getQuantita()<quantita)throw new IllegalArgumentException("Prodotto "+prodotto.getNome()+" non disponibile in magazzino, disponibile solo "+prodotto.getQuantita());
         this.quantita=quantita;
 
     }
@@ -34,9 +35,18 @@ public class RigaCarrello {
 
     public void incrementQuantita(int qt)
     {
+        if(quantita+qt>prodotto.getQuantita()) throw new IllegalArgumentException(
+                "Non puoi aggiungere altre unità di \"" + prodotto.getNome() +
+                        "\": ne hai già " + this.quantita + " nel carrello e la disponibilità massima è " +
+                        prodotto.getQuantita()
+        );
         this.quantita+=qt;
     }
 
+    public void decrementQuantita(int qt)
+    {
+        this.quantita-=qt;
+    }
 
    public float calcolaSubTotale()
    {
@@ -48,15 +58,4 @@ public class RigaCarrello {
 
    }
 
-
-    //TO STRING
-
-
-    @Override
-    public String toString() {
-        return "InCarrello{" +
-                "prodotto=" + prodotto +
-                ", quantita=" + quantita +
-                '}';
-    }
 }

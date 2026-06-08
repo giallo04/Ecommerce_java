@@ -94,7 +94,7 @@ public class CatalogoController {
             return convertToGui(prodotti);
         }
     }
-    public String[] caricaProdotto(Long id){
+    public String[] caricaProdotto(long id){
         RegistroProdotti registro=new RegistroProdotti();
         try{
             Prodotto prodotto=registro.cercaProdottoId(id);
