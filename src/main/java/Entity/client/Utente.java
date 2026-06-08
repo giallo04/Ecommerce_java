@@ -20,13 +20,13 @@ public class Utente {
     @Embedded
     private  Carrello carrello=new Carrello();
 
+
+
     public static String hidePassword(String password, String email) {
         return String.valueOf((password + email).hashCode());
     }
 
-    public Carrello getCarrello() {
-        return carrello;
-    }
+
 
     // COSTRUTTORE
     public Utente(String nome, String cognome, String email, String password, Indirizzo indirizzo) throws IllegalArgumentException {
@@ -57,6 +57,9 @@ public class Utente {
     public String getEmail() { return email; }
     public String getPassword() { return password; }
     public Indirizzo getIndirizzo() { return indirizzo; }
+    public Carrello getCarrello() {
+        return carrello;
+    }
 
 
     // --- SETTER CON VALIDAZIONE ED ECCEZIONI ---

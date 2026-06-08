@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class RegistroUtenti {
 
+    private Long current_user_id;
     private GestorePersistenza gestorePersistenza;
 
     public RegistroUtenti()
@@ -25,6 +26,7 @@ public class RegistroUtenti {
     {
         return gestorePersistenza.salva(utente);
     }
+
     public void aggiornaUtente(long user_id,String nome,String cognome,String email,String password,Indirizzo indirizzo) throws IllegalArgumentException{
         Utente utente=cercaUtentePerId(user_id);
         if(utente==null){
@@ -50,4 +52,6 @@ public class RegistroUtenti {
         List<Utente> user=gestore.cercaPerCampi(Utente.class, Map.of());
         return user.size();
     }
+
+    public Long getCurrent_user_id() {return current_user_id;}
 }

@@ -27,6 +27,7 @@ public class Ordine {
     @JoinColumn(name = "order_id")
     private List<RigaOrdine> inOrdine = new ArrayList<>();
 
+
      
     //costruttore
     public Ordine(Indirizzo indirizzo) { //il resto degli attributi non devono esistere al di fuori dell'ordine quindi vengono creati nel costruttore
