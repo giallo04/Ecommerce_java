@@ -1,5 +1,6 @@
 package Boundary.ClientView;
 
+import Boundary.ClientView.Carrello.CarrelloDialog;
 import Boundary.ClientView.Carrello.ProductInCart;
 import Controller.CarrelloController;
 import Eseguibile.App;
@@ -39,12 +40,6 @@ public class MainPage {
     private JScrollPane scrollPane;
     private JPanel productsPanel;
 
-    //Carrello view
-    private JPanel carrelloPanel;
-    private JScrollPane carrelloScrollPane;
-    private JPanel carrelloViewPanel;
-    private JButton effettuaOrdineButton;
-    private JLabel totaleLabel;
 
     public MainPage(){
 
@@ -104,15 +99,7 @@ public class MainPage {
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
         productsPanel.setLayout(new GridLayout(0, 3, 20, 20));
 
-        //Carrello view
-        carrelloPanel.setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), customColor, 0, arc));
-        carrelloViewPanel = new JPanel();
-        carrelloScrollPane.setViewportView(carrelloViewPanel);
-        carrelloScrollPane.getVerticalScrollBar().setUnitIncrement(20);
-        carrelloViewPanel.setLayout(new GridLayout(0, 1, 0, 0));
-        carrelloScrollPane.getHorizontalScrollBar().setEnabled(false);
-        carrelloPanel.setVisible(false);
-        effettuaOrdineButton.addActionListener(e ->makeOrder());
+
         updateView();
     }
 
@@ -124,47 +111,12 @@ public class MainPage {
     private void goToProduct(){}
     private void goToLogin(){ App.mostraLogin(); }
 
-    private void makeOrder(){
-        CarrelloController controller = new CarrelloController();
-        if(controller.effettuaOrdine()){
-            JOptionPane.showMessageDialog(null, "Ordine effettuato con successo!");
-            refreshCart();
-            return;
-        }else{
-            JOptionPane.showMessageDialog(null, controller.getMsg());
-            return;
-        }
-
-    }
     private void goToCart() {
-        if(carrelloPanel.isVisible()) {
-            carrelloPanel.setVisible(false);
-            return;
-        }else {
-            carrelloPanel.setVisible(true);
-            refreshCart();
-        }
+        CarrelloDialog dialog=new CarrelloDialog();
+        dialog.pack();
+        dialog.setVisible(true);
     }
 
-    private void refreshCart() {
-        CarrelloController controller = new CarrelloController();
-        List<String[]> prodInCart = controller.caricaCarrello();
-        totaleLabel.setText(controller.caricaTotale());
-
-        carrelloViewPanel.removeAll();
-        if (prodInCart == null) return;
-
-        for (String[] prodotto : prodInCart) {
-            ProductInCart p = new ProductInCart(
-                    prodotto[CarrelloController.ID],
-                    prodotto[CarrelloController.QUANTITA],
-                    this::refreshCart
-            );
-            carrelloViewPanel.add(p.getPane());
-        }
-        carrelloViewPanel.revalidate();
-        carrelloViewPanel.repaint();
-    }
     private void goToOrder(){//TODO
     }
     private void goToProfile(){
@@ -173,7 +125,7 @@ public class MainPage {
         dialog.setVisible(true);
     }
     private void goToHome(){
-        carrelloPanel.setVisible(false);
+
     }
 
 
@@ -230,7 +182,7 @@ public class MainPage {
         if(prodotti == null) return null;
         ArrayList<ProductInHome> products = new ArrayList<>();
         for(String[] p : prodotti){
-            products.add(new ProductInHome(p[CatalogoController.ID],p[CatalogoController.NOME],p[CatalogoController.PREZZO],p[CatalogoController.CATEGORIA],p[CatalogoController.SCONTO],p[CatalogoController.IMG_PATH],this::refreshCart));
+            products.add(new ProductInHome(p[CatalogoController.ID],p[CatalogoController.NOME],p[CatalogoController.PREZZO],p[CatalogoController.CATEGORIA],p[CatalogoController.SCONTO],p[CatalogoController.IMG_PATH]));
         }
         return products;
     }

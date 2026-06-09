@@ -12,7 +12,6 @@ import java.awt.event.*;
 
 
 public class ProductDetail extends JDialog {
-    private Runnable onCartChanged;
     private long productId;
     private JPanel contentPane;
     private JButton buttonOK;
@@ -34,8 +33,7 @@ public class ProductDetail extends JDialog {
     private int quantitaDisponibile;
 
 
-    public ProductDetail(String name, Runnable onCartChanged) {
-        this.onCartChanged = onCartChanged;
+    public ProductDetail(String name) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -162,7 +160,6 @@ public class ProductDetail extends JDialog {
             return;
         }else {
             if (controller.aggiungiAlCarrello(productId, Integer.parseInt(quantityLabel.getText()))){
-                onCartChanged.run();
                 JOptionPane.showMessageDialog(null, "Prodotto aggiunto al carrello");
                 dispose();
             }else{
