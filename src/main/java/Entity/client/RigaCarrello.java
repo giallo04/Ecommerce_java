@@ -48,14 +48,9 @@ public class RigaCarrello {
         this.quantita-=qt;
     }
 
-   public float calcolaSubTotale()
-   {
-       float subTotale=0;
-
-       subTotale=prodotto.getPrezzo()*quantita-(prodotto.getPrezzo()*prodotto.getSconto()/100);
-
-       return subTotale;
-
-   }
+    public float calcolaSubTotale() {
+        float prezzoScontato = prodotto.getPrezzo() * (1 - (prodotto.getSconto() / 100f));
+        return prezzoScontato * quantita;
+    }
 
 }
