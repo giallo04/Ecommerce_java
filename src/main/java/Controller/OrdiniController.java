@@ -1,6 +1,7 @@
 package Controller;
 
 import Database.GestorePersistenza;
+import Entity.Merce.Prodotto;
 import Entity.Ordini.Ordine;
 import Entity.Ordini.RegistroOrdini;
 import Entity.Ordini.RigaOrdine;
@@ -114,6 +115,36 @@ public class OrdiniController {
         String totString = String.valueOf(totale);
         return totString;
     }
-    //aggiungere statistiche ordini e annulla ordini da implementare anche in registro ordini
 
+    //aggiungere statistiche ordini e annulla ordini da implementare anche in registro ordini
+    public List<String[]> reportOrdiniMensili(){
+        GestorePersistenza gestore = new GestorePersistenza();
+        List<Ordine> ordiniMese = gestore.caricaOrdiniUltimoMese();
+        List<String[]> righe = new ArrayList<>();
+
+        for(Ordine ordine : ordiniMese){
+
+            String[] riga = new String[]{
+                    String.valueOf(ordine.getOrderId()),
+                    String.valueOf(ordine.getData()),
+                    String.valueOf(ordine.getIndirizzo()),
+                    String.valueOf(ordine.calcolaTotaleOrdine()),
+                    String.valueOf(ordine.getStatoOrdine())
+            };
+
+            righe.add(riga);
+        }
+        return righe;
+    }
+
+    public String[] prodottoPiùVenduto(){
+        GestorePersistenza gestore = new GestorePersistenza();
+        Prodotto prod = gestore.prodottoPiùVenduto();
+
+        String[] riga = new String[]{
+                //chiedi se esiste metodo che passa direttamente
+        };
+
+        return riga;
+    }
 }
