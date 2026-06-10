@@ -18,6 +18,7 @@ public class OrderDetails extends JDialog {
     private JComboBox comboBoxStato;
     private JLabel statoLabel;
     private JPanel productInOrdinePanel;
+    private JLabel orderIdLabel;
     private boolean isConfirmed = false;
 
     public OrderDetails(Frame owner,String order_id, String data, String indirizzo, String statoAttuale) {
@@ -28,15 +29,20 @@ public class OrderDetails extends JDialog {
         OrdiniController oContr = new OrdiniController();
 
         //-- Info --
+        orderIdLabel = new JLabel("Order ID" + order_id);
+        orderIdLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
+
         dataLabel = new JLabel("Data" + data);
         dataLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
 
         indirizzoLabel = new JLabel("Indirizzo" + indirizzo);
         indirizzoLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
 
-
         //aggiungi totale mo mi scoccio e modifica quindi anche firma del costruttore e dati che passi al costruttore in viusalizzaOrdini
 
+        contentPane.add(orderIdLabel);
+        contentPane.add(dataLabel);
+        contentPane.add(indirizzoLabel);
 
         //-- Pannello RigaOrdine --
         productInOrdinePanel.setLayout(new BoxLayout(productInOrdinePanel, BoxLayout.Y_AXIS));
