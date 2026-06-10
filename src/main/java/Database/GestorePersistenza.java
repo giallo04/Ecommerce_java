@@ -1,8 +1,11 @@
 package Database;
 
+import Entity.Merce.Prodotto;
+import Entity.Ordini.Ordine;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -365,4 +368,39 @@ public class GestorePersistenza {
         }
     }
 
+    //Metodi Per Generare Statistiche Sugli Ordini
+    public List<Ordine> caricaOrdiniUltimoMese() {
+        EntityManager em = JpaUtil.getInstance().getEntityManager();
+        try {
+            LocalDate unMeseFa = LocalDate.now().minusMonths(1);
+
+            TypedQuery<Ordine> query = em.createQuery(
+                    "SELECT o FROM Ordine o WHERE o.data >= :dataInizio",
+                    Ordine.class
+            );
+            query.setParameter("dataInizio", unMeseFa);
+            return query.getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public Prodotto prodottoPiùVenduto() {
+        EntityManager em = JpaUtil.getInstance().getEntityManager();
+        try {
+            TypedQuery<Prodotto> query = em.createQuery(
+                    "SELECT r.prodotto FROM RigaOrdine r " +
+                            "GROUP BY r.prodotto " +
+                            "ORDER BY SUM(r.qtaProdotto) DESC",
+                    Prodotto.class
+            );
+            query.setMaxResults(1); // prende solo il primo (il più venduto)
+            List<Prodotto> risultati = query.getResultList();
+            return risultati.isEmpty() ? null : risultati.get(0);
+
+        } finally {
+            em.close();
+        }
+    }
 }

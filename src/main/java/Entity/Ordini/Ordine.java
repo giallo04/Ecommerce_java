@@ -105,7 +105,6 @@ public class Ordine {
                 '}';
     }
 
-
     public float calcolaTotaleOrdine(){
         float totale = 0;
         for(RigaOrdine rigaOrdine: inOrdine) {
