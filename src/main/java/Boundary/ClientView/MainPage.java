@@ -114,6 +114,7 @@ public class MainPage {
     private void goToCart() {
         CarrelloDialog dialog=new CarrelloDialog();
         dialog.pack();
+        dialog.setLocationRelativeTo(pane);
         dialog.setVisible(true);
     }
 
@@ -122,6 +123,7 @@ public class MainPage {
     private void goToProfile(){
         ShowModificaProfiloDialog dialog = new ShowModificaProfiloDialog();
         dialog.pack();
+        dialog.setLocationRelativeTo(pane);
         dialog.setVisible(true);
     }
     private void goToHome(){

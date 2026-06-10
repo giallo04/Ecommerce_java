@@ -47,13 +47,6 @@ public class App {
         MainPage page = new MainPage();
         cambiaPannello(page.getPane());
     }
-    // Metodo pubblico per mostrare la Registrazione
-    public static void mostraRegistrazione() {
-        RegistrazioneForm form = new RegistrazioneForm();
-        form.pack();
-        form.setVisible(true);
-        form.setLocationRelativeTo(null);
-    }
     public static void mostraDashBoard(){
         frame.setResizable(true);
         Dashboard page = new Dashboard();

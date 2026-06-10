@@ -119,6 +119,7 @@ public class Catalogo {
         String id=model.getValueAt(viewRow,0).toString();
         ShowModificaProdottoDialog dialog = new ShowModificaProdottoDialog(id);
         dialog.pack();
+        dialog.setLocationRelativeTo(pane);
         dialog.setVisible(true);
         loadCatalogo();
     }
@@ -140,6 +141,7 @@ public class Catalogo {
     private void onAdd() {
         ShowAggiungiProdottoDialog dialog = new ShowAggiungiProdottoDialog();
         dialog.pack();
+        dialog.setLocationRelativeTo(pane);
         dialog.setVisible(true);
         loadCatalogo();
     }

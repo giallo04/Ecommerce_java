@@ -20,8 +20,6 @@ public class CarrelloDialog extends JDialog {
 
     public CarrelloDialog() {
         setContentPane(carrelloPanel);
-        setModal(true);
-        getRootPane().setDefaultButton(effettuaOrdineButton);
 
         //Carrello view
 
@@ -37,12 +35,6 @@ public class CarrelloDialog extends JDialog {
         carrelloViewPanel.setLayout(new GridLayout(0, 1, 0, 0));
         carrelloScrollPane.getHorizontalScrollBar().setEnabled(false);
         effettuaOrdineButton.addActionListener(e ->makeOrder());
-
-        effettuaOrdineButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
 
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -109,11 +101,10 @@ public class CarrelloDialog extends JDialog {
         CarrelloController controller = new CarrelloController();
         if(controller.effettuaOrdine()){
             JOptionPane.showMessageDialog(null, "Ordine effettuato con successo!");
-            dispose();
         }else{
             JOptionPane.showMessageDialog(null, controller.getMsg());
-            return;
         }
+        return;
 
     }
 

@@ -129,7 +129,10 @@ public class CarrelloController {
         Carrello carrello = utente.getCarrello();
 
         List<RigaCarrello> righe = carrello.getProdotti();
-
+            if (righe.isEmpty()) {
+                setMsg("Carrello vuoto non si puo effettuare un ordine");
+                return false;
+            }
             RegistroOrdini registroOrdini = new RegistroOrdini();
             Ordine ordine = new Ordine(utente.getIndirizzo(),idUtente);
             try {
