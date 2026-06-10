@@ -13,13 +13,14 @@ public class RegistroProdotti {
     public  RegistroProdotti(){
         gestore=new GestorePersistenza();
     }
-    public long aggiungiProdotto(String nome, String descrizione, float prezzo, Categoria categoria,int quantita) throws IllegalArgumentException{
+    public long aggiungiProdotto(String nome, String descrizione, float prezzo, Categoria categoria,int quantita,int sconto) throws IllegalArgumentException{
         //Cerca se il prodotto esiste gia
         Prodotto prodottoEsistente=cercaProdottoNome(nome);
         if(prodottoEsistente!=null){
             throw new IllegalArgumentException("Prodotto "+nome+" già presente in catalogo");
         }else {
             Prodotto prodotto=new Prodotto(nome,prezzo,descrizione,quantita,categoria);
+            prodotto.setSconto(sconto);
             //Creo il prodotto e lo aggiungo al catalogo
             gestore.salva(prodotto);
             return prodotto.getProduct_id();
