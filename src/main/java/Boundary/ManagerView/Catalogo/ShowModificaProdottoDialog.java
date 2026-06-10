@@ -1,14 +1,10 @@
 package Boundary.ManagerView.Catalogo;
 
-import Boundary.FormsTemplate.ProdottoDataForm;
+import Boundary.Template.ProdottoDataForm;
 import Controller.CatalogoController;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
 
 public class ShowModificaProdottoDialog extends ProdottoDataForm {
     private final String id;

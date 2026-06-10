@@ -1,102 +1,111 @@
 package Boundary.ManagerView.ListaOrdini;
 
+import Boundary.Template.Container.Container;
+
 import Controller.OrdiniController;
-import Entity.Ordini.Ordine;
-import Entity.Ordini.RigaOrdine;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.List;
 
-public class OrderDetails extends JDialog {
-    private JPanel contentPane;
-    private JButton buttonOK;
-    private JButton buttonCancel;
-    private JLabel dataLabel;
-    private JLabel indirizzoLabel;
-    private JComboBox comboBoxStato;
-    private JLabel statoLabel;
-    private JPanel productInOrdinePanel;
-    private JLabel orderIdLabel;
-    private boolean isConfirmed = false;
+public class OrderDetails extends Container {
 
-    public OrderDetails(Frame owner,String order_id, String data, String indirizzo, String statoAttuale) {
-        super(owner, true); // Imposta il frame proprietario e la modalità modale
-        setContentPane(contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
-        OrdiniController oContr = new OrdiniController();
+    private final OrdiniController oContr=new OrdiniController();
+    private final String orderId;
 
-        //-- Info --
-        orderIdLabel = new JLabel("Order ID" + order_id);
-        orderIdLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
 
-        dataLabel = new JLabel("Data" + data);
-        dataLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
+    private JComboBox<String> comboBoxStato;
 
-        indirizzoLabel = new JLabel("Indirizzo" + indirizzo);
-        indirizzoLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
+    public OrderDetails(String orderId) {
+        super();
 
-        //aggiungi totale mo mi scoccio e modifica quindi anche firma del costruttore e dati che passi al costruttore in viusalizzaOrdini
+        this.orderId = orderId;
 
-        contentPane.add(orderIdLabel);
-        contentPane.add(dataLabel);
-        contentPane.add(indirizzoLabel);
 
-        //-- Pannello RigaOrdine --
-        productInOrdinePanel.setLayout(new BoxLayout(productInOrdinePanel, BoxLayout.Y_AXIS));
-        List<String[]> righeOrdine = oContr.caricaRigheOrdine(order_id);
-        for(String[] riga: righeOrdine){
-            productInOrdinePanel.add(new ProductInOrdine(owner, riga));
-            productInOrdinePanel.add(Box.createVerticalStrut(5)); //spaziatura
+        setTitle("Dettagli Ordine #" + orderId);
+        salvaBtn.setText("Salva modifiche");
+        salvaBtn.setEnabled(false);
+
+
+        initInfoPanel(orderId);
+
+        // Carica e mostra le righe d'ordine sfruttando il meccanismo di Container
+        refreshContainer();
+    }
+
+    private void initInfoPanel(String orderId) {
+        infoPanel.removeAll();
+
+        String[] data=oContr.caricaOrdine(orderId);
+        JLabel orderIdLabel = new JLabel("ID Ordine: " + orderId);
+        orderIdLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        totaleLabel.setText("totale: $ "+data[OrdiniController.TOTALE]);
+
+
+        JLabel dataLabel = new JLabel("Data: " + data[OrdiniController.DATA]);
+        dataLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
+        JLabel indirizzoLabel = new JLabel("Indirizzo: " + data[OrdiniController.INDIRIZZO]);
+        indirizzoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
+        JPanel statoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        JLabel statoLabel = new JLabel("Stato Ordine: ");
+        statoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
+        List<String> stati = oContr.getStatiOrdine();
+        comboBoxStato = new JComboBox<>();
+        for (String stato : stati) {
+            comboBoxStato.addItem(stato);
         }
+        comboBoxStato.setSelectedItem(data[OrdiniController.STATO]);
 
-
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK(oContr, order_id);
-            }
-        });
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        statoPanel.add(statoLabel);
+        statoPanel.add(comboBoxStato);
+        comboBoxStato.addActionListener(e -> salvaBtn.setEnabled(true));
+        infoPanel.add(orderIdLabel);
+        infoPanel.add(dataLabel);
+        infoPanel.add(indirizzoLabel);
+        infoPanel.add(statoPanel);
     }
 
-    private void onOK(OrdiniController oContr, String order_id) {
-        oContr.modificaOrdine(order_id, getNuovoStato());
+
+
+    @Override
+    protected List<String[]> loadRows() {
+        // Recupero le righe dal controller
+        return oContr.caricaRigheOrdine(this.orderId);
+    }
+
+    @Override
+    protected void addRow(List<String[]> rows) {
+        for (String[] prodotto : rows) {
+            ProductInOrdine p = new ProductInOrdine(
+                    prodotto[OrdiniController.PRODUCT_ID],
+                    prodotto[OrdiniController.QUANTITA],
+                    prodotto[OrdiniController.PREZZO]
+            );
+            containerViewPanel.add(p.getPane());
+        }
+    }
+
+    @Override
+    protected void doOnEmpty() {
+        containerViewPanel.add(new JLabel("Nessun prodotto presente in questo ordine."));
+    }
+
+    @Override
+    protected void onBtn() {
+        if(oContr.modificaOrdine(this.orderId, getNuovoStato())){
+            JOptionPane.showMessageDialog(null, "Stato ordine modificato con successo!");
+        }else{
+            JOptionPane.showMessageDialog(null,oContr.getError_msg());
+        }
         dispose();
     }
 
-    private void onCancel() {
-        // add your code here if necessary
-        dispose();
-    }
-
-    public boolean isConfirmed() {
-        return isConfirmed;
-    }
+    // --- Getter utili ---
 
     public String getNuovoStato() {
-        //aggiungere qui codice da copiare da visualizzaOrdini
         return (String) comboBoxStato.getSelectedItem();
     }
 

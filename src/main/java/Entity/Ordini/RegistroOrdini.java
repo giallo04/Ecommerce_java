@@ -40,13 +40,5 @@ public class RegistroOrdini {
         return gestorePersistenza.salva(ordine);
     }
 
-    public boolean isTerminale(long order_id){
-        Ordine ordine = gestorePersistenza.trovaPerId(Ordine.class, order_id);
-        return ordine.getStatoOrdine().isTerminale();
-    }
-
-    public boolean inviaMessaggio(){
-        return true;
-    }
 }
 

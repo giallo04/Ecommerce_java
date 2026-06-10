@@ -1,12 +1,10 @@
-package Boundary.FormsTemplate;
+package Boundary.Template;
 
 import Boundary.Utils.ImageUtils;
-import Controller.AccountController;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.Map;
 
 public abstract class UserDataForm extends JDialog {

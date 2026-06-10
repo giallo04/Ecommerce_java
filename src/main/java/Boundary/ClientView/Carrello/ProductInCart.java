@@ -1,5 +1,6 @@
 package Boundary.ClientView.Carrello;
 
+import Boundary.Template.Container.ContainerRow;
 import Boundary.Utils.ImageUtils;
 import Controller.CarrelloController;
 import Controller.CatalogoController;
@@ -9,42 +10,40 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class ProductInCart {
-    private final Runnable onCartChanged;
-    private final String id;
-    private JLabel imgLabel;
-    private JLabel qtLabel;
-    private JLabel priceLabel;
-    private JLabel nomeLabel;
-    private JPanel pane;
+public class ProductInCart extends ContainerRow {
+    private Runnable onCartChanged;
     private JButton removeButton;
     private JButton addButton;
     private CarrelloController  carrelloController=new CarrelloController();
+
     public ProductInCart(String id,String qt,Runnable onCartChanged) {
+        super(id,qt);
         this.onCartChanged=onCartChanged;
-        this.id=id;
+    }
+    @Override
+    protected void init(String id){
         CatalogoController controller = new CatalogoController();
         String[] data=controller.caricaProdotto(Long.parseLong(id));
         if(data==null){
             return;
         }
         Font newFont = new Font("Swing ui", Font.BOLD, 16);
-        qtLabel.setFont(newFont);
-        priceLabel.setFont(newFont);
-        addButton.setFont(newFont);
-        removeButton.setFont(newFont);
-        nomeLabel.setFont(newFont);
         imgLabel.setIcon(ImageUtils.getIconScaled(data[CatalogoController.IMG_PATH],100));
-        qtLabel.setText("Selezionato: "+qt);
         priceLabel.setText("Prezzo: "+data[CatalogoController.PREZZO_CON_SCONTO]);
         nomeLabel.setText(data[CatalogoController.NOME]);
-        pane.setBorder(new FlatLineBorder(new Insets(0,0,0,0),new Color(204,203,207), 1, 10));
-
 
         //bottoni
-
+        addButton=new JButton("+");
+        removeButton=new JButton("-");
+        addButton.setFont(newFont);
+        removeButton.setFont(newFont);
         addButton.addActionListener(e -> addProduct());
         removeButton.addActionListener(e -> removeProduct());
+        JPanel btnPanel=new JPanel(new BorderLayout());
+        btnPanel.add(addButton,BorderLayout.NORTH);
+        btnPanel.add(removeButton,BorderLayout.SOUTH);
+        infoPanel.add(btnPanel,BorderLayout.SOUTH);
+
     }
 
 
@@ -66,5 +65,4 @@ public class ProductInCart {
             JOptionPane.showMessageDialog(null, carrelloController.getMsg());
         }
     }
-    public JPanel getPane(){return  pane;}
 }

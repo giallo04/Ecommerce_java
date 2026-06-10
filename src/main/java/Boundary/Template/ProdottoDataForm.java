@@ -1,4 +1,4 @@
-package Boundary.FormsTemplate;
+package Boundary.Template;
 
 import Controller.CatalogoController;
 

@@ -1,12 +1,9 @@
 package Boundary.Login;
 
-import Boundary.FormsTemplate.UserDataForm;
-import Boundary.Utils.ImageUtils;
+import Boundary.Template.UserDataForm;
 import Controller.AccountController;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Map;
 

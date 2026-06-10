@@ -1,6 +1,7 @@
 package Controller;
 
 import Database.GestorePersistenza;
+import Entity.Merce.Categoria;
 import Entity.Ordini.Ordine;
 import Entity.Ordini.RegistroOrdini;
 import Entity.Ordini.RigaOrdine;
@@ -14,56 +15,57 @@ import java.util.Map;
 
 public class OrdiniController {
 
-    public static List<String[]> caricaOrdini(){ //qui non passo i prodotti perché nella tabella generica la lista dei prodotti contenuti nell'ordine non è mostrata
-        RegistroOrdini reg = new RegistroOrdini();
-        List<Ordine> ordini = reg.caricaOrdini();
+    public static final int  ORDER_ID=0;
+    public static final int  DATA=1;
+    public static final int  INDIRIZZO=2;
+    public static final int  TOTALE=3;
+    public static final int  STATO=4;
 
-        List<String[]> righe = new ArrayList<>();
+    public static final int  PRODUCT_ID=0;
+    public static final int  QUANTITA=1;
+    public static final int  PREZZO=2;
 
-        for(Ordine ordine : ordini){
-
-            String[] riga = new String[]{
-                    String.valueOf(ordine.getOrderId()),
-                    String.valueOf(ordine.getData()),
-                    String.valueOf(ordine.getIndirizzo()),
-                    String.valueOf(ordine.calcolaTotaleOrdine()),
-                    String.valueOf(ordine.getStatoOrdine())
-            };
-
-            righe.add(riga);
-        }
-        return righe;
+    private String error_msg;
+    public String getError_msg() {
+        return error_msg;
+    }
+    public void setError_msg(String error_msg) {
+        this.error_msg = error_msg;
     }
 
-    public static List<String[]> caricaOrdiniUtente(String user_id){
+    public  List<String[]> caricaOrdini(){ //qui non passo i prodotti perché nella tabella generica la lista dei prodotti contenuti nell'ordine non è mostrata
+        RegistroOrdini reg = new RegistroOrdini();
+        List<Ordine> ordini = reg.caricaOrdini();
+        if(ordini.isEmpty()){
+            this.setError_msg("Non esiste alcun ordine");
+            return null;
+        }
+        return convertOrderToGui(ordini);
+    }
+
+    public  List<String[]> caricaOrdiniUtente(String user_id){
         RegistroOrdini reg = new RegistroOrdini();
         GestorePersistenza gestore = new GestorePersistenza();
         long u_id = Long.parseLong(user_id);
         List<Ordine> ordini = reg.caricaOrdiniUtente(u_id);
-        List<String[]> righe = new ArrayList<>();
-
-        for(Ordine ordine : ordini){
-
-            String[] riga = new String[]{
-                    String.valueOf(ordine.getOrderId()),
-                    String.valueOf(ordine.getData()),
-                    String.valueOf(ordine.getIndirizzo()),
-                    String.valueOf(ordine.calcolaTotaleOrdine()),
-                    String.valueOf(ordine.getStatoOrdine())
-            };
-
-            righe.add(riga);
+        if(ordini.isEmpty()){
+            this.setError_msg("Non esiste alcun ordine per questo utente");
+            return null;
         }
-        return righe;
+        return convertOrderToGui(ordini);
     }
-
     public String[] caricaOrdine(String order_id){
         RegistroOrdini reg = new RegistroOrdini();
         GestorePersistenza gestore = new GestorePersistenza();
         Ordine ordine = gestore.cercaPrimoPerCampi(Ordine.class, Map.of("order_id", order_id));
         if(ordine==null){
-            throw new IllegalArgumentException("Non esiste alcun ordine relativo a questo user_id");
+            setError_msg("Non esiste alcun ordine relativo a questo order_id");
         }
+            return convertOrderToGui(List.of(ordine)).get(0);
+    }
+    private List<String[]> convertOrderToGui(List<Ordine> ordini){
+        List<String[]> righe = new ArrayList<>();
+        for(Ordine ordine: ordini){
             String[] riga = new String[]{
                     String.valueOf(ordine.getOrderId()),
                     String.valueOf(ordine.getData()),
@@ -71,16 +73,21 @@ public class OrdiniController {
                     String.valueOf(ordine.calcolaTotaleOrdine()),
                     String.valueOf(ordine.getStatoOrdine())
             };
-
-            return riga;
-    }
-
+            righe.add(riga);
+        }
+        return righe;
+        }
     public List<String[]> caricaRigheOrdine(String order_id){
         GestorePersistenza gestore = new GestorePersistenza();
         List<RigaOrdine> righeInOrdine = gestore.cercaPrimoPerCampi(Ordine.class,Map.of("order_id",order_id)).getInOrdine();
         if(righeInOrdine.isEmpty()){
-            throw  new IllegalArgumentException("Non esiste alcun ordine relativo a questo user_id");
+             setError_msg("Non esiste alcun ordine relativo a questo order_id");
+             return null;
         }
+        return convertOrderLineToGui(righeInOrdine);
+    }
+
+    private static List<String[]> convertOrderLineToGui(List<RigaOrdine> righeInOrdine) {
         List<String[]> righe = new ArrayList<>();
         for(RigaOrdine rigaInOrdine: righeInOrdine){
             String[] riga = new String[]{
@@ -94,19 +101,26 @@ public class OrdiniController {
         return righe;
     }
 
-    public void modificaOrdine(String order_id, String newStatoOrdine){
-        StatoOrdine so = Enum.valueOf(StatoOrdine.class, newStatoOrdine);
-        long orderID = Long.parseLong(order_id);
+    //annulla ordini da implementare anche in registro ordini va messo qua dentro
+    public boolean modificaOrdine(String order_id, String newStatoOrdine){
         RegistroOrdini reg = new RegistroOrdini();
-        reg.modificaOrdine(orderID, so);
+        try{
+            reg.modificaOrdine(Long.parseLong(order_id), StatoOrdine.valueOf(newStatoOrdine));
+            return true;
+        }catch (IllegalArgumentException e){
+            setError_msg(e.getMessage());
+            return false;
+        }
     }
 
-    public boolean isTerminale(String order_id){
-        long orderId = Long.parseLong(order_id);
-        RegistroOrdini reg = new RegistroOrdini();
-        return reg.isTerminale(orderId);
-    }
 
-    //aggiungere statistiche ordini e annulla ordini da implementare anche in registro ordini
+    public List<String> getStatiOrdine(){
+        List<String> stati=new ArrayList<>();
+        for(StatoOrdine s:StatoOrdine.values()){
+            stati.add(s.toString());
+        }
+        return stati;
+    }
+    //aggiungere statistiche ordini
 
 }

@@ -23,7 +23,7 @@ public class Ordine {
     private Indirizzo indirizzo;
     private StatoOrdine statoOrdine;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private List<RigaOrdine> inOrdine = new ArrayList<>();
 
@@ -70,9 +70,11 @@ public class Ordine {
     public void setStatoOrdine(StatoOrdine statoOrdine) {
 
         if(statoOrdine.ordinal() < this.statoOrdine.ordinal()) throw new IllegalArgumentException("Lo stato inserito non è valido");
+        if(statoOrdine.ordinal() == this.statoOrdine.ordinal()) return;
+        if(StatoOrdine.ANNULLATO==statoOrdine){sendMsg();}//INVIO MESSAGGIO ANNULLAZIONE
         this.statoOrdine = statoOrdine;
     }
-
+    private void sendMsg(){return;}
 
     public void addRigaOrdine(Prodotto prodotto, int qtaProdotto){
         if(prodotto.getQuantita()<qtaProdotto){

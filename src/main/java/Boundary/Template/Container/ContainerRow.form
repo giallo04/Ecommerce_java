@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Boundary.ClientView.Carrello.ProductInCart">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Boundary.Template.Container.ContainerRow">
   <grid id="27dc6" binding="pane" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="20" left="20" bottom="20" right="20"/>
     <constraints>
@@ -15,7 +15,7 @@
       <grid id="50022" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -38,32 +38,13 @@
           <text value="nome"/>
         </properties>
       </component>
-      <grid id="d5d73" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="d5d73" binding="infoPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="c03d6" layout-manager="BorderLayout" hgap="0" vgap="0">
-            <constraints border-constraint="South"/>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="a74ee" class="javax.swing.JButton" binding="removeButton" default-binding="true">
-                <constraints border-constraint="South"/>
-                <properties>
-                  <text value="-"/>
-                </properties>
-              </component>
-              <component id="2d265" class="javax.swing.JButton" binding="addButton" default-binding="true">
-                <constraints border-constraint="North"/>
-                <properties>
-                  <text value="+"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
           <grid id="3fe55" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints border-constraint="Center"/>

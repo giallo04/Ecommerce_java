@@ -77,6 +77,6 @@ public class Indirizzo {
 
     @Override
     public String toString() {
-        return citta+"in provincia di "+provincia+" via "+via+" cap "+cap;
+        return citta+" in provincia di "+provincia+"  "+via+"  "+cap;
     }
 }

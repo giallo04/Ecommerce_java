@@ -2,19 +2,11 @@ package Boundary.ManagerView.Catalogo;
 
 
 
-import Boundary.FormsTemplate.ProdottoDataForm;
+import Boundary.Template.ProdottoDataForm;
 import Controller.CatalogoController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetAdapter;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.event.*;
-import java.io.File;
-import java.util.List;
 
 public class ShowAggiungiProdottoDialog extends ProdottoDataForm {
     private JLabel quantitaLabel;
