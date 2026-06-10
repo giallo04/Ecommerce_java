@@ -31,6 +31,9 @@ public class RigaOrdine {
     public float getPrezzo() {
         return prezzo;
     }
+    public Prodotto getProdotto() {
+        return prodotto;
+    }
 
     @Override
     public boolean equals(Object o) {

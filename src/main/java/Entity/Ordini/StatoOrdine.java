@@ -14,4 +14,8 @@ public enum StatoOrdine {
         this.livello = livello;
         this.terminale = terminale;
     }
+
+    public boolean isTerminale() {
+        return terminale;
+    }
 }

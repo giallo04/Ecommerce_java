@@ -1,8 +1,13 @@
 package Boundary.ManagerView.ListaOrdini;
 
+import Controller.OrdiniController;
+import Entity.Ordini.Ordine;
+import Entity.Ordini.RigaOrdine;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class OrderDetails extends JDialog {
     private JPanel contentPane;
@@ -12,18 +17,39 @@ public class OrderDetails extends JDialog {
     private JLabel indirizzoLabel;
     private JComboBox comboBoxStato;
     private JLabel statoLabel;
+    private JPanel productInOrdinePanel;
     private boolean isConfirmed = false;
 
-    public OrderDetails(Frame owner, String data, String indirizzo, String statoAttuale) {
+    public OrderDetails(Frame owner,String order_id, String data, String indirizzo, String statoAttuale) {
         super(owner, true); // Imposta il frame proprietario e la modalità modale
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        OrdiniController oContr = new OrdiniController();
+
+        //-- Info --
+        dataLabel = new JLabel("Data" + data);
+        dataLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
+
+        indirizzoLabel = new JLabel("Indirizzo" + indirizzo);
+        indirizzoLabel.setFont(new Font("Segoe UI", Font.BOLD, 15));
+
+
+        //aggiungi totale mo mi scoccio e modifica quindi anche firma del costruttore e dati che passi al costruttore in viusalizzaOrdini
+
+
+        //-- Pannello RigaOrdine --
+        productInOrdinePanel.setLayout(new BoxLayout(productInOrdinePanel, BoxLayout.Y_AXIS));
+        List<String[]> righeOrdine = oContr.caricaRigheOrdine(order_id);
+        for(String[] riga: righeOrdine){
+            productInOrdinePanel.add(new ProductInOrdine(owner, riga));
+            productInOrdinePanel.add(Box.createVerticalStrut(5)); //spaziatura
+        }
 
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onOK();
+                onOK(oContr, order_id);
             }
         });
 
@@ -49,8 +75,8 @@ public class OrderDetails extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onOK() {
-        // add your code here
+    private void onOK(OrdiniController oContr, String order_id) {
+        oContr.modificaOrdine(order_id, getNuovoStato());
         dispose();
     }
 
@@ -64,16 +90,8 @@ public class OrderDetails extends JDialog {
     }
 
     public String getNuovoStato() {
+        //aggiungere qui codice da copiare da visualizzaOrdini
         return (String) comboBoxStato.getSelectedItem();
     }
 
-    /*
-    public static void main(String[] args) {
-        OrderDetails dialog = new OrderDetails();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
-
-     */
 }

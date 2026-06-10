@@ -1,5 +1,6 @@
 package Boundary.ManagerView.ListaOrdini;
 import Boundary.Utils.TableUtils;
+import Controller.OrdiniController;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -9,6 +10,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 //contentpane.removeAll()
 public class VisualizzaOrdini {
@@ -27,7 +29,8 @@ public class VisualizzaOrdini {
 
     // Creazione tabella
     private void VisualizzaTabella() {
-        String[] col = new String[]{"Data", "Indirizzo", "Totale", "Stato Ordine"}; // Esempio di colonne fisiche
+        String[] col = new String[]{"OrderID", "Data", "Indirizzo", "Totale", "Stato Ordine"}; // Esempio di colonne fisiche
+        OrdiniController ordController = new OrdiniController();
 
         // BUG RISOLTO: Assegnato correttamente a model (variabile di istanza)
         model = new DefaultTableModel(col, 0) {
@@ -40,35 +43,53 @@ public class VisualizzaOrdini {
         JPanel card = TableUtils.wrapInCard("Ordini Effettuati", tabellaOrdini);
 
         upperPanel.add(buildControlPanel(sorter), BorderLayout.WEST);
+
+        //inserisco gli ordini all'interno della tabella
+        List<String[]> ordini = ordController.caricaOrdini();
+        if(ordini!=null){
+            for (String[] o: ordini){
+                String order_id = o[0];
+                String data  =o[1];
+                String indirizzo = o[2];
+                String totale = o[3];
+                String stato = o[4];
+                model.addRow(new String[]{order_id, data, indirizzo, totale, stato});
+            }
+        }
         JButton mioBottone = new JButton("Modifica Ordine");
         mioBottone.setPreferredSize(new Dimension(200, 20));
         mioBottone.setFont(new Font("Segoe UI", Font.BOLD, 15));
+
+        contentPane.revalidate();
+        contentPane.repaint();
+
         mioBottone.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 1. Controlla se è stata selezionata una riga
+                //Controlla se è stata selezionata una riga
                 int selectedRow = tabellaOrdini.getSelectedRow();
-
                 //ERRORE RIGA NON SELEZIONATA
                 if (selectedRow == -1) {
                     JOptionPane.showMessageDialog(contentPane,
-                            "Seleziona un ordine dalla tabella per modificarlo.",
+                            "Seleziona un ordine dalla tabella per visuallizzarne i dettagli.",
                             "Nessuna selezione",
                             JOptionPane.WARNING_MESSAGE);
                     return;
                 }
 
-
                 int modelRow = tabellaOrdini.convertRowIndexToModel(selectedRow);
 
-                // 2. Recupera i dati dalle colonne del modello
-                // Colonne: 0 = Data, 1 = Indirizzo, 2 = Totale, 3 = Stato Ordine
-                String data = model.getValueAt(modelRow, 0).toString();
-                String indirizzo = model.getValueAt(modelRow, 1).toString();
-                String statoAttuale = model.getValueAt(modelRow, 3).toString();
+                //Recupera i dati dalle colonne del modello
+                // Colonne: 0 = OrderId, 1 = Data, 2 = Indirizzo, 3 = Totale, 4 = stato ordine
+                String order_id = model.getValueAt(modelRow, 0).toString();
+                String data = model.getValueAt(modelRow, 1).toString();
+                String indirizzo = model.getValueAt(modelRow, 2).toString();
+                String totale = model.getValueAt(modelRow, 3).toString();
+                String statoAttuale = model.getValueAt(modelRow, 4).toString();
 
+                //da spostare in order details
                 //ERRORE ORDINE SELEZIONATO ANNULLATO O CONSEGNATO
-                if (statoAttuale.equalsIgnoreCase("CONSEGNATO") || statoAttuale.equalsIgnoreCase("ANNULLATO")) {
+                if (ordController.isTerminale(order_id)) {
                     JOptionPane.showMessageDialog(contentPane,
                             "Non è possibile modificare un ordine che si trova in stato: " + statoAttuale,
                             "Modifica non consentita",
@@ -76,26 +97,21 @@ public class VisualizzaOrdini {
                     return;
                 }
 
-                // 3. Trova il Frame principale per passarlo al JDialog
+                //Trova il Frame principale per passarlo al JDialog
                 Frame topFrame = (Frame) SwingUtilities.getWindowAncestor(contentPane);
 
-                // 4. Crea e mostra il Dialog OrderDetails
-                OrderDetails dialog = new OrderDetails(topFrame, data, indirizzo, statoAttuale);
+                //Crea e mostra il Dialog OrderDetails
+                OrderDetails dialog = new OrderDetails(topFrame, order_id, data, indirizzo, statoAttuale);
                 dialog.pack();
                 dialog.setLocationRelativeTo(contentPane); // Centra il dialog rispetto alla tabella
                 dialog.setVisible(true); // Questa chiamata è bloccante finché il dialog non si chiude
 
-                // 5. Se l'utente ha premuto OK, aggiorna la tabella
+                //Se l'utente ha premuto OK, aggiorna la tabella
                 if (dialog.isConfirmed()) {
                     String nuovoStato = dialog.getNuovoStato();
-
+                    ordController.modificaOrdine(order_id, nuovoStato);
                     // Aggiorna il modello della tabella alla colonna dell'Id dello Stato (indice 3)
-                    model.setValueAt(nuovoStato, modelRow, 3);
-
-                    // TODO: Qui andrà la chiamata al tuo Controller/Database per salvare il nuovo stato dell'ordine
-                    // esempio: ordineController.aggiornaStato(ordineId, nuovoStato);
-
-
+                    model.setValueAt(nuovoStato, modelRow, 4);
                     JOptionPane.showMessageDialog(contentPane, "Stato dell'ordine aggiornato con successo!");
                 }
             }

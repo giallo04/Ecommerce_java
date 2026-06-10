@@ -22,10 +22,11 @@ public class RegistroOrdini {
         Ordine ordine=gestorePersistenza.trovaPerId(Ordine.class,order_id);
         if(ordine==null){
             throw new IllegalArgumentException("Ordine "+order_id+" non presente nel database");
-        }else {
+        }else{
             ordine.setStatoOrdine(newStato);
             gestorePersistenza.aggiorna(ordine);
         }
+
     }
 
     public List<Ordine> caricaOrdini(){
@@ -38,4 +39,14 @@ public class RegistroOrdini {
     public boolean registraOrdine(Ordine ordine){
         return gestorePersistenza.salva(ordine);
     }
+
+    public boolean isTerminale(long order_id){
+        Ordine ordine = gestorePersistenza.trovaPerId(Ordine.class, order_id);
+        return ordine.getStatoOrdine().isTerminale();
+    }
+
+    public boolean inviaMessaggio(){
+        return true;
+    }
 }
+
