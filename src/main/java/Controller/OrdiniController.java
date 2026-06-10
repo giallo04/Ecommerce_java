@@ -107,6 +107,13 @@ public class OrdiniController {
         return reg.isTerminale(orderId);
     }
 
+    public String totaleOrdine(String order_id){
+        long orderId = Long.parseLong(order_id);
+        RegistroOrdini reg = new RegistroOrdini();
+        float totale = reg.totaleOrdine(orderId);
+        String totString = String.valueOf(totale);
+        return totString;
+    }
     //aggiungere statistiche ordini e annulla ordini da implementare anche in registro ordini
 
 }

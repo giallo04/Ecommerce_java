@@ -48,5 +48,10 @@ public class RegistroOrdini {
     public boolean inviaMessaggio(){
         return true;
     }
+
+    public float totaleOrdine(long order_id){
+        Ordine ordine = gestorePersistenza.trovaPerId(Ordine.class, order_id);
+        return ordine.getTotale();
+    }
 }
 
