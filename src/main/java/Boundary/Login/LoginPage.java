@@ -96,6 +96,11 @@ public class LoginPage {
        }
     }
     private void loadRegisterGUI(){
-        App.mostraRegistrazione();
+            RegistrazioneForm form = new RegistrazioneForm();
+            form.pack();
+            form.setLocationRelativeTo(pane);
+            form.setVisible(true);
+            form.setLocationRelativeTo(null);
+
     }
 }

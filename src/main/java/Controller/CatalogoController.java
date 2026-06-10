@@ -119,10 +119,10 @@ public class CatalogoController {
         }
     }
 
-    public boolean aggiungiProdotto(String nome, String prezzo, String descrizione,String categoria,String quantita,String imgPath){
+    public boolean aggiungiProdotto(String nome, String prezzo, String descrizione,String categoria,String quantita,String imgPath,String sconto){
         RegistroProdotti registro=new RegistroProdotti();
         try{
-            long id=registro.aggiungiProdotto(nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita));
+            long id=registro.aggiungiProdotto(nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita),Integer.parseInt(sconto));
             copyImage(id,imgPath);
             return true;
         }catch (IllegalArgumentException e){

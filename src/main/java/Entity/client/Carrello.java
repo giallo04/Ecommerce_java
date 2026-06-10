@@ -10,6 +10,7 @@ public class Carrello {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = RigaCarrello.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
+    @MapKeyColumn(name = "product_id", insertable = false, updatable = false)
     private Map<Long, RigaCarrello> prodotti = new LinkedHashMap<>();
 
     public List<RigaCarrello> getProdotti() {

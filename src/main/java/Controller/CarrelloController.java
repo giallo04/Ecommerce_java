@@ -129,32 +129,41 @@ public class CarrelloController {
         Carrello carrello = utente.getCarrello();
 
         List<RigaCarrello> righe = carrello.getProdotti();
-        if (utente.verificaCredito(carrello.getTotale())) {
+            if (righe.isEmpty()) {
+                setMsg("Carrello vuoto non si puo effettuare un ordine");
+                return false;
+            }
             RegistroOrdini registroOrdini = new RegistroOrdini();
             Ordine ordine = new Ordine(utente.getIndirizzo(),idUtente);
             try {
                 for (RigaCarrello riga : righe) {
                     ordine.addRigaOrdine(riga.getProdotto(), riga.getQuantita());
                 }
+            } catch (IllegalArgumentException e) {
+                setMsg(e.getMessage());
+                return false;
+            }
+
+            if(utente.verificaCredito(carrello.getTotale())) {
+
                 //Tolgo dal magazzino solo se tutti i prodotti sono stati ordinati correttamente
                 RegistroProdotti registroProdotti=new RegistroProdotti();
                 for (RigaCarrello riga : righe) {
                     riga.getProdotto().decrementQt(riga.getQuantita());
                     registroProdotti.aggiornaProdotto(riga.getProdotto());
                 }
-                //svuoto carrello
-                carrello.svuotaCarrello();
-                registroUtenti.aggiornaUtente(utente);
-            } catch (IllegalArgumentException e) {
-                setMsg(e.getMessage());
-                return false;
-            }
+
+                    //svuoto carrello
+                    carrello.svuotaCarrello();
+                    registroUtenti.aggiornaUtente(utente);
+                }else{
+                    setMsg("Credito insufficiente per effettuare l'ordine");
+                    return false;
+                }
+
             registroOrdini.registraOrdine(ordine);
             return true;
-        } else {
-            setMsg("Credito insufficiente per effettuare l'ordine");
-            return false;
         }
-    }
-
 }
+
+

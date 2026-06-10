@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import Boundary.Utils.ImageUtils;
 public class ProductInHome{
     private long id;
-    private Runnable onCartChanged;
     private JPanel pane;
     private JPanel offerPane;
     private JLabel offerLabel;
@@ -23,8 +22,7 @@ public class ProductInHome{
     private JLabel productPrice;
     private JLabel categoryLabel;
     private JPanel infoPanel;
-    public ProductInHome(String id,String name, String price, String category, String offer,String imgPath,Runnable onCartChanged){
-        this.onCartChanged=onCartChanged;
+    public ProductInHome(String id,String name, String price, String category, String offer,String imgPath){
         this.id=Long.parseLong(id);
         //estetica
         Color customColor = new Color(79,70,229);
@@ -78,7 +76,7 @@ public class ProductInHome{
         return pane;
     }
         private void goToProduct(){
-            ProductDetail productDetail=new ProductDetail(getName(),onCartChanged);
+            ProductDetail productDetail=new ProductDetail(getName());
             productDetail.pack();
             productDetail.setVisible(true);
     }
@@ -86,7 +84,6 @@ public class ProductInHome{
         CarrelloController controller=new CarrelloController();
         if(controller.aggiungiAlCarrello(id,1)){
             JOptionPane.showMessageDialog(null, "Prodotto aggiunto al carrello");
-            onCartChanged.run();
         }else{
             JOptionPane.showMessageDialog(null, controller.getMsg());
         }
