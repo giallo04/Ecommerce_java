@@ -53,5 +53,11 @@ public class RegistroOrdini {
         Ordine ordine = gestorePersistenza.trovaPerId(Ordine.class, order_id);
         return ordine.getTotale();
     }
+
+    public void aggiungiOrdine(long user_id, Indirizzo indirizzo, List<RigaOrdine> inOrdine){
+        Ordine ordine = new Ordine(indirizzo, user_id);
+        GestorePersistenza gest = new GestorePersistenza();
+        gest.salva(ordine);
+    }
 }
 

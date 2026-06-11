@@ -6,6 +6,7 @@ import Entity.Ordini.Ordine;
 import Entity.Ordini.RegistroOrdini;
 import Entity.Ordini.RigaOrdine;
 import Entity.Ordini.StatoOrdine;
+import Entity.client.Indirizzo;
 import com.google.protobuf.Message;
 
 import java.util.ArrayList;
@@ -147,4 +148,6 @@ public class OrdiniController {
 
         return riga;
     }
+
+
 }
