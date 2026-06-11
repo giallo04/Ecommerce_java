@@ -1,13 +1,12 @@
 package Boundary.ClientView;
 
-import Boundary.Login.RegistrazioneForm;
+import Boundary.Template.UserDataForm;
 
 import javax.swing.*;
 import Boundary.Utils.ImageUtils;
 import Controller.AccountController;
-import Controller.Stub;
 
-public class ShowModificaProfiloDialog extends RegistrazioneForm {
+public class ShowModificaProfiloDialog extends UserDataForm {
     public ShowModificaProfiloDialog() {
         super();
         setTitle("Modifica Profilo");

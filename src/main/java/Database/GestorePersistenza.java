@@ -1,8 +1,11 @@
 package Database;
 
+import Entity.Merce.Prodotto;
+import Entity.Ordini.Ordine;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -365,4 +368,51 @@ public class GestorePersistenza {
         }
     }
 
+    /*
+     * Carica tutti gli oggetti di una determinata classe in cui un campo di tipo data
+     * è successivo o uguale a un mese fa rispetto a oggi.
+     */
+    public <T> List<T> caricaElementiUltimoMese(Class<T> classe, String nomeCampoData) {
+        EntityManager em = JpaUtil.getInstance().getEntityManager();
+        try {
+            LocalDate unMeseFa = LocalDate.now().minusMonths(1);
+
+            String jpql = "SELECT e FROM " + classe.getSimpleName() + " e WHERE e." + nomeCampoData + " >= :dataInizio";
+
+            TypedQuery<T> query = em.createQuery(jpql, classe);
+            query.setParameter("dataInizio", unMeseFa);
+            return query.getResultList();
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    /*
+     * Restituisce l'oggetto più "presente/venduto" basandosi sul conteggio o sulla somma
+     * di un campo quantitativo all'interno di una classe di giunzione (es. RigaOrdine).
+     */
+    public <T> List<T> elementoPiuVenduto(Class<T> classeTarget, Class<?> classeRelazione, String campo_id, String campoDaSommare) {
+        EntityManager em = JpaUtil.getInstance().getEntityManager();
+        try {
+            String jpql = "SELECT r." + campo_id + " FROM " + classeRelazione.getSimpleName() + " r " +
+                    "GROUP BY r." + campo_id + " " +
+                    "ORDER BY SUM(r." + campoDaSommare + ") DESC";
+
+            TypedQuery<T> query = em.createQuery(jpql, classeTarget);
+            query.setMaxResults(20);
+
+            List<T> risultati = query.getResultList();
+            return risultati.isEmpty() ? null : risultati;
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

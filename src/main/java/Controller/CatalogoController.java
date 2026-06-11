@@ -1,8 +1,10 @@
 package Controller;
 
+import Database.GestorePersistenza;
 import Entity.Merce.Categoria;
 import Entity.Merce.Prodotto;
 import Entity.Merce.RegistroProdotti;
+import Entity.Ordini.RigaOrdine;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -119,10 +121,10 @@ public class CatalogoController {
         }
     }
 
-    public boolean aggiungiProdotto(String nome, String prezzo, String descrizione,String categoria,String quantita,String imgPath){
+    public boolean aggiungiProdotto(String nome, String prezzo, String descrizione,String categoria,String quantita,String imgPath,String sconto){
         RegistroProdotti registro=new RegistroProdotti();
         try{
-            long id=registro.aggiungiProdotto(nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita));
+            long id=registro.aggiungiProdotto(nome,descrizione,Float.parseFloat(prezzo), Categoria.valueOf(categoria),Integer.parseInt(quantita),Integer.parseInt(sconto));
             copyImage(id,imgPath);
             return true;
         }catch (IllegalArgumentException e){
@@ -186,4 +188,14 @@ public class CatalogoController {
         Path destinazione=Path.of(PRODUCTS_IMG_PATH+id+".png");
         Files.copy(sorgente,destinazione);
     }
+
+
+    public List<String[]> prodottiPiuVenduti(){
+        RegistroProdotti registro=new RegistroProdotti();
+        List<Prodotto> prodotti=registro.ProdottiPiuVenduti();
+        if(prodotti.isEmpty())return null;
+        return convertToGui(prodotti);
+    }
+
+
 }

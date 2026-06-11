@@ -1,9 +1,10 @@
 package Boundary.ManagerView;
 
+import Boundary.ManagerView.ListaOrdini.OrderDetailManager;
 import Controller.AccountController;
 import Eseguibile.App;
 import Boundary.ManagerView.Catalogo.Catalogo;
-import Boundary.ManagerView.ListaOrdini.VisualizzaOrdini;
+import Boundary.Template.VisualizzaOrdini;
 import Boundary.Utils.StyleUtils;
 import javax.swing.*;
 import java.awt.*;
@@ -73,9 +74,19 @@ public class Dashboard {
         statisticheButton.addActionListener(e -> {onStatistiche();});
 
         catalogoButton.addActionListener(e -> {onCatalogo();});
+
+
         ordiniButton.addActionListener(e -> {contentPanel.removeAll();
-            VisualizzaOrdini pane=new VisualizzaOrdini();
-            contentPanel.add(pane.getContentPane());
+            VisualizzaOrdini pane=new VisualizzaOrdini(){
+                @Override
+                protected void openWindow(String id) {
+                   OrderDetailManager pane=new OrderDetailManager(id);
+                   pane.setVisible(true);
+                   pane.pack();
+                   pane.setLocationRelativeTo(contentPanel);
+                }
+            };
+            contentPanel.add(pane.getPane());
             contentPanel.revalidate();
             contentPanel.repaint();
         });

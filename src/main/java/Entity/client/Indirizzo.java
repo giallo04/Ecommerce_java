@@ -15,15 +15,19 @@ public class Indirizzo {
 
 
 
-    public Indirizzo(String citta, String provincia,String via,int cap)throws IllegalArgumentException
+    public Indirizzo(String citta, String provincia,String via,String cap)throws IllegalArgumentException
     {
-        if(citta==null && provincia==null && via==null && cap==0)
+        if(citta==null && provincia==null && via==null && cap==null)
         { throw new IllegalArgumentException("\nInserire citta', provincia, via e cap validi!\n");
         } else {
-            this.citta = citta;
-            this.provincia = provincia;
-            this.via = via;
-            this.cap = cap;
+            setCitta(citta);
+            setProvincia(provincia);
+            setVia(via);
+            try{
+                setCap(Integer.parseInt(cap));
+            }catch (NumberFormatException e){
+                throw new IllegalArgumentException("Cap deve essere un numero");
+            }
         }
     }
 
@@ -51,23 +55,28 @@ public class Indirizzo {
     }
 
     public void setCitta(String citta) {
+        if(citta.isEmpty()) throw new IllegalArgumentException("Citta non puo essere vuota");
+        if(citta.contains(" ")) throw new IllegalArgumentException("Citta non puo contenere spazi");
         this.citta = citta;
     }
 
     public void setProvincia(String provincia) {
+        if(provincia.isEmpty()) throw new IllegalArgumentException("Provincia non puo essere vuota");
         this.provincia = provincia;
     }
 
     public void setVia(String via) {
+        if(via.isEmpty()) throw new IllegalArgumentException("Via non puo essere vuota");
         this.via = via;
     }
 
     public void setCap(int cap) {
+        if(cap<0) throw new IllegalArgumentException("Cap non puo essere negativo");
         this.cap = cap;
     }
 
     @Override
     public String toString() {
-        return citta+"in provincia di "+provincia+" via "+via+" cap "+cap;
+        return citta+" in provincia di "+provincia+"  "+via+"  "+cap;
     }
 }

@@ -64,12 +64,23 @@ public class Ordine {
         return Collections.unmodifiableList(inOrdine);
     }
 
+    public long getOrderId(){ return order_id;}
+
     //modifica ordine
     public void setStatoOrdine(StatoOrdine statoOrdine) {
-
+        //Controlla che il nuovo stato sia valido
         if(statoOrdine.ordinal() < this.statoOrdine.ordinal()) throw new IllegalArgumentException("Lo stato inserito non è valido");
+
+        //Ripristina gli oggetti se il nuovo stato è annullato
+        if(statoOrdine == StatoOrdine.ANNULLATO){
+            for(RigaOrdine riga: inOrdine){
+                riga.getProdotto().incrementQt(riga.getQtaProdotto());
+            }
+        }
+        //salva le modifiche
         this.statoOrdine = statoOrdine;
     }
+
 
     public void addRigaOrdine(Prodotto prodotto, int qtaProdotto){
         if(prodotto.getQuantita()<qtaProdotto){
@@ -98,5 +109,13 @@ public class Ordine {
                 ", statoOrdine=" + statoOrdine +
                 ", inOrdine=" + inOrdine +
                 '}';
+    }
+
+    public float calcolaTotaleOrdine(){
+        float totale = 0;
+        for(RigaOrdine rigaOrdine: inOrdine) {
+            totale = totale + rigaOrdine.getPrezzo();
+        }
+        return totale;
     }
 }

@@ -1,8 +1,10 @@
 package Boundary.ClientView;
 
 import Boundary.ClientView.Carrello.CarrelloDialog;
-import Boundary.ClientView.Carrello.ProductInCart;
-import Controller.CarrelloController;
+import Boundary.ClientView.OrderDetail.OrderDetailClient;
+import Boundary.ManagerView.ListaOrdini.OrderDetailManager;
+import Boundary.Template.VisualizzaOrdini;
+import Controller.OrdiniController;
 import Eseguibile.App;
 import Boundary.ClientView.Catalogo.ProductInHome;
 import Controller.CatalogoController;
@@ -114,18 +116,41 @@ public class MainPage {
     private void goToCart() {
         CarrelloDialog dialog=new CarrelloDialog();
         dialog.pack();
+        dialog.setLocationRelativeTo(pane);
         dialog.setVisible(true);
     }
 
-    private void goToOrder(){//TODO
+    private void goToOrder(){
+        productsPanel.removeAll();
+        productsPanel.setLayout(new BorderLayout());
+
+        VisualizzaOrdini panel = new VisualizzaOrdini() {
+            @Override
+            protected void openWindow(String id) {
+                OrderDetailClient paneOrder = new OrderDetailClient(id);
+                paneOrder.setVisible(true);
+                paneOrder.pack();
+                paneOrder.setLocationRelativeTo(pane);
+            }
+            @Override
+            protected List<String[]> filter() {
+                OrdiniController controller = new OrdiniController();
+                return controller.caricaOrdiniUtente();
+            }
+        };
+
+        productsPanel.add(panel.getPane(), BorderLayout.CENTER);
+        productsPanel.revalidate();
+        productsPanel.repaint();
     }
     private void goToProfile(){
         ShowModificaProfiloDialog dialog = new ShowModificaProfiloDialog();
         dialog.pack();
+        dialog.setLocationRelativeTo(pane);
         dialog.setVisible(true);
     }
     private void goToHome(){
-
+        updateView();
     }
 
 
@@ -166,11 +191,12 @@ public class MainPage {
 
     private void renderProducts(ArrayList<ProductInHome> products) {
         if(products == null) {
-            JOptionPane.showMessageDialog(pane, "Nessun prodotto trovato.","Info",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(pane, "Nessun prodotto trovato.", "Info", JOptionPane.INFORMATION_MESSAGE);
             queryTextField.setText("");
             return;
         }
         productsPanel.removeAll();
+        productsPanel.setLayout(new GridLayout(0, 3, 20, 20));
         for(ProductInHome p : products){
             productsPanel.add(p.getPane());
         }

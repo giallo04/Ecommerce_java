@@ -29,7 +29,7 @@ public class Prodotto {
         setPrezzo(prezzo);
         setDescrizione(descrizione);
         setCategoria(categoria);
-        this.quantita=quantita;
+        setQuantita(quantita);
         this.sconto=0;
     }
 
@@ -52,6 +52,13 @@ public class Prodotto {
     public void setSconto(int sconto) {
         if (sconto < 0 || sconto > 100) throw new IllegalArgumentException("Sconto non valido");
         this.sconto = sconto;
+    }
+    private void setQuantita(int quantita) {
+        if(quantita<0){
+            throw new IllegalArgumentException("Quantità non puo essere negativa");
+        }else {
+            this.quantita=quantita;
+        }
     }
   public void incrementQt(int quantita){
         if(quantita<0){

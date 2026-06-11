@@ -1,4 +1,5 @@
 package Boundary.ManagerView.Catalogo;
+import Boundary.Template.TablePane;
 import Controller.CatalogoController;
 import Boundary.Utils.TableUtils;
 
@@ -10,33 +11,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 
-public class Catalogo {
-    private final JPanel pane;
-    private JTable table;
-    private DefaultTableModel model;
+public class Catalogo extends TablePane {
+
     public Catalogo() {
-        pane = new JPanel(new BorderLayout());
-        pane.setOpaque(false);
-        loadCatalogo();
+        super(new String[]{"ID", "Nome", "Prezzo","Quantità","Categoria", "Sconto"},"Gestione Catalogo");
     }
-
-
-    private void loadCatalogo() {
+    @Override
+    protected void loadTableData() {
         //Static definition of the table
         //load products from database
-        pane.removeAll();
-        model = new DefaultTableModel(null, new String[]{"ID", "Nome", "Prezzo","Quantità","Categoria", "Sconto"}){
-            @Override
-            public boolean isCellEditable(int row, int col) { return false; }
-        };
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-
-        table = buildTable(model, sorter);
-        JPanel card = TableUtils.wrapInCard("Gestione Catalogo", table);
-
-        card.add(buildControlPanel(sorter), BorderLayout.SOUTH);
-
-        pane.add(card, BorderLayout.CENTER);
+        model.setRowCount(0);
         CatalogoController controller=new CatalogoController();
         List <String[]> dati=controller.caricaCatalogo();
         if(dati!=null) {
@@ -50,50 +34,10 @@ public class Catalogo {
                 model.addRow(new String[]{id,nome,prezzo,quantita,categoria,sconto});
             }
         }
-        pane.revalidate();
-        pane.repaint();
     }
 
-    private JTable buildTable(DefaultTableModel model, TableRowSorter<DefaultTableModel> sorter) {
-        JTable t = TableUtils.createStyledTable(model);
-        t.setRowSorter(sorter);
-        return t;
-    }
-
-    private JPanel buildControlPanel(TableRowSorter<DefaultTableModel> sorter) {
-        JPanel panel = new JPanel(new BorderLayout(10, 0));
-        panel.setOpaque(false);
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        panel.add(buildSearchPanel(sorter), BorderLayout.WEST);
-        panel.add(buildActionPanel(),       BorderLayout.EAST);
-
-        return panel;
-    }
-
-    private JPanel buildSearchPanel(TableRowSorter<DefaultTableModel> sorter) {
-        JTextField txtSearch = new JTextField(15);
-        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e)  { applyFilter(); }
-            public void removeUpdate(DocumentEvent e)  { applyFilter(); }
-            public void changedUpdate(DocumentEvent e) { applyFilter(); }
-
-            private void applyFilter() {
-                String text = txtSearch.getText().trim();
-                sorter.setRowFilter(text.isEmpty() ? null : RowFilter.regexFilter("^" + text, 1));
-            }
-        });
-
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        panel.setOpaque(false);
-        JLabel lblSearch = new JLabel("Cerca:");
-        lblSearch.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        panel.add(lblSearch);
-        panel.add(txtSearch);
-        return panel;
-    }
-
-    private JPanel buildActionPanel() {
+    @Override
+    protected JPanel buildActionPanel() {
         JButton btnMod   = createButton("Modifica prodotto");
         JButton btnRemove = createButton("Rimuovi");
         JButton btnAdd    = createButton("Aggiungi prodotto");
@@ -119,8 +63,9 @@ public class Catalogo {
         String id=model.getValueAt(viewRow,0).toString();
         ShowModificaProdottoDialog dialog = new ShowModificaProdottoDialog(id);
         dialog.pack();
+        dialog.setLocationRelativeTo(pane);
         dialog.setVisible(true);
-        loadCatalogo();
+        loadTableData();
     }
 
     private void onRemove() {
@@ -134,22 +79,14 @@ public class Catalogo {
         }else {
             JOptionPane.showMessageDialog(pane, controller.getMsg());
         }
-        loadCatalogo();
+        loadTableData();
     }
 
     private void onAdd() {
         ShowAggiungiProdottoDialog dialog = new ShowAggiungiProdottoDialog();
         dialog.pack();
+        dialog.setLocationRelativeTo(pane);
         dialog.setVisible(true);
-        loadCatalogo();
+        loadTableData();
     }
-
-    private JButton createButton(String text) {
-        JButton btn = new JButton(text);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        return btn;
-    }
-
-    public JPanel getPane() { return pane; }
 }

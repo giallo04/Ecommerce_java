@@ -43,7 +43,7 @@ public class AccountController {
             return false;
         }else {
             try{
-                Utente newUser=new Utente(nome,cognome,email,password,new Indirizzo(citta,provincia,via,Integer.parseInt(cap)));
+                Utente newUser=new Utente(nome,cognome,email,password,new Indirizzo(citta,provincia,via,cap));
                 gestoreUtenti.registraUtente(newUser);
                 //Salvo l'immagine dell'utente
                 Files.copy(Path.of(imgPath), Path.of(USER_IMG_PATH + newUser.getUser_id() + ".png"));
@@ -88,7 +88,7 @@ public class AccountController {
                     return false;
                 }
                 if(nuovaPassword.isEmpty()){nuovaPassword=vecchiaPassword;}
-                gestoreUtenti.aggiornaUtente(current_user_id,nome,cognome,user.getEmail(),nuovaPassword,new Indirizzo(citta,provincia,via,Integer.parseInt(cap)));
+                gestoreUtenti.aggiornaUtente(current_user_id,nome,cognome,user.getEmail(),nuovaPassword,new Indirizzo(citta,provincia,via,cap));
                 if(!img.isEmpty()){
                     //elimino l'immagine vecchia'
                     Files.copy(Path.of(img),Path.of(USER_IMG_PATH+current_user_id+".png"), StandardCopyOption.REPLACE_EXISTING);
