@@ -1,12 +1,11 @@
 package Controller;
 
 import Database.GestorePersistenza;
-import Entity.Merce.Categoria;
+
 import Entity.Ordini.Ordine;
 import Entity.Ordini.RegistroOrdini;
 import Entity.Ordini.RigaOrdine;
 import Entity.Ordini.StatoOrdine;
-import com.google.protobuf.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +112,14 @@ public class OrdiniController {
         }
     }
 
+
+    public List<String[]> reportOrdiniMensili(){
+        GestorePersistenza gestore = new GestorePersistenza();
+        List<Ordine> ordiniMese = gestore.caricaElementiUltimoMese(Ordine.class,"data");
+        if(ordiniMese.isEmpty()){return null;}
+        List<String[]> righe = new ArrayList<>();
+        return convertOrderToGui(ordiniMese);
+    }
 
     public List<String> getStatiOrdine(){
         List<String> stati=new ArrayList<>();

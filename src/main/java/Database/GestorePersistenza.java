@@ -368,37 +368,49 @@ public class GestorePersistenza {
         }
     }
 
-    //Metodi Per Generare Statistiche Sugli Ordini
-    public List<Ordine> caricaOrdiniUltimoMese() {
+    /*
+     * Carica tutti gli oggetti di una determinata classe in cui un campo di tipo data
+     * è successivo o uguale a un mese fa rispetto a oggi.
+     */
+    public <T> List<T> caricaElementiUltimoMese(Class<T> classe, String nomeCampoData) {
         EntityManager em = JpaUtil.getInstance().getEntityManager();
         try {
             LocalDate unMeseFa = LocalDate.now().minusMonths(1);
 
-            TypedQuery<Ordine> query = em.createQuery(
-                    "SELECT o FROM Ordine o WHERE o.data >= :dataInizio",
-                    Ordine.class
-            );
+            String jpql = "SELECT e FROM " + classe.getSimpleName() + " e WHERE e." + nomeCampoData + " >= :dataInizio";
+
+            TypedQuery<T> query = em.createQuery(jpql, classe);
             query.setParameter("dataInizio", unMeseFa);
             return query.getResultList();
 
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw e;
         } finally {
             em.close();
         }
     }
 
-    public Prodotto prodottoPiùVenduto() {
+    /*
+     * Restituisce l'oggetto più "presente/venduto" basandosi sul conteggio o sulla somma
+     * di un campo quantitativo all'interno di una classe di giunzione (es. RigaOrdine).
+     */
+    public <T> List<T> elementoPiuVenduto(Class<T> classeTarget, Class<?> classeRelazione, String campo_id, String campoDaSommare) {
         EntityManager em = JpaUtil.getInstance().getEntityManager();
         try {
-            TypedQuery<Prodotto> query = em.createQuery(
-                    "SELECT r.prodotto FROM RigaOrdine r " +
-                            "GROUP BY r.prodotto " +
-                            "ORDER BY SUM(r.qtaProdotto) DESC",
-                    Prodotto.class
-            );
-            query.setMaxResults(1); // prende solo il primo (il più venduto)
-            List<Prodotto> risultati = query.getResultList();
-            return risultati.isEmpty() ? null : risultati.get(0);
+            String jpql = "SELECT r." + campo_id + " FROM " + classeRelazione.getSimpleName() + " r " +
+                    "GROUP BY r." + campo_id + " " +
+                    "ORDER BY SUM(r." + campoDaSommare + ") DESC";
 
+            TypedQuery<T> query = em.createQuery(jpql, classeTarget);
+            query.setMaxResults(20);
+
+            List<T> risultati = query.getResultList();
+            return risultati.isEmpty() ? null : risultati;
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw e;
         } finally {
             em.close();
         }

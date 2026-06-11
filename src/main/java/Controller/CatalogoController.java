@@ -1,8 +1,10 @@
 package Controller;
 
+import Database.GestorePersistenza;
 import Entity.Merce.Categoria;
 import Entity.Merce.Prodotto;
 import Entity.Merce.RegistroProdotti;
+import Entity.Ordini.RigaOrdine;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -186,4 +188,14 @@ public class CatalogoController {
         Path destinazione=Path.of(PRODUCTS_IMG_PATH+id+".png");
         Files.copy(sorgente,destinazione);
     }
+
+
+    public List<String[]> prodottiPiuVenduti(){
+        GestorePersistenza gestore = new GestorePersistenza();
+        List<Prodotto> prodotti=gestore.elementoPiuVenduto(Prodotto.class, RigaOrdine.class,"product_id","qtaProdotto");
+        if(prodotti.isEmpty())return null;
+        return convertToGui(prodotti);
+    }
+
+
 }
