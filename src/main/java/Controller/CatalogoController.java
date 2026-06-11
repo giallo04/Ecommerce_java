@@ -192,9 +192,9 @@ public class CatalogoController {
 
     public List<String[]> prodottiPiuVenduti(){
         RegistroProdotti registro=new RegistroProdotti();
-        List<Prodotto> prodotti=registro.ProdottiPiuVenduti();
+        List<String[]> prodotti=registro.ProdottiPiuVenduti();
         if(prodotti.isEmpty())return null;
-        return convertToGui(prodotti);
+        return prodotti;
     }
 
 

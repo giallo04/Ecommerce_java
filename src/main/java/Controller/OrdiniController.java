@@ -6,6 +6,7 @@ import Entity.Ordini.Ordine;
 import Entity.Ordini.RegistroOrdini;
 import Entity.Ordini.RigaOrdine;
 import Entity.Ordini.StatoOrdine;
+import Entity.client.RegistroUtenti;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +132,9 @@ public class OrdiniController {
         }
         return stati;
     }
-    //aggiungere statistiche ordini
+    public String getNumberOrderInLavorazione(){
+        RegistroOrdini registroOrdini=new RegistroOrdini();
+        return String.valueOf(registroOrdini.conteggioOrdiniInLavorazione());
+    }
 
 }

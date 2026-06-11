@@ -10,7 +10,8 @@ public class RigaOrdine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long riga_id;
-    @ManyToOne @JoinColumn(name = "product_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "product_id")
     private Prodotto prodotto;
     int qtaProdotto;
     float prezzo;

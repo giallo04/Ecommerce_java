@@ -2,6 +2,7 @@ package Boundary.ManagerView;
 
 import Boundary.ManagerView.ListaOrdini.OrderDetailManager;
 import Controller.AccountController;
+import Controller.OrdiniController;
 import Eseguibile.App;
 import Boundary.ManagerView.Catalogo.Catalogo;
 import Boundary.Template.VisualizzaOrdini;
@@ -49,7 +50,11 @@ public class Dashboard {
                 AccountController controller=new AccountController();
                 labelNUtenti=new JLabel(controller.getNumberUtenti());
         }
-        if (labelNOrdini == null) labelNOrdini = new JLabel("342");//TODO CONTROLLER FOR DATA RECOVERY
+        if (labelNOrdini == null) {
+            labelNOrdini = new JLabel();
+            OrdiniController controller=new OrdiniController();
+            labelNOrdini.setText(controller.getNumberOrderInLavorazione());
+        }
 
         // TOP PANEL
         JPanel statsContainer = new JPanel(new GridLayout(1, 2, 25, 0));
@@ -58,7 +63,7 @@ public class Dashboard {
         statsContainer.setBorder(BorderFactory.createEmptyBorder(30, 40, 5, 40));
 
         statsContainer.add(StyleUtils.createStatCard("Utenti Registrati", labelNUtenti));
-        statsContainer.add(StyleUtils.createStatCard("Ordini in Lavorazione", labelNOrdini));
+        statsContainer.add(StyleUtils.createStatCard("Ordini in Preparazione", labelNOrdini));
 
         viewPanel.add(statsContainer, BorderLayout.NORTH);
 

@@ -25,15 +25,18 @@ public class Statistiche {
                 new String[]{"Prodotto", "Quantità residua"},data
 
         ));
+        OrdiniController ordiniController = new OrdiniController();
+        data=ordiniController.reportOrdiniMensili();
         sections.add(buildSection(
-                "Ordini in attesa di consegna",
-                new String[]{"Ordine", "Cliente", "Indirizzo", "Totale"},
-                Collections.emptyList()   // TODO: replace with real controller call
+                "Ordini nel corso del mese",
+                new String[]{"Order ID", "Data", "Indirizzo", "Totale","stato Ordine"},
+                data
         ));
+        data=controller.prodottiPiuVenduti();
         sections.add(buildSection(
                 "Prodotti più venduti",
                 new String[]{"Prodotto", "Vendite"},
-                Collections.emptyList()  // TODO: replace with real controller call
+                data
         ));
     }
 

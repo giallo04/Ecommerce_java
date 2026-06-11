@@ -74,9 +74,9 @@ public class Ordine {
         if(StatoOrdine.ANNULLATO==statoOrdine){
             sendMsg();
             restoreCatalogo();
-            return;
         }
         this.statoOrdine = statoOrdine;
+        return;
     }
     private void restoreCatalogo(){
         for(RigaOrdine riga:inOrdine){

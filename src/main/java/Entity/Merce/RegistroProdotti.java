@@ -88,8 +88,18 @@ public class RegistroProdotti {
         return  gestore.cercePerCampoOrdinato(Prodotto.class, "quantita", true);
     }
 
-    public List<Prodotto> ProdottiPiuVenduti(){
-        return gestore.elementoPiuVenduto(Prodotto.class, RigaOrdine.class,"product_id","qtaProdotto");
+    public List<String[]> ProdottiPiuVenduti() {
+        List<Object[]> risultato = gestore.elementoPiuVenduto(RigaOrdine.class, "prodotto", "qtaProdotto");
+
+        List<String[]> risultati = new ArrayList<>();
+        if (risultato == null) return risultati;
+
+        for (Object[] o : risultato) {
+            if (o[0] instanceof Prodotto) {
+                risultati.add(new String[]{((Prodotto) o[0]).getNome(), String.valueOf(o[1])});
+            }
+        }
+        return risultati;
     }
 
 }

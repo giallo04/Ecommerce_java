@@ -1,13 +1,8 @@
 package Entity.Ordini;
 
 import Database.GestorePersistenza;
-import Entity.client.Indirizzo;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class RegistroOrdini {
 
@@ -40,12 +35,17 @@ public class RegistroOrdini {
     public Ordine cercaOrdinePerId(long order_id){
         return gestorePersistenza.trovaPerId(Ordine.class,order_id);
     }
-    public boolean registraOrdine(Ordine ordine){
-        return gestorePersistenza.salva(ordine);
+    public void registraOrdine(Ordine ordine){
+        gestorePersistenza.salva(ordine);
     }
     public List<Ordine> caricaOrdiniUltimoMese(){
         return gestorePersistenza.caricaElementiUltimoMese(Ordine.class,"data");
     }
 
+    public int conteggioOrdiniInLavorazione(){
+        GestorePersistenza gestore=new GestorePersistenza();
+        List<Ordine> ordini=gestore.cercaPerCampi(Ordine.class, Map.of("statoOrdine",StatoOrdine.IN_PREPARAZIONE));
+        return ordini.size();
+    }
 }
 

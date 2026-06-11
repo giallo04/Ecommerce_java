@@ -395,17 +395,18 @@ public class GestorePersistenza {
      * Restituisce l'oggetto più "presente/venduto" basandosi sul conteggio o sulla somma
      * di un campo quantitativo all'interno di una classe di giunzione (es. RigaOrdine).
      */
-    public <T> List<T> elementoPiuVenduto(Class<T> classeTarget, Class<?> classeRelazione, String campo_id, String campoDaSommare) {
+    public List<Object[]> elementoPiuVenduto(Class<?> classeRelazione, String campo_id, String campoDaSommare) {
         EntityManager em = JpaUtil.getInstance().getEntityManager();
         try {
-            String jpql = "SELECT r." + campo_id + " FROM " + classeRelazione.getSimpleName() + " r " +
+            String jpql = "SELECT r." + campo_id + ", SUM(r." + campoDaSommare + ") " +
+                    "FROM " + classeRelazione.getSimpleName() + " r " +
                     "GROUP BY r." + campo_id + " " +
                     "ORDER BY SUM(r." + campoDaSommare + ") DESC";
 
-            TypedQuery<T> query = em.createQuery(jpql, classeTarget);
+            TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
             query.setMaxResults(20);
 
-            List<T> risultati = query.getResultList();
+            List<Object[]> risultati = query.getResultList();
             return risultati.isEmpty() ? null : risultati;
 
         } catch (RuntimeException e) {

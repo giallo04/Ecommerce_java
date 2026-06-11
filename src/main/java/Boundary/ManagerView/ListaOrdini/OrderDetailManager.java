@@ -10,6 +10,9 @@ import javax.swing.*;
 public class OrderDetailManager extends OrderContainer {
     public OrderDetailManager(String orderId) {
         super(orderId);
+        setModalityType(ModalityType.APPLICATION_MODAL);
+        pack();
+        setLocationRelativeTo(null);
     }
 
 
