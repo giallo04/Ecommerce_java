@@ -1,6 +1,7 @@
 package Entity.Merce;
 
 import Database.GestorePersistenza;
+import Entity.Ordini.RigaOrdine;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,6 +86,10 @@ public class RegistroProdotti {
     public List<Prodotto> caricaProdottiInEsaurimento(){
         GestorePersistenza gestore=new GestorePersistenza();
         return  gestore.cercePerCampoOrdinato(Prodotto.class, "quantita", true);
+    }
+
+    public List<Prodotto> ProdottiPiuVenduti(){
+        return gestore.elementoPiuVenduto(Prodotto.class, RigaOrdine.class,"product_id","qtaProdotto");
     }
 
 }

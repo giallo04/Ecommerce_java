@@ -10,14 +10,15 @@ import java.awt.*;
 public  abstract class VisualizzaOrdini extends TablePane {
 
     public VisualizzaOrdini() {
-        super(new String[]{"Data", "OrderID", "Indirizzo", "Totale", "Stato Ordine"},"Gestione Ordini"); // Esempio di colonne fisiche
+        super(new String[]{"Data", "OrderID", "Indirizzo", "Totale", "Stato Ordine"},"Gestione Ordini");
     }
+
     @Override
     protected void loadTableData() {
+        model.setRowCount(0);
         //Static definition of the table
         //load products from database
-        OrdiniController controller=new OrdiniController();
-        List <String[]> dati=controller.caricaOrdini();
+        List <String[]> dati=filter();
         if(dati!=null) {
             for (String[] d : dati) {
                 String id=d[OrdiniController.ORDER_ID];
@@ -29,6 +30,10 @@ public  abstract class VisualizzaOrdini extends TablePane {
             }
         }
     }
+    protected List<String[]> filter(){
+        OrdiniController controller=new OrdiniController();
+        return controller.caricaOrdini();
+        }
 
     @Override
     protected JPanel buildActionPanel() {

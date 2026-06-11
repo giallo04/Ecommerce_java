@@ -3,7 +3,6 @@ package Boundary.ManagerView.ListaOrdini;
 import Boundary.Utils.ImageUtils;
 import Boundary.Template.Container.ContainerRow;
 import Controller.CatalogoController;
-import Entity.Ordini.RigaOrdine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +12,7 @@ public class ProductInOrdine extends ContainerRow {
     public ProductInOrdine(String productId, String qta,String prezzo) {
         super(productId,qta);
         priceLabel.setText("Prezzo: $ "+prezzo);
+        init(productId);
     }
 
 

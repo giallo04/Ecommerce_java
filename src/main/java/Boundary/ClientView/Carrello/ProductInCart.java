@@ -19,6 +19,7 @@ public class ProductInCart extends ContainerRow {
     public ProductInCart(String id,String qt,Runnable onCartChanged) {
         super(id,qt);
         this.onCartChanged=onCartChanged;
+        init(id);
     }
     @Override
     protected void init(String id){

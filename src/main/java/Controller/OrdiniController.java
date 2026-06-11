@@ -42,10 +42,9 @@ public class OrdiniController {
         return convertOrderToGui(ordini);
     }
 
-    public  List<String[]> caricaOrdiniUtente(String user_id){
+    public  List<String[]> caricaOrdiniUtente(){
         RegistroOrdini reg = new RegistroOrdini();
-        GestorePersistenza gestore = new GestorePersistenza();
-        long u_id = Long.parseLong(user_id);
+        long u_id = AccountController.get_current_user_id();
         List<Ordine> ordini = reg.caricaOrdiniUtente(u_id);
         if(ordini.isEmpty()){
             this.setError_msg("Non esiste alcun ordine per questo utente");
@@ -55,8 +54,7 @@ public class OrdiniController {
     }
     public String[] caricaOrdine(String order_id){
         RegistroOrdini reg = new RegistroOrdini();
-        GestorePersistenza gestore = new GestorePersistenza();
-        Ordine ordine = gestore.cercaPrimoPerCampi(Ordine.class, Map.of("order_id", order_id));
+        Ordine ordine=reg.cercaOrdinePerId(Long.parseLong(order_id));
         if(ordine==null){
             setError_msg("Non esiste alcun ordine relativo a questo order_id");
         }
@@ -77,8 +75,13 @@ public class OrdiniController {
         return righe;
         }
     public List<String[]> caricaRigheOrdine(String order_id){
-        GestorePersistenza gestore = new GestorePersistenza();
-        List<RigaOrdine> righeInOrdine = gestore.cercaPrimoPerCampi(Ordine.class,Map.of("order_id",order_id)).getInOrdine();
+        RegistroOrdini reg = new RegistroOrdini();
+        Ordine ordine=reg.cercaOrdinePerId(Long.parseLong(order_id));
+        if(ordine==null){
+            setError_msg("Non esiste alcun ordine relativo a questo order_id");
+            return null;
+        }
+        List<RigaOrdine> righeInOrdine=ordine.getInOrdine();
         if(righeInOrdine.isEmpty()){
              setError_msg("Non esiste alcun ordine relativo a questo order_id");
              return null;
@@ -114,8 +117,8 @@ public class OrdiniController {
 
 
     public List<String[]> reportOrdiniMensili(){
-        GestorePersistenza gestore = new GestorePersistenza();
-        List<Ordine> ordiniMese = gestore.caricaElementiUltimoMese(Ordine.class,"data");
+        RegistroOrdini reg = new RegistroOrdini();
+        List<Ordine> ordiniMese = reg.caricaOrdiniUltimoMese();
         if(ordiniMese.isEmpty()){return null;}
         List<String[]> righe = new ArrayList<>();
         return convertOrderToGui(ordiniMese);

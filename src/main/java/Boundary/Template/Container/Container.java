@@ -28,8 +28,13 @@ public abstract class Container extends JDialog {
         containerScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
         containerViewPanel.setLayout(new GridLayout(0, 1, 0, 0));
         containerScrollPanel.getHorizontalScrollBar().setEnabled(false);
-        salvaBtn.addActionListener(e -> onOK());
         infoPanel.setLayout(new GridLayout(0, 1, 0, 0));
+
+       //Viene configurato secondo le necessità con gli hook
+        salvaBtn.setVisible(isSaveBtnVisible());
+        salvaBtn.setEnabled(false);
+        salvaBtn.addActionListener(e -> onOK());
+
         backButton.addActionListener(e -> onCancel());
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -44,23 +49,44 @@ public abstract class Container extends JDialog {
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT
         );
-
     }
+
+    // --- Methods  hooks ---
+
+   //hook per il salvaBtn
+    protected boolean isSaveBtnVisible() {
+        return true;
+    }
+
+    //Hook per la comboBox
+    protected boolean isStatoEditable() {
+        return true;
+    }
+
+//default per quando cambia la combo box
+    protected void onStatoChanged() {
+        salvaBtn.setEnabled(true);
+    }
+
+
+    //Logica tasti
 
     private void onOK() {
         onBtn();
-        dispose();
     }
 
     private void onCancel() {
         dispose();
     }
 
+    // --- Metodi astratti
+
     protected abstract void doOnEmpty();
     protected abstract List<String[]> loadRows();
     protected abstract void addRow(List<String[]> rows);
+    protected abstract void onBtn();
 
-    // Cambiato in public o protected così che la sottoclasse possa chiamarlo al momento giusto
+
     public void refreshContainer() {
         List<String[]> rows = loadRows();
         containerViewPanel.removeAll();
@@ -72,6 +98,4 @@ public abstract class Container extends JDialog {
         containerViewPanel.revalidate();
         containerViewPanel.repaint();
     }
-
-    protected abstract void onBtn();
 }

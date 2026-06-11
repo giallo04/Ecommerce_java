@@ -10,7 +10,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 
 public abstract class TablePane extends JPanel {
-    protected final JPanel pane;
+    protected  final JPanel pane;
     protected JTable table;
     protected DefaultTableModel model;
     protected final String[] columns;
@@ -27,6 +27,7 @@ public abstract class TablePane extends JPanel {
     protected   void loadTable() {
         //Static definition of the table
         //load products from database
+        pane.removeAll();
         model = new DefaultTableModel(null, columns){
             @Override
             public boolean isCellEditable(int row, int col) { return false; }

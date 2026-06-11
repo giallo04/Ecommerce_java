@@ -20,6 +20,7 @@ public class Catalogo extends TablePane {
     protected void loadTableData() {
         //Static definition of the table
         //load products from database
+        model.setRowCount(0);
         CatalogoController controller=new CatalogoController();
         List <String[]> dati=controller.caricaCatalogo();
         if(dati!=null) {

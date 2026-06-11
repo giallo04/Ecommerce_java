@@ -1,6 +1,6 @@
 package Boundary.ManagerView;
 
-import Boundary.ManagerView.ListaOrdini.OrderDetails;
+import Boundary.ManagerView.ListaOrdini.OrderDetailManager;
 import Controller.AccountController;
 import Eseguibile.App;
 import Boundary.ManagerView.Catalogo.Catalogo;
@@ -80,7 +80,7 @@ public class Dashboard {
             VisualizzaOrdini pane=new VisualizzaOrdini(){
                 @Override
                 protected void openWindow(String id) {
-                   OrderDetails pane=new OrderDetails(id);
+                   OrderDetailManager pane=new OrderDetailManager(id);
                    pane.setVisible(true);
                    pane.pack();
                    pane.setLocationRelativeTo(contentPanel);

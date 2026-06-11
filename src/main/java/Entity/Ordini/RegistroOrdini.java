@@ -36,8 +36,15 @@ public class RegistroOrdini {
     public List<Ordine> caricaOrdiniUtente(long user_id){
         return gestorePersistenza.cercaPerCampo(Ordine.class, "user_id", user_id);
     }
+
+    public Ordine cercaOrdinePerId(long order_id){
+        return gestorePersistenza.trovaPerId(Ordine.class,order_id);
+    }
     public boolean registraOrdine(Ordine ordine){
         return gestorePersistenza.salva(ordine);
+    }
+    public List<Ordine> caricaOrdiniUltimoMese(){
+        return gestorePersistenza.caricaElementiUltimoMese(Ordine.class,"data");
     }
 
 }
