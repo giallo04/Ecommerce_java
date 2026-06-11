@@ -153,6 +153,7 @@ public class Utente {
     }
 
     public boolean verificaCredito(float totale){
-        return true;
+        if(totale >=0){return true;}
+        else{return false;}
     }
 }
