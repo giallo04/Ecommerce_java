@@ -191,8 +191,8 @@ public class CatalogoController {
 
 
     public List<String[]> prodottiPiuVenduti(){
-        GestorePersistenza gestore = new GestorePersistenza();
-        List<Prodotto> prodotti=gestore.elementoPiuVenduto(Prodotto.class, RigaOrdine.class,"product_id","qtaProdotto");
+        RegistroProdotti registro=new RegistroProdotti();
+        List<Prodotto> prodotti=registro.ProdottiPiuVenduti();
         if(prodotti.isEmpty())return null;
         return convertToGui(prodotti);
     }
