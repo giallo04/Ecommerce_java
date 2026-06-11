@@ -14,6 +14,7 @@ public class CarrelloDialog extends Container {
         super();
         setTitle("Carrello");
         salvaBtn.setText("Effettua Ordine");
+        salvaBtn.setEnabled(true);
         refreshContainer();
     }
 

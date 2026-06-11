@@ -18,7 +18,7 @@ public abstract class ContainerRow {
         this.id = id;
 
         Font newFont = new Font("Segoe UI", Font.BOLD, 16);
-        qtLabel.setText("Quantità: " + qt + "   ");
+        qtLabel.setText("Quantità: " + qt );
         qtLabel.setFont(newFont);
         priceLabel.setFont(newFont);
         nomeLabel.setFont(newFont);

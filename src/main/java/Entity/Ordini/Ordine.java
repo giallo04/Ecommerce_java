@@ -71,9 +71,19 @@ public class Ordine {
 
         if(statoOrdine.ordinal() < this.statoOrdine.ordinal()) throw new IllegalArgumentException("Lo stato inserito non è valido");
         if(statoOrdine.ordinal() == this.statoOrdine.ordinal()) return;
-        if(StatoOrdine.ANNULLATO==statoOrdine){sendMsg();}//INVIO MESSAGGIO ANNULLAZIONE
+        if(StatoOrdine.ANNULLATO==statoOrdine){
+            sendMsg();
+            restoreCatalogo();
+            return;
+        }
         this.statoOrdine = statoOrdine;
     }
+    private void restoreCatalogo(){
+        for(RigaOrdine riga:inOrdine){
+            riga.getProdotto().incrementQt(riga.getQtaProdotto());
+        }
+    }
+
     private void sendMsg(){return;}
 
     public void addRigaOrdine(Prodotto prodotto, int qtaProdotto){

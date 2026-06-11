@@ -50,8 +50,8 @@ public class ProductInCart extends ContainerRow {
 
     private void addProduct() {
         if (carrelloController.aggiungiAlCarrello(Long.parseLong(id), 1)) {
-            int updatedQt = Integer.parseInt(qtLabel.getText().replace("Selezionato: ", "")) + 1;
-            qtLabel.setText("Selezionato: " + updatedQt);
+            int updatedQt = Integer.parseInt(qtLabel.getText().replace("Quantità: ", "")) + 1;
+            qtLabel.setText("Quantità: " + updatedQt);
             onCartChanged.run();
         } else {
             JOptionPane.showMessageDialog(null, carrelloController.getMsg());
@@ -59,8 +59,8 @@ public class ProductInCart extends ContainerRow {
     }
     private void removeProduct(){
         if(carrelloController.rimuoviDalCarrello(Long.parseLong(id),1)){
-            int updatedQt = Integer.parseInt(qtLabel.getText().replace("Selezionato: ", "")) - 1;
-            qtLabel.setText("Selezionato: "+updatedQt);
+            int updatedQt = Integer.parseInt(qtLabel.getText().replace("Quantità: ", "")) - 1;
+            qtLabel.setText("Quantità: "+updatedQt);
             onCartChanged.run();
         }else{
             JOptionPane.showMessageDialog(null, carrelloController.getMsg());
