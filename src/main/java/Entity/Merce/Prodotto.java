@@ -42,7 +42,6 @@ public class Prodotto {
         if(nome==null) throw new IllegalArgumentException("Nome non valido");
         if (nome.isEmpty()) throw new IllegalArgumentException("Nome non puo essere vuoto");
         if(nome.length()>20) throw new IllegalArgumentException("Nome troppo lungo");
-        if(nome.contains(" ")) throw new IllegalArgumentException("Nome non puo contenere spazi");
         this.nome = nome;
     }
     public void setPrezzo(float prezzo) {
@@ -78,7 +77,7 @@ public class Prodotto {
   }
     public void setDescrizione(String descrizione) {
         if (descrizione.isEmpty()) throw new IllegalArgumentException();
-        if(descrizione.length()>40) throw new IllegalArgumentException("Descrizione troppo lunga");
+        if(descrizione.length()>300) throw new IllegalArgumentException("Descrizione troppo lunga");
         this.descrizione = descrizione;
     }
     public void setCategoria(Categoria categoria) {

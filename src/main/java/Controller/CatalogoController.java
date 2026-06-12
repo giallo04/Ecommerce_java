@@ -151,10 +151,10 @@ public class CatalogoController {
             return false;
         }
     }
-    public boolean eliminaProdotto(Long id){
+    public boolean eliminaProdotto(String id){
         RegistroProdotti registro=new RegistroProdotti();
         try{
-            registro.eliminaProdotto(id);
+            registro.eliminaProdotto(Long.parseLong(id));
             Files.delete(Path.of(PRODUCTS_IMG_PATH+id+".png"));
             return true;
         }catch (IllegalArgumentException e){

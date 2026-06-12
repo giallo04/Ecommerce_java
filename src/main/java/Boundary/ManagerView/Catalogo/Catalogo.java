@@ -74,7 +74,7 @@ public class Catalogo extends TablePane {
             JOptionPane.showMessageDialog(pane, "Seleziona un prodotto.");   return; }
         String id=model.getValueAt(viewRow,0).toString();
         CatalogoController controller=new CatalogoController();
-        if(controller.eliminaProdotto(Long.parseLong(id))){
+        if(controller.eliminaProdotto(id)){
             JOptionPane.showMessageDialog(pane, "Prodotto eliminato con successo");
         }else {
             JOptionPane.showMessageDialog(pane, controller.getMsg());

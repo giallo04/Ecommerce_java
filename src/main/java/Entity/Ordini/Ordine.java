@@ -68,7 +68,7 @@ public class Ordine {
 
     //modifica ordine
     public void setStatoOrdine(StatoOrdine statoOrdine) {
-
+        if(this.statoOrdine.isTerminale()) throw new IllegalStateException("L'ordine è in uno stato terminale e non puo essere modificato");
         if(statoOrdine.ordinal() < this.statoOrdine.ordinal()) throw new IllegalArgumentException("Lo stato inserito non è valido");
         if(statoOrdine.ordinal() == this.statoOrdine.ordinal()) return;
         if(StatoOrdine.ANNULLATO==statoOrdine){

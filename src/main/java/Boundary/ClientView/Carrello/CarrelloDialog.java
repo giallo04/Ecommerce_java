@@ -50,6 +50,7 @@ public class CarrelloDialog extends Container {
         CarrelloController controller = new CarrelloController();
         if (controller.effettuaOrdine()) {
             JOptionPane.showMessageDialog(null, "Ordine effettuato con successo!");
+            dispose();
         } else {
             JOptionPane.showMessageDialog(null, controller.getMsg());
         }

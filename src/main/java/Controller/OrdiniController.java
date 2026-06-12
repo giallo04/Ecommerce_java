@@ -110,7 +110,7 @@ public class OrdiniController {
         try{
             reg.modificaOrdine(Long.parseLong(order_id), StatoOrdine.valueOf(newStatoOrdine));
             return true;
-        }catch (IllegalArgumentException e){
+        }catch (IllegalArgumentException | IllegalStateException e){
             setError_msg(e.getMessage());
             return false;
         }
