@@ -119,6 +119,4 @@ public class ProdottoTest {
         p.setCategoria(Categoria.Sport);
         Assertions.assertEquals(Categoria.Sport,p.getCategoria());
     }
-
-
 }

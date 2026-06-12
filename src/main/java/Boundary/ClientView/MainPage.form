@@ -168,7 +168,7 @@
         </constraints>
         <properties>
           <font name="Segoe UI Black" size="36"/>
-          <text value="SHOPFLOW 🌐"/>
+          <text value="Federico Hub 🛒"/>
         </properties>
       </component>
       <grid id="193b8" binding="topPanel" layout-manager="BorderLayout" hgap="0" vgap="0">

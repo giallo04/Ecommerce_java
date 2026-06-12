@@ -45,16 +45,14 @@ public class Dashboard {
         StyleUtils.styleButton(statisticheButton);
         StyleUtils.styleButton(logoutButton);
 
-        // --- TOP PANEL ---
+// --- TOP PANEL ---
         if (labelNUtenti == null) {
-                AccountController controller=new AccountController();
-                labelNUtenti=new JLabel(controller.getNumberUtenti());
+            labelNUtenti = new JLabel();
         }
         if (labelNOrdini == null) {
             labelNOrdini = new JLabel();
-            OrdiniController controller=new OrdiniController();
-            labelNOrdini.setText(controller.getNumberOrderInLavorazione());
         }
+        aggiornaStatistiche();
 
         // TOP PANEL
         JPanel statsContainer = new JPanel(new GridLayout(1, 2, 25, 0));
@@ -76,12 +74,14 @@ public class Dashboard {
         viewPanel.add(contentPanel, BorderLayout.CENTER);
 
         // --- AZIONI MENU LATERALE ---
-        statisticheButton.addActionListener(e -> {onStatistiche();});
+        statisticheButton.addActionListener(e -> {aggiornaStatistiche();onStatistiche();});
 
-        catalogoButton.addActionListener(e -> {onCatalogo();});
+        catalogoButton.addActionListener(e -> {aggiornaStatistiche();onCatalogo();});
 
 
-        ordiniButton.addActionListener(e -> {contentPanel.removeAll();
+        ordiniButton.addActionListener(e -> {
+            aggiornaStatistiche();
+            contentPanel.removeAll();
             VisualizzaOrdini pane=new VisualizzaOrdini(){
                 @Override
                 protected void openWindow(String id) {
@@ -89,6 +89,11 @@ public class Dashboard {
                    pane.setVisible(true);
                    pane.pack();
                    pane.setLocationRelativeTo(contentPanel);
+                }
+                @Override
+                protected void onSelect(){//Mi serve per aggiornare le statistiche dinamicamente
+                    super.onSelect();
+                    Dashboard.this.aggiornaStatistiche();
                 }
             };
             contentPanel.add(pane.getPane());
@@ -123,5 +128,18 @@ public class Dashboard {
     }
     public JPanel getPane() {
         return pane;
+    }
+
+    //Aggiorna le top card dinamicamente
+    public void aggiornaStatistiche() {
+        AccountController accountController = new AccountController();
+        if (labelNUtenti != null) {
+            labelNUtenti.setText(accountController.getNumberUtenti());
+        }
+
+        OrdiniController ordiniController = new OrdiniController();
+        if (labelNOrdini != null) {
+            labelNOrdini.setText(ordiniController.getNumberOrderInLavorazione());
+        }
     }
 }

@@ -51,7 +51,7 @@ public  abstract class VisualizzaOrdini extends TablePane {
 //Action handlers
 
 
-    private void onSelect() {
+    protected void onSelect() {
         int viewRow = table.getSelectedRow();
         if (viewRow == -1) {JOptionPane.showMessageDialog(pane, "Seleziona un ordine da visualizzare"); return;}
         String id=model.getValueAt(viewRow,1).toString();

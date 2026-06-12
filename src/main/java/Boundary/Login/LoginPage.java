@@ -76,7 +76,7 @@ public class LoginPage {
         String email = textField1.getText();
         if(email.equals("admin")){App.mostraDashBoard();return;}
        if(email.contains("@")){
-           if(passwordField1.getPassword().length>8){
+           if(passwordField1.getPassword().length>=8){
                AccountController controller=new AccountController();
                if(controller.login(email,passwordField1.getText())){
                    App.mostraHome();
