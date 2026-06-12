@@ -157,7 +157,7 @@ public class CatalogoController {
             registro.eliminaProdotto(Long.parseLong(id));
             Files.delete(Path.of(PRODUCTS_IMG_PATH+id+".png"));
             return true;
-        }catch (IllegalArgumentException e){
+        }catch(IllegalArgumentException e){
             setMsg(e.getMessage());
             return false;
         }catch (IOException e){

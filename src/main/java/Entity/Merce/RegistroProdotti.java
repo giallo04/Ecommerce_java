@@ -55,10 +55,15 @@ public class RegistroProdotti {
     }
     public void eliminaProdotto(long id){
             //Verifica internamente se esiste
-           boolean result=gestore.elimina(Prodotto.class,id);
-           if(!result){
-               throw new IllegalArgumentException("Prodotto "+id+" non presente nel catalogo");
-           }
+        try {
+            boolean result = gestore.elimina(Prodotto.class, id);
+            if (!result) {
+                throw new IllegalArgumentException("Prodotto " + id + " non presente nel catalogo");
+            }
+        }catch (RuntimeException e){
+            //Lo so che é brutto
+            throw new IllegalArgumentException("Il prodotto non puo essere rimosso in quanto presente in carrelli/ordini");
+        }
     }
     public List<Prodotto> cercaProdottiPerCategoria(Categoria categoria){
             return gestore.cercaPerCampi(Prodotto.class,Map.of("categoria",categoria));

@@ -1,5 +1,6 @@
 package Boundary.Login;
 
+import Boundary.Utils.ImageUtils;
 import Eseguibile.App;
 import Controller.AccountController;
 
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 public class LoginPage {
     private JPanel pane;
@@ -25,7 +27,8 @@ public class LoginPage {
         textField1.putClientProperty("JTextField.placeholderText", "name@email.com");
         nonHaiUnAccountButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         signInButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        showButton.setIcon(new ImageIcon(getClass().getResource("/images/show.png")));
+        showButton.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/show.png"))));
+        labelImmagine.setIcon(ImageUtils.getIconScaled("img/brand/logo.png",400));
         //LISTENER TASTI
         nonHaiUnAccountButton.addActionListener(new ActionListener() {
             @Override
@@ -68,14 +71,6 @@ public class LoginPage {
 
     public JPanel getPane() {
         return pane;
-    }
-    private void createUIComponents() {
-        labelImmagine = new JLabel();
-        java.net.URL imgUrl = getClass().getResource("/images/logo.png");
-        labelImmagine.setOpaque(false);
-        if (imgUrl != null) {
-            labelImmagine.setIcon(new ImageIcon(imgUrl));
-        }
     }
     private void enterData(){
         String email = textField1.getText();

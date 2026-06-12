@@ -359,9 +359,7 @@ public class GestorePersistenza {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-
-            e.printStackTrace();
-            return false;
+            throw e;//per gestire prodotto nel carrello/ordine eccezione
 
         } finally {
             em.close();

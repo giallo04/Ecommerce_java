@@ -66,7 +66,7 @@
           <visible value="true"/>
         </properties>
       </component>
-      <component id="7e816" class="javax.swing.JLabel" binding="labelImmagine" custom-create="true">
+      <component id="7e816" class="javax.swing.JLabel" binding="labelImmagine">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="4" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
