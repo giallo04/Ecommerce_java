@@ -1,11 +1,8 @@
 package Entity.Merce;
 
-import Entity.Ordini.RigaOrdine;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+
 
 @Entity
 public class Prodotto {
@@ -42,7 +39,10 @@ public class Prodotto {
     public int getSconto()              { return sconto; } // int, non String
 
     public void setNome(String nome) {
+        if(nome==null) throw new IllegalArgumentException("Nome non valido");
         if (nome.isEmpty()) throw new IllegalArgumentException("Nome non puo essere vuoto");
+        if(nome.length()>20) throw new IllegalArgumentException("Nome troppo lungo");
+        if(nome.contains(" ")) throw new IllegalArgumentException("Nome non puo contenere spazi");
         this.nome = nome;
     }
     public void setPrezzo(float prezzo) {
@@ -78,10 +78,13 @@ public class Prodotto {
   }
     public void setDescrizione(String descrizione) {
         if (descrizione.isEmpty()) throw new IllegalArgumentException();
+        if(descrizione.length()>40) throw new IllegalArgumentException("Descrizione troppo lunga");
         this.descrizione = descrizione;
     }
     public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+        if(categoria!=null){
+                this.categoria = categoria;
+        }else throw new IllegalArgumentException("Categoria non valida");
     }
     public long getProduct_id() {
         return product_id;
