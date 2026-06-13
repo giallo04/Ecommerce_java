@@ -76,8 +76,13 @@ public class Prodotto {
         }
   }
     public void setDescrizione(String descrizione) {
-        if (descrizione.isEmpty()) throw new IllegalArgumentException();
-        if(descrizione.length()>300) throw new IllegalArgumentException("Descrizione troppo lunga");
+        if (descrizione == null || descrizione.isEmpty())
+            throw new IllegalArgumentException("Descrizione non può essere vuota");
+        if (descrizione.length() > 300)
+            throw new IllegalArgumentException("Descrizione troppo lunga");
+        if (!descrizione.matches("[a-zA-Z0-9À-ÿ .,!?'-]+"))
+            throw new IllegalArgumentException("Descrizione contiene caratteri non validi");
+
         this.descrizione = descrizione;
     }
     public void setCategoria(Categoria categoria) {

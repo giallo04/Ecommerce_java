@@ -49,6 +49,16 @@ public class ProdottoTest {
         Assertions.assertThrowsExactly(IllegalArgumentException.class,()->p.setDescrizione(""));
     }
     @Test
+    void setDescrizioneTroppoLungaTest() {
+        String descrizioneTroppoLunga="a".repeat(301);
+        Assertions.assertThrowsExactly(IllegalArgumentException.class,()->p.setDescrizione(descrizioneTroppoLunga));
+    }
+    @Test
+    void setDescrizioneSimboliTest() {
+        String descrizioneSimboli="schermo <10>";
+        Assertions.assertThrowsExactly(IllegalArgumentException.class,()->p.setDescrizione(descrizioneSimboli));
+    }
+    @Test
     void incrementaQuantitaTest() {
         p.incrementQt(5);
         Assertions.assertEquals(quantita+5,p.getQuantita());
