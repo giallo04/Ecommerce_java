@@ -16,7 +16,8 @@ public class CarrelloController {
     private final String PRODUCTS_IMG_PATH="img/products/";
 
     public static final int  ID=0;
-   public static final int  QUANTITA=1;
+    public static final int  QUANTITA=1;
+    public static final int PREZZO_RIGA=2;
     private  String messaggio_errore;
 
 
@@ -81,7 +82,8 @@ public class CarrelloController {
         {
             String[] prodotto=new String[]{
                     String.valueOf(riga.getProdotto().getProduct_id()),
-                    String.valueOf(riga.getQuantita())
+                    String.valueOf(riga.getQuantita()),
+                    String.valueOf(riga.getProdotto().getPrezzoScontato()*riga.getQuantita())
                 };
             lista.add(prodotto);
         }

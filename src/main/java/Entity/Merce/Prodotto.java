@@ -94,4 +94,8 @@ public class Prodotto {
         return product_id;
     }
 
+    public float getPrezzoScontato(){
+        return prezzo-prezzo*sconto/100;
+    }
+
 }

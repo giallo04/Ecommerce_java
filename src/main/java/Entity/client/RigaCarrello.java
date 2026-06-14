@@ -49,8 +49,7 @@ public class RigaCarrello {
     }
 
     public float calcolaSubTotale() {
-        float prezzoScontato = prodotto.getPrezzo() * (1 - (prodotto.getSconto() / 100f));
-        return prezzoScontato * quantita;
+        return prodotto.getPrezzoScontato() * quantita;
     }
 
 }

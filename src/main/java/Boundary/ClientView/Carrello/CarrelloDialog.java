@@ -33,6 +33,7 @@ public class CarrelloDialog extends Container {
             ProductInCart p = new ProductInCart(
                     prodotto[CarrelloController.ID],
                     prodotto[CarrelloController.QUANTITA],
+                    prodotto[CarrelloController.PREZZO_RIGA],
                     this::refreshContainer
             );
             containerViewPanel.add(p.getPane());

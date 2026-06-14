@@ -16,9 +16,10 @@ public class ProductInCart extends ContainerRow {
     private JButton addButton;
     private CarrelloController  carrelloController=new CarrelloController();
 
-    public ProductInCart(String id,String qt,Runnable onCartChanged) {
+    public ProductInCart(String id,String qt,String price,Runnable onCartChanged) {
         super(id,qt);
         this.onCartChanged=onCartChanged;
+        priceLabel.setText("Prezzo: "+price);
         init(id);
     }
     @Override
@@ -30,7 +31,6 @@ public class ProductInCart extends ContainerRow {
         }
         Font newFont = new Font("Swing ui", Font.BOLD, 16);
         imgLabel.setIcon(ImageUtils.getIconScaled(data[CatalogoController.IMG_PATH],100));
-        priceLabel.setText("Prezzo: "+data[CatalogoController.PREZZO_CON_SCONTO]);
         nomeLabel.setText(data[CatalogoController.NOME]);
 
         //bottoni
