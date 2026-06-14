@@ -52,14 +52,6 @@ public class Ordine {
         return indirizzo;
     }
 
-    public float getTotale() {
-        float totale=0;
-        for(RigaOrdine riga:inOrdine){
-            totale+=riga.getPrezzo()*riga.getQtaProdotto();
-        }
-        return totale;
-    }
-
     public List<RigaOrdine> getInOrdine() {
         return Collections.unmodifiableList(inOrdine);
     }
