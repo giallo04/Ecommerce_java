@@ -1,4 +1,4 @@
-# 🛒 primaGui — E-Commerce Desktop in Java
+# 🛒 Progetto Ingegneria del Software — E-Commerce Desktop in Java
 
 Applicazione desktop per la gestione di un e-commerce, realizzata con **Java 21**, **Swing** (tema FlatLaf) e **Hibernate/JPA** su **MySQL**.  
 Il progetto segue il pattern architetturale **BCE (Boundary – Controller – Entity)** e supporta due ruoli distinti: **Cliente** e **Manager**.
