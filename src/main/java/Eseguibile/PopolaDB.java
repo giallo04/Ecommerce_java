@@ -75,9 +75,9 @@ public class PopolaDB {
         catalogo.aggiungiProdotto("Ps4", "Una vecchia gloria che resiste al tempo. Ideale per recuperare capolavori senza svaligiare una banca.", 500F, Categoria.Elettronica, 35, 10);
         catalogo.aggiungiProdotto("Xbox Series X", "Il monolito nero della potenza videoludica. Pronta a divorare le tue ore di sonno insieme al Game Pass.", 1000F, Categoria.Elettronica, 40, 30);
         catalogo.aggiungiProdotto("iPhone 17 pro", "Il flagship del futuro con scocca in titanio alleggerito e un comparto fotografico che scatta foto anche ai tuoi pensieri.", 999.99F, Categoria.Elettronica, 90, 0);
-        catalogo.aggiungiProdotto("Lego DC Batman", "Diventa la notte (e un ingegnere civile) costruendo l'iconica Batcaverna mattoncino dopo mattoncino.", 30, Categoria.Giochi, 10, 0);
+        catalogo.aggiungiProdotto("Lego DC Batman", "Diventa la notte  costruendo l'iconica Batcaverna mattoncino dopo mattoncino.", 30, Categoria.Giochi, 10, 0);
         catalogo.aggiungiProdotto("Monopoly", "Il gioco da tavolo definitivo per distruggere amicizie storiche e litigare pesantemente con i parenti a Natale.", 40, Categoria.Giochi, 15, 0);
-        catalogo.aggiungiProdotto("Pallone da basket", "Perfetto per fare tre passi, saltare sul cemento e sognare la NBA (o per finire dritto sul balcone dei vicini).", 19.99F, Categoria.Sport, 30, 15);
+        catalogo.aggiungiProdotto("Pallone da basket", "Perfetto per fare tre passi, saltare sul cemento e sognare la NBA .", 19.99F, Categoria.Sport, 30, 15);
         catalogo.aggiungiProdotto("Maglia del Napoli", "Maglia azzurra ufficiale. Passione viscerale stampata su tessuto. 'Un giorno all'improvviso mi innamorai di te, batte il mio cuore non chiedermi il perché...'", 99F, Categoria.Abbigliamento, 100, 0);
         catalogo.aggiungiProdotto("Bicicletta", "Due ruote, zero emissioni e la promessa solenne di rimettersi in forma, che svanirà puntualmente alla prima salita.", 150, Categoria.Sport, 20, 0);
         catalogo.aggiungiProdotto("Tesi di laurea", "Un capolavoro accademico dal valore inestimabile, redatto all'ombra della meravigliosa Piazza d'Italia a Sassari, tra il profumo della favata e il fascino senza tempo della Sardegna. Vale ogni singolo centesimo.", 999, Categoria.Giochi, 10, 0);
